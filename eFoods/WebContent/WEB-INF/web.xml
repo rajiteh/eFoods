@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd" id="WebApp_ID" version="3.1">
+  <display-name>eFoods</display-name>
+  <welcome-file-list>
+    <welcome-file>Home.jspx</welcome-file>
+  </welcome-file-list>
+  <servlet>
+    <servlet-name>Category</servlet-name>
+    <servlet-class>ctrl.Category</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>Item</servlet-name>
+    <servlet-class>ctrl.Item</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>Auth</servlet-name>
+    <servlet-class>ctrl.Auth</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>Cart</servlet-name>
+    <servlet-class>ctrl.Cart</servlet-class>
+  </servlet>
+</web-app>

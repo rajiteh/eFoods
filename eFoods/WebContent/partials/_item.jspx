@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:c="http://java.sun.com/jsp/jstl/core" version="2.0">
+	<jsp:directive.page contentType="text/html; charset=UTF-8"
+		pageEncoding="UTF-8" session="false" />
+	<jsp:output omit-xml-declaration="true" />
+	
+	<!--  TODO: add jspx looping over contents -->
+	<!-- main content -->
+	<!-- need to add a loop here to go through the content -->
+	<!-- fields are 
+        picture
+        name
+        price
+        item id
+      	-->
+	<c:forEach items="${results }" var="r">
+		<div class="col-md-4">
+            	<div class="thumbnail">
+           			<img src="http://placehold.it/300x200" class="img-responsive"></img>
+          			<div class="caption">
+	          			<h4> ${r.name } </h4>
+	          			<h4> ${r.price } </h4>
+	          			<h4> ${r.qty } </h4>
+	          			<h4> ${r.category.name } </h4>
+	          			<h4> ${r.number } </h4>
+	          			<button class="btn btn-primary" name="itemAdd">Add</button>
+	          		</div>
+          		</div>
+		</div>
+	</c:forEach>
+
+</jsp:root>

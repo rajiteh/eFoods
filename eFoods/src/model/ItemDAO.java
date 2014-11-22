@@ -1,0 +1,141 @@
+package model;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
+
+import util.eFoodsDataSource;
+
+public class ItemDAO extends BaseDAO {
+
+	public final static String NUMBER_ALL = "-1";
+	public final static int CAT_ALL = -1;
+	
+	public static final String BASE_QUERY = "SELECT  I.number, "
+			+ "I.name,  I.price,  I.qty,  I.onorder, "
+			+ "I.reorder,  I.catid,  I.supid,  I.costprice, "
+			+ "I.unit,  C.id as \"CAT_ID\",  C.name as \"CAT_NAME\", "
+			+ "C.description as \"CAT_DESCRIPTION\" FROM ITEM I "
+			+ "INNER JOIN CATEGORY C  ON I.catId = C.id";
+	
+	public ItemDAO() {
+		// TODO Auto-generated constructor stub
+	}
+
+	public List<ItemBean> retrieve() throws Exception {
+		return retrieve(NUMBER_ALL);
+	}
+
+	
+
+	public List<ItemBean> retrieve(String number) throws Exception {
+		return retrieve(number, CAT_ALL);
+	}
+
+
+	
+	public List<ItemBean> retrieve(String number, int catId) throws Exception {
+		Connection connection = null;
+		PreparedStatement preparedStatement;
+		ResultSet rs;
+		List<ItemBean> retval = new ArrayList<ItemBean>();
+
+		try {
+			connection = eFoodsDataSource.getConnection();
+
+			if (number.equals(NUMBER_ALL) && catId == CAT_ALL) {
+				preparedStatement = connection.prepareStatement(BASE_QUERY);
+			} else {
+				
+				Queue<PrepareInstruction> instructions=new LinkedList<PrepareInstruction>();	
+				List<String> wheres = new ArrayList<String>();
+				
+				if (!(number.equals(NUMBER_ALL))) {
+					wheres.add("I.number = ?");
+					instructions.add(new PrepareInstruction(PrepareInstruction.TYPE_STRING, number));
+				}
+				if (catId != ID_ALL) {
+					wheres.add("C.id = ?");
+					instructions.add(new PrepareInstruction(PrepareInstruction.TYPE_INT, catId));
+				}
+				
+				
+		        String query = BASE_QUERY + " WHERE " + createWhereString(wheres, "AND");
+				preparedStatement = instaPrepareStatement(query, instructions, connection);
+				
+			}
+
+			rs = preparedStatement.executeQuery();
+
+			while (rs.next()) {
+				CategoryBean cat = new CategoryBean(rs.getInt("cat_id"),
+						rs.getString("cat_name"),
+						rs.getString("cat_description"), null);
+				ItemBean item = new ItemBean(rs.getString("number"),
+						rs.getString("name"), rs.getFloat("price"),
+						rs.getInt("qty"), rs.getInt("onorder"),
+						rs.getInt("reorder"), cat, rs.getInt("supid"),
+						rs.getInt("costprice"), rs.getString("unit"));
+				retval.add(item);
+			}
+		} catch (Exception e) {
+			throw e;
+		} finally {
+			if (connection != null)
+				connection.close();
+		}
+
+		return retval;
+	}
+	class PrepareInstruction {
+		static final int TYPE_STRING = 0x0a;
+		static final int TYPE_INT = 0x0b;
+		int type;
+		Object value;
+		public PrepareInstruction(int type, Object value) {
+			super();
+			this.type = type;
+			this.value = value;
+		}
+	}
+	
+	private String createWhereString(List<String> wheres, String operator) {
+		String whereString = "";
+		Iterator<String> iter = wheres.iterator();
+        whereString += iter.hasNext() ? iter.next() : "";
+        while (iter.hasNext()) whereString += " "+ operator + " " + iter.next();
+        return "(" + whereString + ")";
+	}
+	
+	private PreparedStatement instaPrepareStatement(String query, Queue<PrepareInstruction> piQ, Connection connection) throws Exception {
+		PreparedStatement ps = connection.prepareStatement(query);
+		int idx=0;
+		while (piQ.size() > 0) {
+			PrepareInstruction pi = piQ.poll();
+			idx++; //Start with 1
+			switch (pi.type) {
+			case PrepareInstruction.TYPE_STRING:
+				ps.setString(idx, (String) pi.value);
+				break;
+			case PrepareInstruction.TYPE_INT:
+				ps.setInt(idx, (int) pi.value);
+				break;
+			default:
+				throw new Exception("Instructions not clear statement stuck in toaster");
+			}
+		}
+		return ps;
+	}
+
+	/*
+	 * SET SCHEMA roumani; SELECT I.number, I.name, I.price, I.qty, I.onorder,
+	 * I.reorder, I.catid, I.supid, I.costprice, I.unit, C.id as "cat_id",
+	 * C.name as "cat_name", C.description as "cat_description" FROM ITEM I
+	 * INNER JOIN CATEGORY C ON I.catId = C.id;
+	 */
+}

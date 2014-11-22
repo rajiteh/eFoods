@@ -1,0 +1,30 @@
+/*
+ * Main CSS rules
+ */
+
+body {
+    margin-top: 20px;
+    font-family: @font-family-sans-serif;
+}
+
+.header {
+    margin-bottom: 100px;
+}
+
+.login-text {
+    display: inline;
+    font-size: 1.0em;
+}
+
+.footer {
+	margin-top: 100px;
+}
+
+.logo {
+	
+}
+
+/* Level this with the logo */
+.cart {
+	padding-top: 20px;
+}

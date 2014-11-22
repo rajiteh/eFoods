@@ -1,0 +1,18 @@
+package util;
+
+import javax.servlet.http.HttpServletRequest;
+
+public abstract class Authenticator {
+
+	protected String sessionKey;
+	
+	
+	public abstract boolean isAuthenticated(HttpServletRequest request);
+	
+	public abstract boolean login(HttpServletRequest request, String username, String password);
+	
+	public abstract void logout(HttpServletRequest request) throws Exception;
+	
+	
+
+}

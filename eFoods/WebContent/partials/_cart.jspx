@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:c="http://java.sun.com/jsp/jstl/core" version="2.0">
+	<jsp:directive.page contentType="text/html; charset=UTF-8"
+		pageEncoding="UTF-8" session="false" />
+	<jsp:output omit-xml-declaration="true" />
+
+	
+	<c:forEach items="${cartItems }" var="r">
+		<h4>Name: ${r.item.name } </h4>
+		<h4>Price: ${r.item.price } </h4>
+ 		<h4>Number: ${r.item.number } </h4>
+ 		<h2>Purchase Qty: ${r.quantity }</h2>
+		<hr />
+	</c:forEach>
+	<h2>Total: ${total }</h2>
+	<h2>Shipping: ${shipping }</h2>
+	<h2>Tax: ${tax }</h2>
+	<h2>SubTotal: ${total + shipping + tax }</h2>
+</jsp:root>
