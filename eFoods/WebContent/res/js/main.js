@@ -14,6 +14,14 @@ eFoods.util.errors = {};
 //Core app code
 eFoods.app = {};
 
+// Returns the baseURL, ex. http://localhost:4413
+eFoods.util.baseURL = function() {
+	path = window.location.href.split('/');
+	protocol = path[0];
+	host = path[2];
+	return protocol + "//" + host;
+}
+
 //Ajax helper. Takes url and 2 callbacks.
 eFoods.util.doAjax = function(url, data, method, onSuccess, onFailure) {
 
@@ -158,3 +166,4 @@ eFoods.app.handleForm = function(form) {
 };
 
 eFoods.app.init();
+console.log(eFoods.util.baseURL());
