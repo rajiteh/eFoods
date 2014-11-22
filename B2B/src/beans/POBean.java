@@ -13,7 +13,7 @@ public class POBean
 {
 	// @XmlElement
 	private CustomerBean customer;
-	// @XmlElement(name="item")
+	// @XmlElement(name="items")
 	private ItemsWrapper items;
 	// @XmlElement
 	private double total;

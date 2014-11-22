@@ -49,18 +49,34 @@ public class Purchaser
 				item.setPrice(-1.0);
 				item.setWholesaler("No wholesaler");
 				item.setCode("Out of stock");
+				item.setOrdered(false);
 			}
 			else // take the best offer
 			{
-				item.setCode(best.order(item.getNumber(), item.getQuantity(), this.key));
-				item.setPrice(bestOffer);
-				item.setWholesaler(best.getName());
-				item.updateExtended();
+				String code;
+				try
+				{
+					code = best.order(item.getNumber(), item.getQuantity(), this.key);
+					if (code.equals("Invalid key!"))
+					{
+						item.setOrdered(false);
+					}
+					else
+					{
+						item.setOrdered(true);
+					}
+					item.setPrice(bestOffer);
+					item.setCode(code);
+					item.setWholesaler(best.getName());
+				}
+				catch (Exception e)
+				{
+					item.setOrdered(false);
+				}
 			}
 		} // end of iterating items
 		
 		// generate report
-		order.updateTotal();
 		this.generateReport(order, outfile);
 	}
 	

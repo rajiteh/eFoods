@@ -60,7 +60,7 @@ public class AggOrderBean
 		this.id = id;
 	}
 	
-	public void updateTotal()
+	private void updateTotal()
 	{
 		this.total = 0;
 		Iterator<AggItemBean> itr = this.items.iterator();

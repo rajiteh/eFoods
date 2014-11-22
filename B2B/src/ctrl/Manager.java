@@ -30,8 +30,8 @@ public class Manager
 							 "/home/user/Downloads/PO122.xml",
 							 "/home/user/Downloads/PO124.xml"};
 		
-		AggOrderBean prcr = agg.getAggregatedOrder(fns, 101);
-		pch.purchase(prcr, "/home/user/Downloads/rpt101.xml");
+		AggOrderBean prcr = agg.getAggregatedOrder(fns, 103);
+		pch.purchase(prcr, "/home/user/Downloads/rpt103.xml");
 	}
 
 }

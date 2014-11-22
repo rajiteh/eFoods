@@ -89,11 +89,12 @@ public class Wholesaler
 			throw new Exception("Error occurs when setting up SOAP connection.");
 		}
 		
-		// parse the respond
+		// parse the response
 		NodeList result;
 		try
 		{
 			result = resp.getSOAPPart().getEnvelope().getBody().getElementsByTagName(operation + "Return");
+			// resp.writeTo(System.out);
 		}
 		catch (Exception e)
 		{

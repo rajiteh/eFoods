@@ -24,6 +24,8 @@ public class AggItemBean
 	private String wholesaler;
 	// @XmlElement
 	private String code;
+	// @XmlElement
+	private boolean ordered;
 	
 	public AggItemBean()
    {
@@ -35,6 +37,7 @@ public class AggItemBean
 		this.number = item.getNumber();
 		this.name = item.getName();
 		this.quantity = item.getQuantity();
+		this.ordered = false;
 	}
 	
 	public AggItemBean(String number, String name, double price, int quantity,
@@ -44,15 +47,15 @@ public class AggItemBean
 	   this.name = name;
 	   this.price = price;
 	   this.quantity = quantity;
-	   this.updateExtended();
+	   this.extended = 0;
 	   this.wholesaler = wholesaler;
 	   this.code = code;
+	   this.ordered = false;
    }
 	
 	public void addQuantity(int amount)
 	{
 		this.quantity = this.quantity + amount;
-		this.updateExtended();
 	}
 
 	// ==============   getters and setters  ====================
@@ -87,7 +90,6 @@ public class AggItemBean
 	public void setPrice(double price)
 	{
 		this.price = price;
-		this.updateExtended();
 	}
 
 	@XmlElement
@@ -99,12 +101,12 @@ public class AggItemBean
 	public void setQuantity(int quantity)
 	{
 		this.quantity = quantity;
-		this.updateExtended();
 	}
 
 	@XmlElement
 	public double getExtended()
 	{
+		this.updateExtended();
 		return extended;
 	}
 
@@ -130,8 +132,26 @@ public class AggItemBean
 		this.code = code;
 	}
 	
-	public void updateExtended()
+	@XmlElement
+	public boolean isOrdered()
 	{
-		this.extended = this.price * this.quantity;
+		return ordered;
+	}
+
+	public void setOrdered(boolean ordered)
+	{
+		this.ordered = ordered;
+	}
+
+	private void updateExtended()
+	{
+		if (this.ordered)
+		{
+			this.extended = this.price * this.quantity;
+		}
+		else
+		{
+			this.extended = 0;
+		}
 	}
 }

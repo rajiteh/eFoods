@@ -54,7 +54,7 @@ public class Aggregator
 			}
 		} // end of aggregating orders into map
 		
-		// restore aggregated order into AggOrderBean
+		// store aggregated order into AggOrderBean
 		List<AggItemBean> aggItems = new ArrayList<AggItemBean>();
 		Iterator<AggItemBean> itr3 = mp.values().iterator();
 		while (itr3.hasNext())
@@ -68,7 +68,7 @@ public class Aggregator
 	private List<POBean> getOrders(String[] fnames) throws Exception
 	{
 		if (fnames == null)
-			throw new NullPointerException("File names are not valid.");
+			throw new NullPointerException("invalid file names.");
 		
 		// define unmarshaller
 		JAXBContext jc;
