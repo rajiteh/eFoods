@@ -28,7 +28,7 @@
 
 					<button type="button" class="btn btn-default btn-lg">
 						<!-- TODO: ajax item counter -->
-						<span class="badge"> 0 </span> <span
+						<span class="badge" name="cartCount"> 0 </span> <span
 							class="glyphicon glyphicon-shopping-cart"></span>
 					</button>
 				</div>

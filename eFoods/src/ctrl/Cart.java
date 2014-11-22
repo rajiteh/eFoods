@@ -76,8 +76,6 @@ public class Cart extends BaseCtrl implements Servlet {
 		
 	}
 
-
-	
 	
 	
 	

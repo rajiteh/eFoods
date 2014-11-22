@@ -41,8 +41,12 @@
       	<div class="row">
         	<span> Cats go here</span>
       	</div>
-
-
+      	
+      	<div class="row">
+      		<jsp:include page="/partials/_category.jspx">
+      		</jsp:include>
+      	</div>
+      	
       	<!-- footer -->
 		<div class="row">
 			<jsp:include page="Footer.jspx">

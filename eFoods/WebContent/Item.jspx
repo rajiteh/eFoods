@@ -14,7 +14,6 @@
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" type="text/css"/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/res/css/main.css" type="text/css" title="cse4413" media="screen, print"/>
-    
 </head>
 <body>
 	<!-- wrapper over content -->
@@ -36,7 +35,7 @@
         item id
       	-->
       	<div class="row">
-	      	<jsp:include page="/partials/_category.jspx">
+	      	<jsp:include page="/partials/_item.jspx">
 	      	</jsp:include>
       	</div>
       	
@@ -46,6 +45,10 @@
 			</jsp:include>
     	</div>
     </div>
+    
+    <!--  JS scripts -->
+    <script src="${pageContext.request.contextPath}/res/js/item.js">;</script>
+    
 </body>
 </html>
 </jsp:root>

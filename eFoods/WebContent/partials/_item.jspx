@@ -16,14 +16,14 @@
       	-->
 	<c:forEach items="${results }" var="r">
 		<div class="col-md-4">
-            	<div class="thumbnail">
+            	<div class="thumbnail item">
            			<img src="http://placehold.it/300x200" class="img-responsive"></img>
           			<div class="caption">
-	          			<h4> ${r.name } </h4>
-	          			<h4> ${r.price } </h4>
-	          			<h4> ${r.qty } </h4>
-	          			<h4> ${r.category.name } </h4>
-	          			<h4> ${r.number } </h4>
+	          			<h4 class="item-name"> ${r.name } </h4>
+	          			<h4 class="item-price"> ${r.price } </h4>
+	          			<h4 class="item-quantity"> ${r.qty } </h4>
+	          			<h4 class="item-category"> ${r.category.name } </h4>
+	          			<h4 class="item-number"> ${r.number } </h4>
 	          			<button class="btn btn-primary" name="itemAdd">Add</button>
 	          		</div>
           		</div>

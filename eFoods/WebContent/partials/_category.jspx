@@ -16,12 +16,12 @@
       	-->
 	<c:forEach items="${results }" var="r">
 		<div class="col-md-4">
-			<div class="thumbnail">
+			<div class="thumbnail category">
 				<img src="http://placehold.it/300x200" class="img-responsive"></img>
 				<div class="caption">
-					<h4>${r.name }</h4>
-					<h4>${r.description }</h4>
-					<h4>${r.id }</h4>
+					<h4 class="category-name">${r.name }</h4>
+					<h4 class="category-description">${r.description }</h4>
+					<h4 class="category-id">${r.id }</h4>
 				</div>
 			</div>
 		</div>

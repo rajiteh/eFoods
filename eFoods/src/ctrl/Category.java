@@ -20,6 +20,7 @@ public class Category extends BaseCtrl {
 
 	protected void processRequest(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
+		System.out.println("Processing Category route");
 		EFoods model = getModel(request);
 		Route route = getRoute(request);
 		List<CategoryBean> results = null;
@@ -49,7 +50,7 @@ public class Category extends BaseCtrl {
 			e.printStackTrace();
 		}
 		request.setAttribute("results", results);
-		request.getRequestDispatcher("/partials/_category.jspx").forward(
+		request.getRequestDispatcher("/Category.jspx").forward(
 				request, response);
 
 	}

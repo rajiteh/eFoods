@@ -56,7 +56,7 @@ public class Item extends BaseCtrl {
 			e.printStackTrace();
 		}
 		request.setAttribute("results", results);
-		request.getRequestDispatcher("/partials/_item.jspx").forward(request,
+		request.getRequestDispatcher("/Item.jspx").forward(request,
 				response);
 	}
 
