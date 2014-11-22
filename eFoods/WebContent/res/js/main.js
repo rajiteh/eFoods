@@ -136,8 +136,8 @@ eFoods.app.handleHref = function(href, ajaxifyTarget) {
 		}
 
 	} catch (e) {
-		throw e
-		//console.log(e);
+		//throw e
+		console.log(e);
 	}
 	return false;
 };
