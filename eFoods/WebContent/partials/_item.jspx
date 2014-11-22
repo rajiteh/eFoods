@@ -14,6 +14,8 @@
         price
         item id
       	-->
+    <h1>${category.name }</h1>
+    <a href="backend/category/" data-refresh-ids="main-content" onClick="return eFoods.app.handleHref(this, true);">Back to all categories</a>
 	<c:forEach items="${results }" var="r">
 		<div class="col-md-4">
             	<div class="thumbnail">
@@ -24,7 +26,12 @@
 	          			<h4> ${r.qty } </h4>
 	          			<h4> ${r.category.name } </h4>
 	          			<h4> ${r.number } </h4>
-	          			<button class="btn btn-primary" name="itemAdd">Add</button>
+	          			<form method="POST" action="backend/cart" data-refresh-ids="cart-info" onsubmit="return eFoods.app.handleForm(this);">
+							<input type="number" name="qty" value="1"/>
+							<input type="hidden" name="item" value="${r.number }"/>
+							<input type="submit" class="btn btn-primary" name="itemAdd" value="Add"/>
+						</form>
+	          			
 	          		</div>
           		</div>
 		</div>

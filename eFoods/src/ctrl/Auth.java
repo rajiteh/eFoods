@@ -21,6 +21,7 @@ public class Auth extends BaseCtrl implements Servlet {
 	public static final int ROUTE_INITAL = 0x0a;
 	public static final int ROUTE_AUTHORIZE = 0x0b;
 	public static final int ROUTE_LOGOUT = 0x0c;
+	public static final int ROUTE_USER_BADGE = 0x0d;
        
     /**
      * @see BaseCtrl#BaseCtrl()
@@ -31,13 +32,13 @@ public class Auth extends BaseCtrl implements Servlet {
     }
 
 	protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		Authenticator auth = getAuthenticator(request);
+		SSOAuthenticator auth = (SSOAuthenticator) getAuthenticator(request);
 		Route route = getRoute(request);
 		switch(route.getIdentifier()) {
 		case ROUTE_INITAL:
 		case ROUTE_AUTHORIZE:
 			auth.login(request, "cse11011", null);
-			UserBean usr = ((SSOAuthenticator) auth).getUser(request);
+			UserBean usr = auth.getUser(request);
 			System.out.println("Login: Successfully authenticated as " + usr.getName());
 			break;
 		case ROUTE_LOGOUT:
@@ -49,6 +50,11 @@ public class Auth extends BaseCtrl implements Servlet {
 				throw new ServletException(e.getMessage());
 				
 			}
+			break;
+		case ROUTE_USER_BADGE:
+			request.setAttribute("currentUser", auth.getUser(request));
+			request.getRequestDispatcher("/partials/_userBadge.jspx").forward(
+					request, response);
 			break;
 		default:
 			throw new ServletException("Not sure whats happening here...");

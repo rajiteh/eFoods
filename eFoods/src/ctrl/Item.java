@@ -25,6 +25,7 @@ public class Item extends BaseCtrl {
 			HttpServletResponse response) throws ServletException, IOException {
 		EFoods model = getModel(request);
 		Route route = getRoute(request);
+		PagingHelper paging = getPagination(request);
 		List<ItemBean> results = null;
 		int routeType;
 		if (route == null)
@@ -37,15 +38,17 @@ public class Item extends BaseCtrl {
 			switch (routeType) {
 			case ROUTE_BY_CATEGORY:
 				int catId = Integer.parseInt(route.getMatcher().group("catId"));
-				results = model.items(ItemDAO.NUMBER_ALL, catId);
+				CategoryBean cat = model.categories(catId).get(0);
+				request.setAttribute("category", cat);
+				results = model.items(ItemDAO.NUMBER_ALL, catId, paging.getPage(), paging.getLimit());
 				break;
 			case ROUTE_BY_NUMBER:
 				String number = route.getMatcher().group("itemNumber");
-				results = model.items(number, ItemDAO.CAT_ALL);
+				results = model.items(number, ItemDAO.CAT_ALL, paging.getPage(), paging.getLimit());
 				break;
 			case ROUTE_ALL:
 			default:
-				results = model.items(ItemDAO.NUMBER_ALL, ItemDAO.CAT_ALL);
+				results = model.items(ItemDAO.NUMBER_ALL, ItemDAO.CAT_ALL, paging.getPage(), paging.getLimit());
 			}
 
 				
@@ -59,5 +62,7 @@ public class Item extends BaseCtrl {
 		request.getRequestDispatcher("/partials/_item.jspx").forward(request,
 				response);
 	}
+
+
 
 }

@@ -15,10 +15,31 @@ import model.*;
 public abstract class BaseCtrl extends HttpServlet
 {
 	private static final long serialVersionUID = 1L;
+
+	public class PagingHelper {
+		int page;
+		int limit;
+		/**
+		 * @return the page
+		 */
+		public int getPage() {
+			return page;
+		}
+
+		/**
+		 * @return the limit
+		 */
+		public int getLimit() {
+			return limit;
+		}
+		
+		public PagingHelper(int page, int limit) {
+			super();
+			this.page = page;
+			this.limit = limit;
+		}
+	}
 	
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
     public BaseCtrl() {
         super();
         
@@ -41,6 +62,22 @@ public abstract class BaseCtrl extends HttpServlet
 	}
 	
 	protected abstract void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException; 
+	
+
+	protected PagingHelper getPagination(HttpServletRequest request) {
+		String pageStr, limitStr;
+		int page, limit;
+		if ((pageStr = request.getParameter("page")) != null )
+			page = Integer.parseInt(pageStr);
+		else
+			page = BaseDAO.PAGE_ALL;
+		
+		if ((limitStr = request.getParameter("limit")) != null)
+			limit = Integer.parseInt(limitStr);
+		else
+			limit = BaseDAO.LIMIT_ALL;
+		return new PagingHelper(page, limit);
+	}
 	
 	//Static helpers
 	

@@ -4,7 +4,7 @@
 	<jsp:directive.page contentType="text/html; charset=UTF-8"
 		pageEncoding="UTF-8" session="false" />
 	<jsp:output omit-xml-declaration="true" />
-	
+
 	<!--  TODO: add jspx looping over contents -->
 	<!-- main content -->
 	<!-- need to add a loop here to go through the content -->
@@ -14,10 +14,13 @@
         price
         item id
       	-->
+     <h1>All Categories</h1>
 	<c:forEach items="${results }" var="r">
 		<div class="col-md-4">
 			<div class="thumbnail">
-				<img src="http://placehold.it/300x200" class="img-responsive"></img>
+				<a href="backend/category/${r.id }/items" data-refresh-ids="main-content" onClick="return eFoods.app.handleHref(this, true);"> <img
+					src="http://placehold.it/300x200" class="img-responsive"></img>
+				</a>
 				<div class="caption">
 					<h4>${r.name }</h4>
 					<h4>${r.description }</h4>

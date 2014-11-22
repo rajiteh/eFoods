@@ -4,7 +4,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
@@ -34,12 +33,12 @@ public class ItemDAO extends BaseDAO {
 	
 
 	public List<ItemBean> retrieve(String number) throws Exception {
-		return retrieve(number, CAT_ALL);
+		return retrieve(number, CAT_ALL, PAGE_ALL, LIMIT_ALL);
 	}
 
 
 	
-	public List<ItemBean> retrieve(String number, int catId) throws Exception {
+	public List<ItemBean> retrieve(String number, int catId, int page, int limit) throws Exception {
 		Connection connection = null;
 		PreparedStatement preparedStatement;
 		ResultSet rs;
@@ -65,7 +64,7 @@ public class ItemDAO extends BaseDAO {
 				}
 				
 				
-		        String query = BASE_QUERY + " WHERE " + createWhereString(wheres, "AND");
+		        String query = BASE_QUERY + " WHERE " + createWhereString(wheres, "AND") + pagingString(page, limit);
 				preparedStatement = instaPrepareStatement(query, instructions, connection);
 				
 			}
@@ -92,45 +91,7 @@ public class ItemDAO extends BaseDAO {
 
 		return retval;
 	}
-	class PrepareInstruction {
-		static final int TYPE_STRING = 0x0a;
-		static final int TYPE_INT = 0x0b;
-		int type;
-		Object value;
-		public PrepareInstruction(int type, Object value) {
-			super();
-			this.type = type;
-			this.value = value;
-		}
-	}
 	
-	private String createWhereString(List<String> wheres, String operator) {
-		String whereString = "";
-		Iterator<String> iter = wheres.iterator();
-        whereString += iter.hasNext() ? iter.next() : "";
-        while (iter.hasNext()) whereString += " "+ operator + " " + iter.next();
-        return "(" + whereString + ")";
-	}
-	
-	private PreparedStatement instaPrepareStatement(String query, Queue<PrepareInstruction> piQ, Connection connection) throws Exception {
-		PreparedStatement ps = connection.prepareStatement(query);
-		int idx=0;
-		while (piQ.size() > 0) {
-			PrepareInstruction pi = piQ.poll();
-			idx++; //Start with 1
-			switch (pi.type) {
-			case PrepareInstruction.TYPE_STRING:
-				ps.setString(idx, (String) pi.value);
-				break;
-			case PrepareInstruction.TYPE_INT:
-				ps.setInt(idx, (int) pi.value);
-				break;
-			default:
-				throw new Exception("Instructions not clear statement stuck in toaster");
-			}
-		}
-		return ps;
-	}
 
 	/*
 	 * SET SCHEMA roumani; SELECT I.number, I.name, I.price, I.qty, I.onorder,

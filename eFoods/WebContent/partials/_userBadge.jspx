@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:c="http://java.sun.com/jsp/jstl/core" version="2.0">
+	<jsp:directive.page contentType="text/html; charset=UTF-8"
+		pageEncoding="UTF-8" session="false" />
+	<jsp:output omit-xml-declaration="true" />
+
+	<c:choose>
+		<c:when test="${not empty currentUser }">
+			<p class="login-text">Hello, ${currentUser.name }!  </p>
+			<p class="login-text"><a href="backend/logout" data-refresh-ids="user-info, cart-info" onClick="return eFoods.app.handleHref(this);">Log Out</a></p> 
+		</c:when>
+		<c:otherwise>
+			<p class="login-text"><a href="backend/login" data-refresh-ids="user-info, cart-info" onClick="return eFoods.app.handleHref(this);">Log In</a></p>
+		</c:otherwise>
+	</c:choose>
+	
+	<!--  Logged in, goto checkout -->
+	<!-- 	                <p class="login-text"> Checkout </p> -->
+</jsp:root>

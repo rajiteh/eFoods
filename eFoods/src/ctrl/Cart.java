@@ -7,6 +7,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import ctrl.BaseCtrl.PagingHelper;
 import util.Route;
 import util.SSOAuthenticator;
 import model.CartModel;
@@ -24,6 +25,7 @@ public class Cart extends BaseCtrl implements Servlet {
 	public static final int ROUTE_MANIPULATE = 0x0b;
 	public static final int ROUTE_HISTORY = 0x0c;
 	public static final int ROUTE_CHECKOUT = 0x0d;
+	public static final int ROUTE_BADGE = 0x0e;
        
     /**
      * @see BaseCtrl#BaseCtrl()
@@ -41,6 +43,7 @@ public class Cart extends BaseCtrl implements Servlet {
 		SSOAuthenticator auth = (SSOAuthenticator) getAuthenticator(request);
 		CartModel cart = CartModel.getInstance(request ,auth);
 		EFoods model = getModel(request);
+		PagingHelper paging = getPagination(request);
 		
 		switch(route.getIdentifier()) {
 		case ROUTE_ALL:
@@ -58,7 +61,7 @@ public class Cart extends BaseCtrl implements Servlet {
 			try {
 				itemNumber = request.getParameter("item");
 				newQty =  Integer.parseInt(request.getParameter("qty"));
-				item = model.items(itemNumber, ItemDAO.CAT_ALL).get(0);
+				item = model.items(itemNumber, ItemDAO.CAT_ALL, paging.getPage(), paging.getLimit()).get(0);
 				cart.manipulateCart(item, newQty);
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -69,6 +72,11 @@ public class Cart extends BaseCtrl implements Servlet {
 			//Create PO Here
 			break;
 		case ROUTE_HISTORY:
+			break;
+		case ROUTE_BADGE:
+			request.setAttribute("cartItemCount", cart.getCartItems().size());
+			request.getRequestDispatcher("/partials/_cartBadge.jspx").forward(
+					request, response);
 			break;
 		default:
 			throw new ServletException("Uh oh! We shouldn't be here!");
