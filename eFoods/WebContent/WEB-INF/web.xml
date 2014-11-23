@@ -20,4 +20,8 @@
     <servlet-name>Cart</servlet-name>
     <servlet-class>ctrl.Cart</servlet-class>
   </servlet>
+  <servlet>
+    <servlet-name>Misc</servlet-name>
+    <servlet-class>ctrl.Misc</servlet-class>
+  </servlet>
 </web-app>

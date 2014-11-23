@@ -6,12 +6,12 @@
 	<jsp:output omit-xml-declaration="true" />
 <a href="backend/category/" data-refresh-ids="main-content" onClick="return eFoods.app.handleHref(this, true);">Back to all categories</a>
 	
-<h1>Server error.</h1>
+<h1>Looks like we got a problem...</h1>
 <br/>
-<c:if test="${not empty sessionScope['com.eFoods.LAST_ERROR'] }">
-	<h2>Server says: ${sessionScope['com.eFoods.LAST_ERROR']  }</h2>
+<c:if test="${not empty errorMessage }">
+	<h2>${errorMessage}</h2>
 </c:if>
-<c:if test="${empty sessionScope['com.eFoods.LAST_ERROR'] }">
+<c:if test="${empty errorMessage }">
 	<h2>We screwed up. Our bad. Please try again!</h2>
 </c:if>
 

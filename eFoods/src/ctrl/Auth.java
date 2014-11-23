@@ -7,6 +7,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.tomcat.util.codec.binary.Base64;
+
 import model.UserBean;
 import util.Authenticator;
 import util.Route;
@@ -37,6 +39,7 @@ public class Auth extends BaseCtrl implements Servlet {
 		switch(route.getIdentifier()) {
 		case ROUTE_INITAL:
 			try {
+				
 				request.getSession().setAttribute("LAST_STATE", request.getParameter("state"));
 				auth.SSORedirect(request, response);
 			} catch (Exception e2) {
@@ -49,8 +52,9 @@ public class Auth extends BaseCtrl implements Servlet {
 				if (auth.login(request, null, null)) {
 					UserBean usr = auth.getUser(request);
 					System.out.println("Login: Successfully authenticated as " + usr.getName());
-					response.sendRedirect(request.getContextPath() + "#!" + ((String) request.getSession().getAttribute("LAST_STATE")));
-					request.getSession().setAttribute("LAST_STATE", null);
+					String state = ((String) request.getSession().getAttribute("LAST_STATE"));
+					if (state == null || state.startsWith("backend/error")) { state = ""; }
+					response.sendRedirect(request.getContextPath() + "#!" + state);
 					return;
 				} else {
 					throw new Exception("Sorry! We could not authenticate you at this moment.");
@@ -58,8 +62,8 @@ public class Auth extends BaseCtrl implements Servlet {
 			} catch (Exception e1) {
 				System.out.println(e1.getMessage());
 				e1.printStackTrace();
-				request.getSession().setAttribute(ctrl.Front.LAST_ERROR_KEY , e1.getMessage());
-				response.sendRedirect(request.getContextPath());
+				String encodedError = Base64.encodeBase64String(e1.getMessage().getBytes()); 
+				response.sendRedirect(request.getContextPath() + "#!backend/error/" + encodedError);
 				//throw new ServletException(e1.getMessage());
 			}
 			break;

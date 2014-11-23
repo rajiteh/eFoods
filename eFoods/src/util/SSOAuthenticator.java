@@ -84,6 +84,9 @@ public class SSOAuthenticator extends Authenticator {
 		}
 
 		nonce = retrieveNonce(request);
+		
+		expireNonce(request); //A nonce may only used once and ONCE only
+		
 		if (nonce == null) {
 			throw new Exception("Request expired. Please re-initiate login.");
 		}

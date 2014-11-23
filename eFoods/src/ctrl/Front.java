@@ -74,6 +74,8 @@ public class Front extends HttpServlet {
 		appRouter.addRoute(new Route("^/cart/history(/)?","Cart", Route.METHOD_GET, Cart.ROUTE_HISTORY, true));
 		appRouter.addRoute(new Route("^/cart/badge(/)?","Cart", Route.METHOD_GET, Cart.ROUTE_BADGE, false));
 		
+		appRouter.addRoute(new Route("^/error/(?<Base64EncodedMessage>.*)?","Misc", Route.METHOD_GET, Misc.ERROR_PAGE, false));
+		
 		//Poking the context
 		config.getServletContext().setAttribute(MODEL_KEY, model);
 		config.getServletContext().setAttribute(ROUTER_KEY, appRouter);
@@ -90,11 +92,6 @@ public class Front extends HttpServlet {
 		
 		Route route;
 		try {
-			//Checking if we have errors
-			String error = (String) request.getSession().getAttribute(LAST_ERROR_KEY);
-			if (error != null && error.length() > 0)
-				throw new ServletException("Rendering error page"); 
-			
 			if ((route = router.getRoute(request)) != null) {
 				if (!route.isRequireAuthentication() || httpAuth.isAuthenticated(request)) {
 					System.out.println("Serving Route: " + request.getPathInfo() + " (" + route.getUrlPattern() + ") " +
@@ -114,8 +111,7 @@ public class Front extends HttpServlet {
 		} catch (Exception e) {
 			request.getRequestDispatcher("/partials/_serverError.jspx").forward(
 					request, response);
-			request.getSession().setAttribute(LAST_ERROR_KEY, null);
-			throw new ServletException(e);
+			//throw new ServletException(e);
 		}
 	}
 
