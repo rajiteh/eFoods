@@ -67,7 +67,7 @@ public class ItemDAO extends BaseDAO {
 				if (wheres.size() > 0) { query += " WHERE " + createWhereString(wheres, "AND"); }
 				
 		        query += pagingString(page, limit);
-		        System.out.println("DB Query: " + query);
+		        System.out.println("DB Query: " + query.replaceFirst(BASE_QUERY, ""));
 				preparedStatement = instaPrepareStatement(query, instructions, connection);
 				
 			

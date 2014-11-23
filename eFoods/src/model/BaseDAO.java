@@ -62,14 +62,14 @@ public class BaseDAO {
 	
 	protected String pagingString(int page, int limit) {
 		String ret = "";
-		/*
+		
 		if (page > 0) {
-			ret += " OFFSET " + (page - 1) * limit;
+			ret += " OFFSET " + (page - 1) * limit + " ROWS ";
 			if (limit != LIMIT_ALL) {
 				ret += " FETCH NEXT " + limit + " ROWS ONLY";
 			}
 		}
-		*/
+		
 		return ret;
 	}
 }

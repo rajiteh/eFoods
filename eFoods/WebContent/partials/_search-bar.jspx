@@ -18,6 +18,8 @@
 			data-refresh-ids="main-content">
 				<input name="filter" id="item-search" type="text" 
 				value="" placeholder="Search from a wide assortment of foods."/>
+				<input type="hidden" name="page" value="1"/>
+				<input type="hidden" name="limit" value="25"/>
 			</form>
 		</div>
 	</div>
