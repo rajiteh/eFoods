@@ -8,7 +8,13 @@
 	
 <h1>Server error.</h1>
 <br/>
-<h2>We screwed up. Our bad. Please try again!</h2>
+<c:if test="${not empty sessionScope['com.eFoods.LAST_ERROR'] }">
+	<h2>Server says: ${sessionScope['com.eFoods.LAST_ERROR']  }</h2>
+</c:if>
+<c:if test="${empty sessionScope['com.eFoods.LAST_ERROR'] }">
+	<h2>We screwed up. Our bad. Please try again!</h2>
+</c:if>
+
 <br/>
 <h3>Here's a picture of a kitten to brighten your day.</h3>
 <br/>

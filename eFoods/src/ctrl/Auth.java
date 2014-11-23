@@ -19,10 +19,10 @@ public class Auth extends BaseCtrl implements Servlet {
 	private static final long serialVersionUID = 1L;
 	
 	public static final int ROUTE_INITAL = 0x0a;
-	public static final int ROUTE_AUTHORIZE = 0x0b;
+	public static final int ROUTE_AUTHENTICATE = 0x0b;
 	public static final int ROUTE_LOGOUT = 0x0c;
 	public static final int ROUTE_USER_BADGE = 0x0d;
-       
+      
     /**
      * @see BaseCtrl#BaseCtrl()
      */
@@ -36,10 +36,32 @@ public class Auth extends BaseCtrl implements Servlet {
 		Route route = getRoute(request);
 		switch(route.getIdentifier()) {
 		case ROUTE_INITAL:
-		case ROUTE_AUTHORIZE:
-			auth.login(request, "cse11011", null);
-			UserBean usr = auth.getUser(request);
-			System.out.println("Login: Successfully authenticated as " + usr.getName());
+			try {
+				request.getSession().setAttribute("LAST_STATE", request.getParameter("state"));
+				auth.SSORedirect(request, response);
+			} catch (Exception e2) {
+				e2.printStackTrace();
+				throw new ServletException(e2.getMessage());
+			}
+			break;
+		case ROUTE_AUTHENTICATE:
+			try {
+				if (auth.login(request, null, null)) {
+					UserBean usr = auth.getUser(request);
+					System.out.println("Login: Successfully authenticated as " + usr.getName());
+					response.sendRedirect(request.getContextPath() + "#!" + ((String) request.getSession().getAttribute("LAST_STATE")));
+					request.getSession().setAttribute("LAST_STATE", null);
+					return;
+				} else {
+					throw new Exception("Sorry! We could not authenticate you at this moment.");
+				}
+			} catch (Exception e1) {
+				System.out.println(e1.getMessage());
+				e1.printStackTrace();
+				request.getSession().setAttribute(ctrl.Front.LAST_ERROR_KEY , e1.getMessage());
+				response.sendRedirect(request.getContextPath());
+				//throw new ServletException(e1.getMessage());
+			}
 			break;
 		case ROUTE_LOGOUT:
 			try {

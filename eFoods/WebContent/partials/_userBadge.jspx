@@ -8,10 +8,10 @@
 	<c:choose>
 		<c:when test="${not empty currentUser }">
 			<p class="login-text">Hello, ${currentUser.name }!  </p>
-			<p class="login-text"><a href="backend/logout" data-refresh-ids="user-info, cart-info" onClick="return eFoods.app.handleHref(this);">Log Out</a></p> 
+			<p class="login-text"><a href="backend/logout" data-refresh-ids="user-info, cart-info, main-content" onClick="return eFoods.app.handleHref(this);">Log Out</a></p> 
 		</c:when>
 		<c:otherwise>
-			<p class="login-text"><a href="backend/login" data-refresh-ids="user-info, cart-info" onClick="return eFoods.app.handleHref(this);">Log In</a></p>
+			<p class="login-text"><a href="backend/login" onClick="return eFoods.util.statefulHref(this);">Log In</a></p>
 		</c:otherwise>
 	</c:choose>
 	

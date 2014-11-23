@@ -21,9 +21,10 @@ public class Front extends HttpServlet {
 	public static final String MODEL_KEY = "com.eFoods.ctrl.Front.EFOODS";
 	private static final String ROUTER_KEY = "com.eFoods.ctrl.Front.ROUTER";
 	public static final String SSO_AUTHENTICATOR_KEY = "com.eFoods.ctrl.Front.HTTP_AUTHENTICATOR";
-	private static final String SSO_AUTHENTICATOR_URL = "https://www.cse.yorku.ca/~cse11011/4413/sso_endpoint";
-	
+	private static final String SSO_AUTHENTICATOR_URL = "https://www.cse.yorku.ca/~cse11011/4413/auth/index.php";
+	private static final String SSO_SHARED_KEY = "7fcbc0e27e7bb31e4ad7a39677eebdaf6b94c9db7dcdb2ebf25791298609a4a4";
        
+	public static final String LAST_ERROR_KEY = "com.eFoods.LAST_ERROR";
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -44,7 +45,7 @@ public class Front extends HttpServlet {
 		//Initializing authentication module
 		SSOAuthenticator auth;
 		try {
-			auth = new SSOAuthenticator(SSO_AUTHENTICATOR_URL);
+			auth = new SSOAuthenticator(SSO_AUTHENTICATOR_URL, SSO_SHARED_KEY);
 		} catch (Exception e) {
 			throw new ServletException("Authenticator init failure.");
 		}
@@ -61,7 +62,7 @@ public class Front extends HttpServlet {
 		appRouter.addRoute(new Route("^/item/(?<itemNumber>[0-9a-zA-Z]+)(/)?$","Item", Route.METHOD_GET, Item.ROUTE_BY_NUMBER,false));
 		
 		appRouter.addRoute(new Route("^/login(/)?","Auth", Route.METHOD_GET, Auth.ROUTE_INITAL, false));
-		appRouter.addRoute(new Route("^/login/authorize(/)?","Auth", Route.METHOD_GET, Auth.ROUTE_AUTHORIZE, false));
+		appRouter.addRoute(new Route("^/login/authenticate(/)?","Auth", Route.METHOD_GET, Auth.ROUTE_AUTHENTICATE, false));
 		appRouter.addRoute(new Route("^/logout(/)?","Auth", Route.METHOD_GET, Auth.ROUTE_LOGOUT, true));
 		appRouter.addRoute(new Route("^/user(/)?","Auth", Route.METHOD_GET, Auth.ROUTE_USER_BADGE, false));
 		
@@ -86,7 +87,12 @@ public class Front extends HttpServlet {
 		Authenticator httpAuth = (SSOAuthenticator) request.getServletContext().getAttribute(SSO_AUTHENTICATOR_KEY);
 		
 		Route route;
-		try {			
+		try {
+			//Checking if we have errors
+			String error = (String) request.getSession().getAttribute(LAST_ERROR_KEY);
+			if (error != null && error.length() > 0)
+				throw new ServletException("Rendering error page"); 
+			
 			if ((route = router.getRoute(request)) != null) {
 				if (!route.isRequireAuthentication() || httpAuth.isAuthenticated(request)) {
 					System.out.println("Serving Route: " + request.getPathInfo() + 
@@ -104,8 +110,10 @@ public class Front extends HttpServlet {
 						request, response);
 			}
 		} catch (Exception e) {
-			
-			throw e;
+			request.getRequestDispatcher("/partials/_serverError.jspx").forward(
+					request, response);
+			request.getSession().setAttribute(LAST_ERROR_KEY, null);
+			throw new ServletException(e);
 		}
 	}
 

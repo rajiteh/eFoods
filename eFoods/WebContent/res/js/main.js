@@ -205,6 +205,14 @@ eFoods.app.watchState = function() {
 	}, 250)
 }
 
+eFoods.util.statefulHref = function(ele) {
+	var state = eFoods.util.getState();
+	var hasQS = ele.href.split("?").length > 1;
+	var toAppend = (hasQS ? "&" : "?") +  (state ? "state=" + encodeURIComponent(state) : "");
+	window.location.href = ele.href + toAppend;
+	return false;
+}
+
 //Initialization code. We'll call this at the bottom of the file.
 eFoods.app.init = function() {
 	eFoods.util.setState();
