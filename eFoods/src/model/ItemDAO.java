@@ -14,7 +14,7 @@ public class ItemDAO extends BaseDAO {
 
 	public final static String NUMBER_ALL = "-1";
 	public final static int CAT_ALL = -1;
-	public final static String NO_FILTER = "";
+	public final static String NO_FILTER = "__!!__";
 	
 	public static final String BASE_QUERY = "SELECT  I.number, "
 			+ "I.name,  I.price,  I.qty,  I.onorder, "
@@ -46,10 +46,7 @@ public class ItemDAO extends BaseDAO {
 		try {
 			connection = eFoodsDataSource.getConnection();
 
-			if (number.equals(NUMBER_ALL) && catId == CAT_ALL) {
-				preparedStatement = connection.prepareStatement(BASE_QUERY);
-			} else {
-				
+			
 				Queue<PrepareInstruction> instructions=new LinkedList<PrepareInstruction>();	
 				List<String> wheres = new ArrayList<String>();
 				
@@ -63,15 +60,17 @@ public class ItemDAO extends BaseDAO {
 				}
 				
 				if (!filter.equals(NO_FILTER)) {
-					//wheres.add("LOWER(I.name) like %?%");
-					//instructions.add(new PrepareInstruction(PrepareInstruction.TYPE_STRING, filter));
+					wheres.add("LOWER(I.name) LIKE LOWER( ? )");
+					instructions.add(new PrepareInstruction(PrepareInstruction.TYPE_STRING, "%" + filter + "%"));
 				}
+				String query = BASE_QUERY;
+				if (wheres.size() > 0) { query += " WHERE " + createWhereString(wheres, "AND"); }
 				
-				
-		        String query = BASE_QUERY + " WHERE " + createWhereString(wheres, "AND") + pagingString(page, limit);
+		        query += pagingString(page, limit);
+		        System.out.println("DB Query: " + query);
 				preparedStatement = instaPrepareStatement(query, instructions, connection);
 				
-			}
+			
 
 			rs = preparedStatement.executeQuery();
 
