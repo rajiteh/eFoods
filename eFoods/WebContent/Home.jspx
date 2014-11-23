@@ -17,6 +17,8 @@
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css"
 	type="text/css" />
+	<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet"
+	type="text/css"/>
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/res/css/main.css"
 	type="text/css" title="cse4413" media="screen, print" />
@@ -25,12 +27,16 @@
 </head>
 <body>
 	<!-- wrapper over content -->
-	<div class="container-fluid">
+	<div class="container">
 
 		<!-- header -->
 		<div class="row">
 			<jsp:include page="Head.jspx" />
-
+		</div>
+		
+		<div class="jumbotron">
+			<jsp:include page="/partials/_search-bar.jspx">
+			</jsp:include>
 		</div>
 
 		<div class="row" data-ajaxify="backend/category/" id="main-content"> Please wait loading... </div>
@@ -44,6 +50,8 @@
 
 	<script type="text/javascript"
 		src="${pageContext.request.contextPath}/res/js/main.js"> console.log("Just to make jsp happy"); </script>
+	<script type="text/javascript"
+		src="${pageContext.request.contextPath}/res/js/search.js">;</script>
 </body>
 	</html>
 </jsp:root>
