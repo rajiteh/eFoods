@@ -6,7 +6,11 @@
 
 <div class="footer">
 	<h1 class="text-center">Footer</h1>
-	<h2> Fake contact information type of thing </h2>
+	<h2> Mailing address </h2>
+	<h2> Phone </h2>
+	<h2> Something else? </h2>
+	<h2> Google Map </h2>
+	
 </div>
 
 </jsp:root>

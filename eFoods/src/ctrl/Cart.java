@@ -61,7 +61,7 @@ public class Cart extends BaseCtrl implements Servlet {
 			try {
 				itemNumber = request.getParameter("item");
 				newQty =  Integer.parseInt(request.getParameter("qty"));
-				item = model.items(itemNumber, ItemDAO.CAT_ALL, paging.getPage(), paging.getLimit()).get(0);
+				item = model.items(itemNumber, ItemDAO.CAT_ALL, paging.getPage(), paging.getLimit(), ItemDAO.NO_FILTER).get(0);
 				cart.manipulateCart(item, newQty);
 			} catch (Exception e) {
 				e.printStackTrace();

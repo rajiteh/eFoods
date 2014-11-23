@@ -60,6 +60,8 @@ public class Front extends HttpServlet {
 		
 		appRouter.addRoute(new Route("^/item(/)?$","Item", Route.METHOD_GET, Item.ROUTE_ALL,false));
 		appRouter.addRoute(new Route("^/item/(?<itemNumber>[0-9a-zA-Z]+)(/)?$","Item", Route.METHOD_GET, Item.ROUTE_BY_NUMBER,false));
+		appRouter.addRoute(new Route("^/item/search/(?<itemFilter>(filter=([^&]*)))(/)?$","Item", Route.METHOD_GET, Item.ROUTE_BY_SEARCH,false));
+
 		
 		appRouter.addRoute(new Route("^/login(/)?","Auth", Route.METHOD_GET, Auth.ROUTE_INITAL, false));
 		appRouter.addRoute(new Route("^/login/authenticate(/)?","Auth", Route.METHOD_GET, Auth.ROUTE_AUTHENTICATE, false));
