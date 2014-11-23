@@ -125,7 +125,7 @@ eFoods.app.ajaxify = function(element) {
 	}
 
 	eFoods.util.doAjax(url, "", "GET", function(request) {
-		console.log("successfully loaded", url);
+		console.log("Ajaxified.", url, element.id);
 		element.innerHTML = request.responseText;
 	});
 };
@@ -172,22 +172,32 @@ eFoods.app.handleHref = function(href, ajaxifyTarget) {
 };
 
 //Ajax form submission
-eFoods.app.handleForm = function(form) {
+eFoods.app.handleForm = function(form, ajaxifyTarget) {
 	try {
-		console.log(form);
 		var method = form.method;
-		var url = form.action;
+		var url = form.getAttribute('action');
 		var refreshDoms = form.getAttribute("data-refresh-ids").split(",");
 		var formData = eFoods.util.formToQueryString(form);
-		console.log(method, url, refreshDoms, formData);
-		eFoods.util.doAjax(url, formData, method, function(request) {
-			console.log("Request success!" + url);
+		console.log("Submitting form", method, url, refreshDoms, formData, form);
+		
+		if (ajaxifyTarget) {
 			for (i = 0; i < refreshDoms.length; i++) {
 				(function(target) {
+					console.log("Target url for form" , url + "?" + formData);
+					target.setAttribute("data-ajaxify", url + "?" + formData);
 					eFoods.app.ajaxify(target);
-				})(document.getElementById(refreshDoms[i].trim()))
+				}(document.getElementById(refreshDoms[i].trim())));
 			}
-		});
+		} else {
+			eFoods.util.doAjax(url, formData, method, function(request) {
+				console.log("Request success!" + url);
+				for (i = 0; i < refreshDoms.length; i++) {
+					(function(target) {
+						eFoods.app.ajaxify(target);
+					})(document.getElementById(refreshDoms[i].trim()))
+				}
+			});
+		}
 	} catch (e) {
 		console.log(e, e.stack);
 	}
@@ -244,7 +254,7 @@ searchBar.addEventListener('keypress', function() {
 	searchTimeout = setTimeout(function() {
 		// do ajax here
 		console.log('keypress');
-		eFoods.app.handleForm(searchForm);
+		eFoods.app.handleForm(searchForm, true);
 	}, 400)
 })
 	

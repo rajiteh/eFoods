@@ -68,7 +68,7 @@ public class Item extends BaseCtrl {
 						response);
 				break;
 			case ROUTE_BY_SEARCH:
-				String filter = route.getMatcher().group("itemFilter");
+				String filter = request.getParameter("filter");
 				System.out.println(filter);
 				results = model.items(ItemDAO.NUMBER_ALL, ItemDAO.CAT_ALL, paging.getPage(), paging.getLimit(), filter);
 				request.setAttribute("results", results);
