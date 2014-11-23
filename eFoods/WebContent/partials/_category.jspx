@@ -19,7 +19,8 @@
 		<div class="col-md-4">
 			<div class="thumbnail">
 				<a href="backend/category/${r.id }/items" data-refresh-ids="main-content" onClick="return eFoods.app.handleHref(this, true);"> <img
-					src="http://placehold.it/300x200" class="img-responsive"></img>
+					src="${pageContext.request.contextPath}/pics/ids/${r.id }-300x200.jpg" 
+					class="img-responsive"></img>
 				</a>
 				<div class="caption">
 					<h4>${r.name }</h4>

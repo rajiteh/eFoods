@@ -1,0 +1,8 @@
+names -> id mapping
+
+Categories
+
+meat : 3
+cheese: 4
+ice cream: 5
+cereal: 6
