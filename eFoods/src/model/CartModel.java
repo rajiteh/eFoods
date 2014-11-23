@@ -1,7 +1,6 @@
 package model;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -9,10 +8,8 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import util.SSOAuthenticator;
-import util.eFoodsDataSource;
 
 public class CartModel {
 
@@ -43,7 +40,9 @@ public class CartModel {
 	}
 
 	private static final BigDecimal TAX_MULTIPLIER = new BigDecimal("0.13");
-	private static final boolean TAX_WITH_SHIPPING = false;
+	private static final BigDecimal FREE_SHIPPING_LIMIT = new BigDecimal("100.00");
+	private static final BigDecimal SHIPPING_CHARGE = new BigDecimal("5.00");
+	// private static final boolean TAX_WITH_SHIPPING = false;
 	private static final String CART_SESSION_KEY = "com.eFoods.model.Cart";
 
 	private List<CartItem> cartItems;
@@ -57,7 +56,7 @@ public class CartModel {
 		this.cartItems = new ArrayList<CartItem>();
 		this.account = account;
 		this.total = BigDecimal.ZERO;
-		this.shipping = BigDecimal.ZERO;
+		this.shipping = SHIPPING_CHARGE;
 		this.tax = BigDecimal.ZERO;
 	}
 
@@ -104,7 +103,9 @@ public class CartModel {
 	}
 
 	private BigDecimal calculateShipping() {
-		return BigDecimal.ZERO;
+		if (isFreeShipping())
+			return BigDecimal.ZERO;
+		return SHIPPING_CHARGE;
 	}
 
 	private BigDecimal calculateTotal() {
@@ -117,10 +118,13 @@ public class CartModel {
 	}
 
 	private BigDecimal calculateTax() {
-		return (TAX_WITH_SHIPPING ? total.add(shipping)
-				.multiply(TAX_MULTIPLIER) : total.multiply(TAX_MULTIPLIER));
+		return (isFreeShipping() ? total.multiply(TAX_MULTIPLIER) : total.add(shipping).multiply(TAX_MULTIPLIER));
 	}
 
+	public boolean isFreeShipping() {
+		return (total.compareTo(FREE_SHIPPING_LIMIT) >= 0);
+	}
+	
 	/**
 	 * @param cartItems
 	 *            the cartItems to set
