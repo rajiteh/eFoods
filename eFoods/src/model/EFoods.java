@@ -15,8 +15,8 @@ public class EFoods {
 		return categoryDAO.retrieve(id);
 	}
 	
-	public List<ItemBean> items(String number, int catId, int page, int limit) throws Exception {
-		return itemDAO.retrieve(number, catId, page, limit);
+	public List<ItemBean> items(String number, int catId, int page, int limit, String filter) throws Exception {
+		return itemDAO.retrieve(number, catId, page, limit, filter);
 	}
 
 	 

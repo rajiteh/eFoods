@@ -14,6 +14,7 @@ public class ItemDAO extends BaseDAO {
 
 	public final static String NUMBER_ALL = "-1";
 	public final static int CAT_ALL = -1;
+	public final static String NO_FILTER = "";
 	
 	public static final String BASE_QUERY = "SELECT  I.number, "
 			+ "I.name,  I.price,  I.qty,  I.onorder, "
@@ -33,12 +34,10 @@ public class ItemDAO extends BaseDAO {
 	
 
 	public List<ItemBean> retrieve(String number) throws Exception {
-		return retrieve(number, CAT_ALL, PAGE_ALL, LIMIT_ALL);
+		return retrieve(number, CAT_ALL, PAGE_ALL, LIMIT_ALL, NO_FILTER);
 	}
-
-
 	
-	public List<ItemBean> retrieve(String number, int catId, int page, int limit) throws Exception {
+	public List<ItemBean> retrieve(String number, int catId, int page, int limit, String filter) throws Exception {
 		Connection connection = null;
 		PreparedStatement preparedStatement;
 		ResultSet rs;
@@ -61,6 +60,11 @@ public class ItemDAO extends BaseDAO {
 				if (catId != ID_ALL) {
 					wheres.add("C.id = ?");
 					instructions.add(new PrepareInstruction(PrepareInstruction.TYPE_INT, catId));
+				}
+				
+				if (!filter.equals(NO_FILTER)) {
+					//wheres.add("LOWER(I.name) like %?%");
+					//instructions.add(new PrepareInstruction(PrepareInstruction.TYPE_STRING, filter));
 				}
 				
 				

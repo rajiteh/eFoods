@@ -6,7 +6,7 @@
 	<jsp:output omit-xml-declaration="true" />
 
 	<h1>${category.name }</h1>
-	<a href="backend/category/" data-refresh-ids="main-content"
+	<a href="backend/item/filter/" data-refresh-ids="main-content"
 		onClick="return eFoods.app.handleHref(this, true);">Back to all
 		categories</a>
 	<c:forEach items="${results }" var="r">

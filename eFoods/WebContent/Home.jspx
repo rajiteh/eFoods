@@ -50,8 +50,6 @@
 
 	<script type="text/javascript"
 		src="${pageContext.request.contextPath}/res/js/main.js"> console.log("Just to make jsp happy"); </script>
-	<script type="text/javascript"
-		src="${pageContext.request.contextPath}/res/js/search.js">;</script>
 </body>
 	</html>
 </jsp:root>

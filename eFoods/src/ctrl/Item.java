@@ -22,6 +22,7 @@ public class Item extends BaseCtrl {
 	public static final int ROUTE_ALL = 0xff;
 	public static final int ROUTE_BY_NUMBER = 0x0b;
 	public static final int ROUTE_BY_CATEGORY = 0x0c;
+	public static final int ROUTE_BY_SEARCH = 0x0d;
 
 
 	protected void processRequest(HttpServletRequest request,
@@ -45,7 +46,7 @@ public class Item extends BaseCtrl {
 				int catId = Integer.parseInt(route.getMatcher().group("catId"));
 				CategoryBean cat = model.categories(catId).get(0);
 				
-				results = model.items(ItemDAO.NUMBER_ALL, catId, paging.getPage(), paging.getLimit());
+				results = model.items(ItemDAO.NUMBER_ALL, catId, paging.getPage(), paging.getLimit(), ItemDAO.NO_FILTER);
 				request.setAttribute("cartItems", cart.mappedCartItems());
 				request.setAttribute("category", cat);
 				request.setAttribute("results", results);
@@ -54,14 +55,22 @@ public class Item extends BaseCtrl {
 				break;
 			case ROUTE_BY_NUMBER:
 				String number = route.getMatcher().group("itemNumber");
-				ItemBean item = model.items(number, ItemDAO.CAT_ALL, ItemDAO.PAGE_ALL, ItemDAO.LIMIT_ALL).get(0);
+				ItemBean item = model.items(number, ItemDAO.CAT_ALL, ItemDAO.PAGE_ALL, ItemDAO.LIMIT_ALL, ItemDAO.NO_FILTER).get(0);
 				request.setAttribute("cartItem", cart.getCartItemFor(item));
 				request.setAttribute("item", item);
 				request.getRequestDispatcher("/partials/_item.jspx").forward(request,
 						response);
 				break;
 			case ROUTE_ALL:
-				results = model.items(ItemDAO.NUMBER_ALL, ItemDAO.CAT_ALL, paging.getPage(), paging.getLimit());
+				results = model.items(ItemDAO.NUMBER_ALL, ItemDAO.CAT_ALL, paging.getPage(), paging.getLimit(), ItemDAO.NO_FILTER);
+				request.setAttribute("results", results);
+				request.getRequestDispatcher("/partials/_items.jspx").forward(request,
+						response);
+				break;
+			case ROUTE_BY_SEARCH:
+				String filter = route.getMatcher().group("itemFilter");
+				System.out.println(filter);
+				results = model.items(ItemDAO.NUMBER_ALL, ItemDAO.CAT_ALL, paging.getPage(), paging.getLimit(), filter);
 				request.setAttribute("results", results);
 				request.getRequestDispatcher("/partials/_items.jspx").forward(request,
 						response);

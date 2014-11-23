@@ -90,6 +90,7 @@ eFoods.util.formToQueryString = function(form) {
 		}
 		params += elem[i].name + "=" + encodeURIComponent(value) + "&";
 	}
+	console.log('Form query string', params);
 	return params;
 }
 
@@ -215,3 +216,27 @@ eFoods.app.init = function() {
 eFoods.app.init();
 
 console.log(eFoods.util.baseURL());
+
+/* The idea for this module is as the user is typing
+ * the main page is updated with foods matching the search.
+ * 
+ * We use a timeout to avoid sending requests for every keystroke.
+ */			
+var searchBar = document.getElementById('item-search');
+var searchForm = document.getElementById('search-form');
+
+console.log(searchBar);
+	
+var searchTimeout;
+searchBar.addEventListener('keypress', function() {
+	// an ajax request will be only sent only after 400ms
+	if (searchTimeout) {
+		clearTimeout(searchTimeout);
+	}
+	searchTimeout = setTimeout(function() {
+		// do ajax here
+		console.log('keypress');
+		eFoods.app.handleForm(searchForm);
+	}, 400)
+})
+	

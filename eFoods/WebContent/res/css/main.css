@@ -40,7 +40,7 @@ body {
 	max-width: 800px;
 }
 
-.item-search {
+#item-search {
 	height: 2em;
 	font-size: 2em;
 	width: 100%;

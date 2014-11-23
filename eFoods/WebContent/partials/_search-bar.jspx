@@ -14,8 +14,11 @@
 	<div class="text-center landing">
 		<div id="home-search-bar" class="col-md-12">
 			<h2> The best way to shop and order Food.</h2>
-			<input class="item-search" type="text" value="" 
-			placeholder="Search from a wide assortment of foods."/>
+			<form method="get" action="backend/item/search" id="search-form"
+			data-refresh-ids="main-content">
+				<input name="filter" id="item-search" type="text" 
+				value="" placeholder="Search from a wide assortment of foods."/>
+			</form>
 		</div>
 	</div>
 	
