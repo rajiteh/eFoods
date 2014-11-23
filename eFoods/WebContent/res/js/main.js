@@ -13,6 +13,11 @@ eFoods.util = {};
 eFoods.util.errors = {};
 //Core app code
 eFoods.app = {};
+//App vars
+eFoods.vars = {
+	MAIN_URL : "backend/category",
+	CONTENT_DIV : "main-content"
+};
 
 // Returns the baseURL, ex. http://localhost:4413
 eFoods.util.baseURL = function() {
@@ -87,14 +92,37 @@ eFoods.util.formToQueryString = function(form) {
 	}
 	return params;
 }
-//Initialization code. We'll call this at the bottom of the file.
-eFoods.app.init = function() {
-	eFoods.app.ajaxifyAll();
-};
+
+//Get current app state from hashbang
+eFoods.util.getState = function() {
+	var state = "";
+	if (window.location.hash && window.location.hash.substring(0, 2) == "#!") {
+		state = window.location.hash.substring(2);
+	}
+	return state.length < 1 ? null : state
+}
+
+//Set hashbang state (or default state when empty) to app state 
+eFoods.util.setState = function() {
+	var state = this.getState();
+	if (state) {
+		url = state
+	} else {
+		url = eFoods.vars.MAIN_URL;
+	}
+	var ele = document.getElementById(eFoods.vars.CONTENT_DIV);
+	ele.setAttribute('data-ajaxify', url)
+}
 
 //Ajaxify, looks for  the tag data-ajaxify and populates the inside via ajax usisng "GET"
 eFoods.app.ajaxify = function(element) {
 	var url = element.getAttribute("data-ajaxify");
+	
+	// Check if we're changing app state
+	if (element.getAttribute("id") == eFoods.vars.CONTENT_DIV) {
+		window.location.hash = "#!" + url;
+	}
+
 	eFoods.util.doAjax(url, "", "GET", function(request) {
 		console.log("successfully loaded", url);
 		element.innerHTML = request.responseText;
@@ -136,8 +164,8 @@ eFoods.app.handleHref = function(href, ajaxifyTarget) {
 		}
 
 	} catch (e) {
-		throw e
-		//console.log(e);
+		//throw e
+		console.log(e);
 	}
 	return false;
 };
@@ -165,5 +193,25 @@ eFoods.app.handleForm = function(form) {
 	return false;
 };
 
+//Watch for any changes in the hash bang, update app state if needed
+eFoods.app.watchState = function() {
+	var ele = document.getElementById(eFoods.vars.CONTENT_DIV);
+	var interval = setInterval(function() {
+	var appState = ele.getAttribute('data-ajaxify');
+		if (appState != eFoods.util.getState()) {
+			eFoods.util.setState();
+			eFoods.app.ajaxify(ele);
+		}
+	}, 250)
+}
+
+//Initialization code. We'll call this at the bottom of the file.
+eFoods.app.init = function() {
+	eFoods.util.setState();
+	eFoods.app.ajaxifyAll();
+	eFoods.app.watchState();
+};
+
 eFoods.app.init();
+
 console.log(eFoods.util.baseURL());

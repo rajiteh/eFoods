@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:c="http://java.sun.com/jsp/jstl/core" version="2.0">
+	<jsp:directive.page contentType="text/html; charset=UTF-8"
+		pageEncoding="UTF-8" session="false" />
+	<jsp:output omit-xml-declaration="true" />
+
+	<!--  TODO: add jspx looping over contents -->
+	<!-- main content -->
+	<!-- need to add a loop here to go through the content -->
+	<!-- fields are 
+        picture
+        name
+        price
+        item id
+      	-->
+
+	<h1>${category.name }</h1>
+	<a href="backend/category/" data-refresh-ids="main-content"
+		onClick="return eFoods.app.handleHref(this, true);">Back to all
+		categories</a>
+	<c:forEach items="${results }" var="r">
+		<div class="col-md-4" data-ajaxify="backend/item/${r.number }" id="item-${r.number }">
+			<c:set var="item" scope="request" value="${r }" />
+			<c:set var="cartItem" scope="request" value="${cartItems[r.name] }" />
+			<jsp:include page="_item.jspx" />
+		</div>
+	</c:forEach>
+
+</jsp:root>
