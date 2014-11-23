@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:c="http://java.sun.com/jsp/jstl/core" version="2.0">
+	<jsp:directive.page contentType="text/html; charset=UTF-8"
+		pageEncoding="UTF-8" session="false" />
+	<jsp:output omit-xml-declaration="true" />
+<a href="backend/category/" data-refresh-ids="main-content" onClick="return eFoods.app.handleHref(this, true);">Back to all categories</a>
+	
+<h1>Signed in users only!</h1>
+<br/>
+<h2>You seem to have forgotton to <a href="backend/login" data-refresh-ids="user-info, cart-info" onClick="return eFoods.app.handleHref(this);">log in.</a> </h2>
+</jsp:root>

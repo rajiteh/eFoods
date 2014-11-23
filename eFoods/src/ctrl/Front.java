@@ -86,18 +86,26 @@ public class Front extends HttpServlet {
 		Authenticator httpAuth = (SSOAuthenticator) request.getServletContext().getAttribute(SSO_AUTHENTICATOR_KEY);
 		
 		Route route;
-		
-		if ((route = router.getRoute(request)) != null) {
-			if (!route.isRequireAuthentication() || httpAuth.isAuthenticated(request)) {
-				System.out.println("Serving Route: " + request.getPathInfo() + 
-						(route.isRequireAuthentication() ? " (Authenticated as " + ((SSOAuthenticator) httpAuth).getUser(request).getName() + ")": ""));
-				request.getServletContext().getNamedDispatcher(route.getDestination()).forward(request, response);
+		try {			
+			if ((route = router.getRoute(request)) != null) {
+				if (!route.isRequireAuthentication() || httpAuth.isAuthenticated(request)) {
+					System.out.println("Serving Route: " + request.getPathInfo() + 
+							(route.isRequireAuthentication() ? " (Authenticated as " + ((SSOAuthenticator) httpAuth).getUser(request).getName() + ")": ""));
+					request.getServletContext().getNamedDispatcher(route.getDestination()).forward(request, response);
+				} else {
+					System.out.println("Permission Denied");
+					request.getRequestDispatcher("/partials/_permissionDenied.jspx").forward(
+							request, response);
+				}
 			} else {
-				System.out.println("Permission Denied");
+				
+				System.out.println("Route not found!: " + request.getPathInfo());
+				request.getRequestDispatcher("/partials/_notFound.jspx").forward(
+						request, response);
 			}
-		} else {
+		} catch (Exception e) {
 			
-			System.out.println("Route not found!: " + request.getPathInfo());
+			throw e;
 		}
 	}
 

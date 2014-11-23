@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:c="http://java.sun.com/jsp/jstl/core" version="2.0">
+	<jsp:directive.page contentType="text/html; charset=UTF-8"
+		pageEncoding="UTF-8" session="false" />
+	<jsp:output omit-xml-declaration="true" />
+<a href="backend/category/" data-refresh-ids="main-content" onClick="return eFoods.app.handleHref(this, true);">Back to all categories</a>
+	
+<h1>Server error.</h1>
+<br/>
+<h2>We screwed up. Our bad. Please try again!</h2>
+<br/>
+<h3>Here's a picture of a kitten to brighten your day.</h3>
+<br/>
+<img src="http://placekitten.com/g/200/300"></img>
+</jsp:root>
