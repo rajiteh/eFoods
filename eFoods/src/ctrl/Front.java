@@ -21,7 +21,7 @@ public class Front extends HttpServlet {
 	public static final String MODEL_KEY = "com.eFoods.ctrl.Front.EFOODS";
 	private static final String ROUTER_KEY = "com.eFoods.ctrl.Front.ROUTER";
 	public static final String SSO_AUTHENTICATOR_KEY = "com.eFoods.ctrl.Front.HTTP_AUTHENTICATOR";
-	private static final String SSO_AUTHENTICATOR_URL = "https://www.cse.yorku.ca/~cse11011/4413/auth/index.php";
+	private static final String SSO_AUTHENTICATOR_URL = "https://www.cse.yorku.ca/~cse11011/4413/auth/";
 	private static final String SSO_SHARED_KEY = "7fcbc0e27e7bb31e4ad7a39677eebdaf6b94c9db7dcdb2ebf25791298609a4a4";
        
 	public static final String LAST_ERROR_KEY = "com.eFoods.LAST_ERROR";

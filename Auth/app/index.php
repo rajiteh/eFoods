@@ -139,13 +139,13 @@ if  (!empty($_REQUEST['submit'])) {
         <div class="form-group">
             <div class="input-group input-group-lg">
               <span class="input-group-addon">@</span>
-              <input type="text" name="username" class="form-control" placeholder="Username" value="testuser">
+              <input type="text" name="username" class="form-control" placeholder="Username">
             </div>
         </div>  
         <div class="form-group">
             <div class="input-group input-group-lg">
               <span class="input-group-addon">@</span>
-              <input type="password" name="password" class="form-control" placeholder="Password" value="testpass">
+              <input type="password" name="password" class="form-control" placeholder="Password">
             </div>
         </div>  
         <input type="hidden" name="submit" value="true"/>
