@@ -54,7 +54,9 @@ public class Auth extends BaseCtrl implements Servlet {
 					System.out.println("Login: Successfully authenticated as " + usr.getName());
 					String state = ((String) request.getSession().getAttribute("LAST_STATE"));
 					if (state == null || state.startsWith("backend/error")) { state = ""; }
-					response.sendRedirect(request.getContextPath() + "#!" + state);
+					String rdr = (request.getContextPath().length() == 0 ? "/" : request.getContextPath()) + "#!" + state;
+					System.out.println("Redirecting to: " + rdr);
+					response.sendRedirect(rdr);
 					return;
 				} else {
 					throw new Exception("Sorry! We could not authenticate you at this moment.");
@@ -62,8 +64,11 @@ public class Auth extends BaseCtrl implements Servlet {
 			} catch (Exception e1) {
 				System.out.println(e1.getMessage());
 				e1.printStackTrace();
-				String encodedError = Base64.encodeBase64String(e1.getMessage().getBytes()); 
-				response.sendRedirect(request.getContextPath() + "#!backend/error/" + encodedError);
+				String encodedError = Base64.encodeBase64String(e1.getMessage().getBytes());
+				//Debug
+				String rdr = (request.getContextPath().length() == 0 ? "/" : request.getContextPath()) + "#!backend/error/" + encodedError;;
+				System.out.println("Redirecting to: " + rdr);
+				response.sendRedirect(rdr);
 				//throw new ServletException(e1.getMessage());
 			}
 			break;
