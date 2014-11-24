@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<!DOCTYPE Configure PUBLIC "-//Jetty//Configure//EN" "http://www.eclipse.org/jetty/configure.dtd">
+<Configure class="org.eclipse.jetty.webapp.WebAppContext">
+	<New id="DS" class="org.eclipse.jetty.plus.jndi.Resource">
+		<Arg></Arg>
+		<Arg>java:comp/env/jdbc/EECS</Arg>
+		<Arg>
+			<New class="org.apache.derby.jdbc.ClientConnectionPoolDataSource">
+				<Set name="DatabaseName">CSE</Set>
+				<Set name="ServerName">roumani.eecs.yorku.ca</Set>
+				<Set name="PortNumber">64413</Set>
+				<Set name="User">student</Set>
+				<Set name="Password">secret</Set>
+			</New>
+		</Arg>
+	</New>
+</Configure>
