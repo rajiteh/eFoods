@@ -106,8 +106,8 @@ if  (!empty($_REQUEST['submit'])) {
   <link rel="shortcut icon" href="/6df2b309.favicon.ico">
   <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
 
-  <link rel="stylesheet" href="styles/050e8903.main.css">
-  <script src="scripts/vendor/fbe20327.modernizr.js"></script>
+  <link rel="stylesheet" href="styles/main.css">
+  <script src="scripts/vendor/1cb556bb.modernizr.js"></script>
 
 </head>
 <body>
