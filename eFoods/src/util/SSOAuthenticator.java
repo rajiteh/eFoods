@@ -65,7 +65,7 @@ public class SSOAuthenticator extends Authenticator {
 		String payload = URLEncoder.encode(new String(Base64.encodeBase64(("nonce=" + nonce).getBytes())), "UTF-8");
 		System.out.println("Calculating the hash from  :" + payload);
 		String signature = encode(sharedKey,payload).toLowerCase();
-		String queryString = "payload=" + payload + "&signature=" + signature;
+		String queryString = "payload=" + payload + "&signature=" + signature + "&redirect=" + URLEncoder.encode("backend/login/authenticate","UTF-8");
 		storeNonce(request, nonce);
 		response.sendRedirect(ssoEndpoint + "?" + queryString);
 	}

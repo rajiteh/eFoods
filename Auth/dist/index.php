@@ -1,4 +1,6 @@
 <?php
+session_start();
+
 $CONFIG_FILE = "./config/config.json";
 
 $config = get_config($CONFIG_FILE);
@@ -79,7 +81,13 @@ if  (!empty($_REQUEST['submit'])) {
   if ($authenticate === true) {
     http_response_code(200);
     $data = array("username" => $username);
-    $url = get_redirect_url($config->redirectURL, $payload["nonce"], $data, $config->sharedKey);
+
+    //Testing
+    $ALT_REDIRECT = empty($_SESSION["REDIRECT_TO"]) ? $config->redirectURL : $_SESSION["REDIRECT_TO"];
+    //End testing
+    error_log("Redirect To :   " . $ALT_REDIRECT);
+
+    $url = get_redirect_url($ALT_REDIRECT, $payload["nonce"], $data, $config->sharedKey);
     echo json_encode(array("url" => $url));
   } else {
     http_response_code(403);
@@ -93,6 +101,10 @@ if  (!empty($_REQUEST['submit'])) {
   if ($payload === false) {
     $error = "Login request is expired. Please go back to the site and click login again.";
   }
+}
+
+if (!empty($_SERVER["HTTP_REFERER"]) && !empty($_REQUEST["redirect"])) {
+  $_SESSION["REDIRECT_TO"] = $_SERVER["HTTP_REFERER"] . $_REQUEST["redirect"];
 }
 
 ?>
