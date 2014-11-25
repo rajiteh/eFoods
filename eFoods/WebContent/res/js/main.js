@@ -246,14 +246,14 @@ var searchForm = document.getElementById('search-form');
 console.log(searchBar);
 	
 var searchTimeout;
-searchBar.addEventListener('keypress', function() {
+searchBar.addEventListener('keyup', function() {
 	// an ajax request will be only sent only after 400ms
 	if (searchTimeout) {
 		clearTimeout(searchTimeout);
 	}
 	searchTimeout = setTimeout(function() {
 		// do ajax here
-		console.log('keypress');
+		console.log('keyup');
 		eFoods.app.handleForm(searchForm, true);
 	}, 400)
 })
