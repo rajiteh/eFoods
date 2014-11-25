@@ -10,6 +10,8 @@
 	<h2> Phone </h2>
 	<h2> Something else? </h2>
 	<h2> Google Map </h2>
+	<iframe width="600" height="450" frameborder="0" style="border:0" 
+	src="https://www.google.com/maps/embed/v1/place?q=York%20University%2C%20Keele%20Street%2C%20Toronto%2C%20ON%2C%20Canada&amp;key=AIzaSyDqdeEV19s2GM_hCoj1eu-pKy37wB5_U9I">;</iframe>
 	
 </div>
 

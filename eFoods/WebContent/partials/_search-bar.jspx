@@ -11,12 +11,13 @@
 </head>
 <body>
 
-	<div class="text-center landing">
-		<div id="home-search-bar" class="col-md-12">
-			<h2> The best way to shop and order Food.</h2>
+	<div class="text-center row">
+		<h2 class="home-heading"> The best way to shop and order Food.</h2>
+		<p> Choose foods ranging from meats to ice cream.</p>
+		<div class="home-search-bar col-md-12">
 			<form method="get" action="backend/search" id="search-form"
 			data-refresh-ids="main-content">
-				<input name="filter" id="item-search" type="text" 
+				<input name="filter" class="search-input" type="text" 
 				value="" placeholder="Search from a wide assortment of foods."/>
 				<input type="hidden" name="page" value="1"/>
 				<input type="hidden" name="limit" value="25"/>

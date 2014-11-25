@@ -10,7 +10,7 @@
 		<!--  Title -->
 		<div class="pull-left">
 			<div class="logo">
-				<h1>eFoods</h1>
+				<h1><a href="/eFoods/">eFoods</a></h1>
 			</div>
 		</div>
 		<div class="pull-right">
