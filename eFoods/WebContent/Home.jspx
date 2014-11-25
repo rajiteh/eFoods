@@ -19,6 +19,10 @@
 	type="text/css" />
 	<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet"
 	type="text/css"/>
+	<link href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-material-design/0.1.6/css/material-wfont.css" rel="stylesheet"
+	type="text/css"/>
+	<link href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-material-design/0.1.6/css/ripples.css" rel="stylesheet"
+	type="text/css"/>
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/res/css/main.css"
 	type="text/css" title="cse4413" media="screen, print" />
