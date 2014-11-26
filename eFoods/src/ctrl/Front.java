@@ -63,20 +63,20 @@ public class Front extends HttpServlet {
 		appRouter.addRoute(new Route("^/search(/)?$","Item", Route.METHOD_GET, Item.ROUTE_BY_SEARCH,false));
 
 		
-		appRouter.addRoute(new Route("^/login(/)?","Auth", Route.METHOD_GET, Auth.ROUTE_INITAL, false));
-		appRouter.addRoute(new Route("^/login/authenticate(/)?","Auth", Route.METHOD_GET, Auth.ROUTE_AUTHENTICATE, false));
-		appRouter.addRoute(new Route("^/logout(/)?","Auth", Route.METHOD_GET, Auth.ROUTE_LOGOUT, true));
-		appRouter.addRoute(new Route("^/user(/)?","Auth", Route.METHOD_GET, Auth.ROUTE_USER_BADGE, false));
+		appRouter.addRoute(new Route("^/login(/)?$","Auth", Route.METHOD_GET, Auth.ROUTE_INITAL, false));
+		appRouter.addRoute(new Route("^/login/authenticate(/)?$","Auth", Route.METHOD_GET, Auth.ROUTE_AUTHENTICATE, false));
+		appRouter.addRoute(new Route("^/logout(/)?$","Auth", Route.METHOD_GET, Auth.ROUTE_LOGOUT, true));
+		appRouter.addRoute(new Route("^/user(/)?$","Auth", Route.METHOD_GET, Auth.ROUTE_USER_BADGE, false));
 		
-		appRouter.addRoute(new Route("^/cart(/)?","Cart", Route.METHOD_GET, Cart.ROUTE_ALL, false));
-		appRouter.addRoute(new Route("^/cart(/)?","Cart", Route.METHOD_POST, Cart.ROUTE_MANIPULATE, false));
-		appRouter.addRoute(new Route("^/cart/checkout(/)?","Cart", Route.METHOD_POST, Cart.ROUTE_CHECKOUT, true));
-		appRouter.addRoute(new Route("^/cart/history(/)?","Cart", Route.METHOD_GET, Cart.ROUTE_HISTORY, true));
-		appRouter.addRoute(new Route("^/cart/badge(/)?","Cart", Route.METHOD_GET, Cart.ROUTE_BADGE, false));
+		appRouter.addRoute(new Route("^/cart(/)?$","Cart", Route.METHOD_GET, Cart.ROUTE_ALL, false));
+		appRouter.addRoute(new Route("^/cart(/)?$","Cart", Route.METHOD_POST, Cart.ROUTE_MANIPULATE, false));
+		appRouter.addRoute(new Route("^/cart/checkout(/)?$","Cart", Route.METHOD_POST, Cart.ROUTE_CHECKOUT, true));
+		appRouter.addRoute(new Route("^/cart/history(/)?$","Cart", Route.METHOD_GET, Cart.ROUTE_HISTORY, true));
+		appRouter.addRoute(new Route("^/cart/badge(/)?$","Cart", Route.METHOD_GET, Cart.ROUTE_BADGE, false));
 		
 		appRouter.addRoute(new Route("^/error/(?<Base64EncodedMessage>.*)?","Misc", Route.METHOD_GET, Misc.ERROR_PAGE, false));
 		
-		appRouter.addRoute(new Route("^/analytics(/)?","AnalysisCtrl", Route.METHOD_ANY, AnalysisCtrl.ANALYTICS_PAGE, true));
+		appRouter.addRoute(new Route("^/analytics(/)?$","AnalysisCtrl", Route.METHOD_ANY, AnalysisCtrl.ANALYTICS_PAGE, true));
 		
 		//Poking the context
 		config.getServletContext().setAttribute(MODEL_KEY, model);
