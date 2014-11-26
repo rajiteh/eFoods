@@ -49,7 +49,7 @@
 
 
 		<!-- footer -->
-		<div class="row">
+		<div class="row footer">
 			<jsp:include page="Footer.jspx" />
 		</div>
 	</div>
