@@ -8,7 +8,7 @@
 
 html, body {
     margin-top: 20px;
-    font-family: @font-family-sans-serif;
+    font-family: 'Lato';
     font-size: 12px;
 }
 
@@ -29,9 +29,13 @@ html, body {
 	
 }
 
-.logo a {
+a {
 	text-decoration: none;
 	color: inherit;
+}
+
+a:hover {
+	text-decoration: none;
 }
 
 /* Level this with the logo */
