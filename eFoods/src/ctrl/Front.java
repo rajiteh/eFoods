@@ -76,6 +76,8 @@ public class Front extends HttpServlet {
 		
 		appRouter.addRoute(new Route("^/error/(?<Base64EncodedMessage>.*)?","Misc", Route.METHOD_GET, Misc.ERROR_PAGE, false));
 		
+		appRouter.addRoute(new Route("^/analytics(/)?","AnalysisCtrl", Route.METHOD_ANY, AnalysisCtrl.ANALYTICS_PAGE, true));
+		
 		//Poking the context
 		config.getServletContext().setAttribute(MODEL_KEY, model);
 		config.getServletContext().setAttribute(ROUTER_KEY, appRouter);
@@ -87,6 +89,10 @@ public class Front extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		// ensure to create a session whenever a fresh request comes
+		request.getSession();
+		
 		Router router =  (Router) request.getServletContext().getAttribute(ROUTER_KEY);
 		Authenticator httpAuth = (SSOAuthenticator) request.getServletContext().getAttribute(SSO_AUTHENTICATOR_KEY);
 		

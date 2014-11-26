@@ -7,7 +7,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import ctrl.BaseCtrl.PagingHelper;
 import util.Route;
 import util.SSOAuthenticator;
 import model.CartModel;
@@ -63,12 +62,18 @@ public class Cart extends BaseCtrl implements Servlet {
 				newQty =  Integer.parseInt(request.getParameter("qty"));
 				item = model.items(itemNumber, ItemDAO.CAT_ALL, paging.getPage(), paging.getLimit(), ItemDAO.NO_FILTER).get(0);
 				cart.manipulateCart(item, newQty);
+				
+				// poke number of cart items into session scope, for listener
+				request.getSession().setAttribute("cartItemsCount", cart.getCartItems().size());
 			} catch (Exception e) {
 				e.printStackTrace();
 				throw new ServletException(e.getMessage());
 			}
 			break;
 		case ROUTE_CHECKOUT:
+			// notify listener by poking attribute into session scope
+			request.getSession().setAttribute("checkedOut", true);
+			
 			//Create PO Here
 			break;
 		case ROUTE_HISTORY:
