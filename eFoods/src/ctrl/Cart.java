@@ -71,7 +71,9 @@ public class Cart extends BaseCtrl implements Servlet {
 			}
 			break;
 		case ROUTE_CHECKOUT:
-			// notify listener by poking attribute into session scope
+			// add code here
+			
+			// notify listener by poking attribute into session scope after client had checked out
 			request.getSession().setAttribute("checkedOut", true);
 			
 			//Create PO Here

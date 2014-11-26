@@ -9,21 +9,21 @@
 		omit-xml-declaration="true" />
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title>Foods R Us! Data Analytics</title>
+	<title>Foods R Us! Data Analytics</title>
 </head>
 <body>
-<h1>Foods R Us! Data Analytics</h1>
-<br/>
-<table id="tb" border="0">
-<tr>
-<td><strong>Average time for customers to add an item to cart:</strong></td>
-<td><my:MinSec milliseconds="${avgAddItemTime}"/></td>
-</tr>
-<tr>
-<td><strong>Average time between a fresh visit to check out:</strong></td>
-<td><my:MinSec milliseconds="${avgCheckOutTime}"/></td>
-</tr>
-</table>
+	<h1>Foods R Us! Data Analytics</h1>
+	<br/>
+	<table id="tb" border="0">
+		<tr>
+			<td><strong>Average time for customers to add an item to cart:</strong></td>
+			<td><my:MinSec milliseconds="${avgAddItemTime}"/></td>
+		</tr>
+		<tr>
+			<td><strong>Average time between a fresh visit to check out:</strong></td>
+			<td><my:MinSec milliseconds="${avgCheckOutTime}"/></td>
+		</tr>
+	</table>
 </body>
 </html>
 </jsp:root>
