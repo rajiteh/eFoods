@@ -89,7 +89,6 @@ public class SSOAuthenticator extends Authenticator {
 		
 		remotePayload = request.getParameter("payload");
 		remoteSignature = request.getParameter("signature");
-		
 		localSignature = encode(sharedKey, remotePayload);
 		localNonce = retrieveNonce(request);
 		payloadQueryString = new String(Base64.decodeBase64(remotePayload));
@@ -103,8 +102,13 @@ public class SSOAuthenticator extends Authenticator {
 			throw new Exception("Invalid payload.");
 		}
 		
+		System.out.println("Auth : remote Payload: " + remotePayload);
+		System.out.println("Auth : remote signatr: " + remoteSignature);
+		System.out.println("Auth : local  signatr: " + localSignature);
+		
+		
 		//Initial validation
-		if (!localSignature.equals(remoteSignature))
+		if (!localSignature.toLowerCase().equals(remoteSignature.toLowerCase()))
 			throw new Exception("Payload verification failed.");
 		if (localNonce == null) 
 			throw new Exception("Request expired. Please re-initiate login.");	

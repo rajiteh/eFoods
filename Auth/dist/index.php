@@ -57,14 +57,11 @@ function validate_payload($raw_payload, $raw_signature, $shared_key) {
 
 function get_redirect_url($base_url, $nonce, $data, $shared_key ) {
   $data["nonce"] = $nonce;
-  $pre_payload = http_build_query($data);
-  error_log($pre_payload);
-  $pre_encode = base64_encode($pre_payload);
-  $payload =  urlencode($pre_encode);
+  $raw_payload = http_build_query($data);
+  $payload = base64_encode($pre_payload);
   $signature = strtolower(hash_hmac('sha256', $payload, $shared_key));
-  $query_string = "payload=" . $payload . "&signature=" . $signature;
-  
-  return $base_url . "?" . $query_string; 
+  $query_string = "payload=" . urlencode($pre_encode) . "&signature=" . urlencode($signature);
+  return $base_url . "?" . $query_string;
 }
 
 function get_full_name($username) {
