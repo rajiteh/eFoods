@@ -25,6 +25,9 @@
 	type="text/css"/>
 	<link href='http://fonts.googleapis.com/css?family=Lato:300,400' rel='stylesheet' 
 	type='text/css'/>
+	<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/bower_components/spinkit/css/spinkit.css"
+	type="text/css"/>
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/res/css/main.css"
 	type="text/css" title="cse4413" media="screen, print" />
@@ -44,12 +47,15 @@
 			<jsp:include page="/partials/_search-bar.jspx">
 			</jsp:include>
 		</div>
+		
 
-		<div class="row" data-ajaxify="backend/category/" id="main-content"> Please wait loading... </div>
+		<div class="row" data-ajaxify="backend/category/" id="main-content"> 
+			<p class="lead text-center"> Please wait loading... </p> 
+		</div>
 
 
 		<!-- footer -->
-		<div class="row">
+		<div class="row footer">
 			<jsp:include page="Footer.jspx" />
 		</div>
 	</div>

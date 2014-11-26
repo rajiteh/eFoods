@@ -18,6 +18,4 @@
 		</c:otherwise>
 	</c:choose>
 	
-	<!--  Logged in, goto checkout -->
-	<!-- 	                <p class="login-text"> Checkout </p> -->
 </jsp:root>

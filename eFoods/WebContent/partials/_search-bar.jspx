@@ -17,7 +17,7 @@
 		<div class="home-search-bar col-md-12">
 			<form method="get" action="backend/search" id="search-form"
 			data-refresh-ids="main-content">
-				<input name="filter" class="search-input" type="text" id="item-search"
+				<input name="filter" class="search-input"  id="item-search" type="text" 
 				value="" placeholder="Search from a wide assortment of foods."/>
 				<input type="hidden" name="page" value="1"/>
 				<input type="hidden" name="limit" value="25"/>

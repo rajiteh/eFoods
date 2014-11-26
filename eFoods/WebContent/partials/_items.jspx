@@ -5,12 +5,16 @@
 		pageEncoding="UTF-8" session="false" />
 	<jsp:output omit-xml-declaration="true" />
 
-	<h1>${category.name }</h1>
-	<a href="backend/category/" data-refresh-ids="main-content"
-		onClick="return eFoods.app.handleHref(this, true);">Back to all
-		categories</a>
+	<div class="col-md-12">
+		<h1>${category.name }</h1>
+		<p class="lead"><a href="backend/category/" data-refresh-ids="main-content"
+			onClick="return eFoods.app.handleHref(this, true);">Back to all
+			categories</a></p>
+			
+	</div>
+	
 	<c:forEach items="${results }" var="r">
-		<div class="col-md-4" data-ajaxify="backend/item/${r.number }" id="item-${r.number }">
+		<div class="col-md-4 col-sm-6 col-lg-3" data-ajaxify="backend/item/${r.number }" id="item-${r.number }">
 			<c:set var="item" scope="request" value="${r }" />
 			<c:set var="cartItem" scope="request" value="${cartItems[r.name] }" />
 			<jsp:include page="_item.jspx" />

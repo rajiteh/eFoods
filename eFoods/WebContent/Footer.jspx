@@ -4,15 +4,16 @@
 		pageEncoding="UTF-8" session="false"/>
 	<jsp:output omit-xml-declaration="true" />
 
-<div class="footer">
-	<h1 class="text-center">Footer</h1>
-	<h2> Mailing address </h2>
-	<h2> Phone </h2>
-	<h2> Something else? </h2>
-	<h2> Google Map </h2>
-	<iframe width="600" height="450" frameborder="0" style="border:0" 
-	src="https://www.google.com/maps/embed/v1/place?q=York%20University%2C%20Keele%20Street%2C%20Toronto%2C%20ON%2C%20Canada&amp;key=AIzaSyDqdeEV19s2GM_hCoj1eu-pKy37wB5_U9I">;</iframe>
+
+	<div class="col-md-6">
+		<p> Contact Information </p>
+		<p> 4700 Keele St, Toronto, ON M3J 1P3 </p>
+		<p> (416) 736-2100 </p>
+	</div>
 	
-</div>
+	<div class="col-md-6">
+		<iframe width="600" height="450" frameborder="0" style="border:0" 
+		src="https://www.google.com/maps/embed/v1/place?q=York%20University%2C%20Keele%20Street%2C%20Toronto%2C%20ON%2C%20Canada&amp;key=AIzaSyDqdeEV19s2GM_hCoj1eu-pKy37wB5_U9I">;</iframe>
+	</div>
 
 </jsp:root>
