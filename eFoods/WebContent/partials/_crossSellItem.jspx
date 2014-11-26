@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:c="http://java.sun.com/jsp/jstl/core" version="2.0">
+	<jsp:directive.page contentType="text/html; charset=UTF-8"
+		pageEncoding="UTF-8" session="false" />
+	<jsp:output omit-xml-declaration="true" />
+
+
+	<div class="thumbnail">
+		<img src="http://placehold.it/300x200" class="img-responsive"></img>
+		<div class="caption">
+			<h4>${item.name }</h4>
+			<h4>${item.price }</h4>
+			<h4>${item.qty }</h4>
+			<h4>${item.category.name }</h4>
+			<h4>${item.number }</h4>
+			<form method="POST" action="backend/cart"
+				data-refresh-ids="cart-info, item-${item.number }"
+				onsubmit="return eFoods.app.handleForm(this);">
+				<label for="number">Quantity:</label>
+				<c:choose>
+					<c:when test="${not empty cartItem }">
+					<input type="number" name="qty" value="${cartItem.quantity }" /> <input type="hidden"
+					name="item" value="${item.number }" /> <input type="submit"
+					class="btn btn-primary" name="itemAdd" value="Change" />
+						<p>
+							<b>Element in cart. + u r been cross sold with ${crossSellItem.name } (${crossSellItem.number })</b>
+						</p>
+					</c:when>
+					<c:otherwise>
+						<input type="number" name="qty" value="1" /> <input type="hidden"
+					name="item" value="${item.number }" /> <input type="submit"
+					class="btn btn-primary" name="itemAdd" value="Add" />
+					</c:otherwise>
+				</c:choose>
+				
+			</form>
+		</div>
+	</div>
+
+
+</jsp:root>
