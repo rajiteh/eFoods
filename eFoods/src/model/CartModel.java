@@ -36,6 +36,10 @@ public class CartModel {
 			this.item = item;
 			this.quantity = quantity;
 		}
+		
+		public String getItemTotal() {
+			return (new BigDecimal(Float.toString(item.price))).multiply(new BigDecimal(quantity)).toPlainString();
+		}
 
 	}
 
@@ -111,7 +115,7 @@ public class CartModel {
 	private BigDecimal calculateTotal() {
 		BigDecimal t = BigDecimal.ZERO;
 		for (CartItem ci : cartItems) {
-			t = t.add(new BigDecimal(ci.item.getPrice())).multiply(
+			t = t.add(new BigDecimal(Float.toString(ci.item.getPrice()))).multiply(
 					new BigDecimal(ci.quantity));
 		}
 		return t;

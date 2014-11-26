@@ -5,16 +5,35 @@
 		pageEncoding="UTF-8" session="false" />
 	<jsp:output omit-xml-declaration="true" />
 <a href="backend/category/" data-refresh-ids="main-content" onClick="return eFoods.app.handleHref(this, true);">Back to all categories</a>
+	<table class="table table-striped table-hover">
+		<tr>
+			<th>Item</th>
+			<th>Price</th>
+			<th>Quantity</th>
+			<th>Total</th>
+		</tr>
+		<c:forEach items="${cartItems }" var="r">
+		<tr>
+			<td>
+				${r.item.name }
+			</td>
+			<td>${r.item.price }</td>
+	 		<td>
+	 		<form method="POST" action="backend/cart"
+				data-refresh-ids="cart-info, main-content"
+				onsubmit="return eFoods.app.handleForm(this);">
+				<input type="number" name="qty" value="${r.quantity }" /> <input type="hidden"
+					name="item" value="${r.item.number }" /> <input type="submit"
+					class="" name="itemAdd" value="Change" />
+			</form>
+	 		</td>
+	 		<td>${r.getItemTotal() }</td>
+		</tr>
+		</c:forEach>
+	</table>
 	
-	<c:forEach items="${cartItems }" var="r">
-		<h4>Name: ${r.item.name } </h4>
-		<h4>Price: ${r.item.price } </h4>
- 		<h4>Number: ${r.item.number } </h4>
- 		<h2>Purchase Qty: ${r.quantity }</h2>
-		<hr />
-	</c:forEach>
-	<h2>Total: ${total }</h2>
-	<h2>Shipping: ${shipping }</h2>
-	<h2>Tax: ${tax }</h2>
-	<h2>SubTotal: ${total + shipping + tax }</h2>
+	<h2>Total: ${total.toPlainString() }</h2>
+	<h2>Shipping: ${shipping.toPlainString() }</h2>
+	<h2>Tax: ${tax.toPlainString() }</h2>
+	<h2>SubTotal: ${total.add(shipping).add(tax).toPlainString() }</h2>
 </jsp:root>
