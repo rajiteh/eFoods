@@ -7,6 +7,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
@@ -29,22 +30,29 @@ public class SSOAuthenticator extends Authenticator {
 	private static final String NONCE_TIME_KEY = "com.eFoods.util.Authentication.SSO.nonce.time";
 	private static final int NONCE_EXPIRY = 10; //minutes
 	
-	private static final Random RANDOM = new SecureRandom();
-	
 	private static final int NONCE_LENGTH = 16;
 	
 	private String sharedKey;
 	private String sessionKey;
 	private String ssoEndpoint;
-
-	public SSOAuthenticator(String ssoEndpoint, String sharedKey) throws Exception {
-		if (ssoEndpoint == null || ssoEndpoint.length() < 0)
+	private String ssoReciever;
+	private List<String> adminUsers;
+	
+	public SSOAuthenticator(String ssoEndpoint, String ssoReciever,  String sharedKey, List<String> adminUsers) throws Exception {
+		if (ssoEndpoint == null || ssoEndpoint.length() < 1)
 			throw new Exception("Endpoint must not be blank!");
-		if (sharedKey == null || sharedKey.length() < 0)
+		if (sharedKey == null || sharedKey.length() < 1)
 			throw new Exception("Shared key must not be blank!");
-		this.sharedKey = sharedKey;
+		if (adminUsers.size() < 1)
+			throw new Exception("No admin users in the system!");
+		if (ssoReciever == null || ssoReciever.length() < 1)
+			throw new Exception("SSO Recieve URL must not be empty!");
 		this.ssoEndpoint = ssoEndpoint;
+		this.ssoReciever = ssoReciever;
+		this.sharedKey = sharedKey;
 		this.sessionKey = SESSION_KEY_PREFIX + "." + ssoEndpoint.hashCode();
+		this.adminUsers = adminUsers;
+		
 	}
 
 	@Override
@@ -62,10 +70,14 @@ public class SSOAuthenticator extends Authenticator {
 
 	public void SSORedirect(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		String nonce = generateNonce(NONCE_LENGTH);
-		String payload = URLEncoder.encode(new String(Base64.encodeBase64(("nonce=" + nonce).getBytes())), "UTF-8");
-		System.out.println("Calculating the hash from  :" + payload);
+		String rawPayload = "nonce=" + nonce;
+		String payload = new String(Base64.encodeBase64(rawPayload.getBytes()));
 		String signature = encode(sharedKey,payload).toLowerCase();
-		String queryString = "payload=" + payload + "&signature=" + signature + "&redirect=" + URLEncoder.encode("backend/login/authenticate","UTF-8");
+		
+		String encodedPayload = URLEncoder.encode(payload, "UTF-8");
+		String encodedSignature = URLEncoder.encode(signature, "UTF-8");
+		String encodedReciever = URLEncoder.encode(ssoReciever, "UTF-8");
+		String queryString = "payload=" + encodedPayload + "&signature=" + encodedSignature + "&redirect=" + encodedReciever;
 		storeNonce(request, nonce);
 		response.sendRedirect(ssoEndpoint + "?" + queryString);
 	}
@@ -73,42 +85,44 @@ public class SSOAuthenticator extends Authenticator {
 	public boolean login(HttpServletRequest request, String uname,
 			String pwd) throws Exception {
 		Map<String,String[]> payload = new HashMap<String,String[]>();
-		String signature, nonce, userName, remoteNonce, remotePayload, remoteSignature, payloadQueryString;
+		String localSignature, localNonce, remoteNonce, remotePayload, remoteSignature, payloadQueryString, userName, userFullName;
 		
 		remotePayload = request.getParameter("payload");
 		remoteSignature = request.getParameter("signature");
-		signature = encode(sharedKey,URLEncoder.encode(remotePayload, "UTF-8"));
 		
-		if (!signature.equals(remoteSignature)) {
-			throw new Exception("Payload verification failed.");
-		}
-
-		nonce = retrieveNonce(request);
-		
-		expireNonce(request); //A nonce may only used once and ONCE only
-		
-		if (nonce == null) {
-			throw new Exception("Request expired. Please re-initiate login.");
-		}
-		
+		localSignature = encode(sharedKey, remotePayload);
+		localNonce = retrieveNonce(request);
 		payloadQueryString = new String(Base64.decodeBase64(remotePayload));
 		RequestUtil.parseParameters(payload, payloadQueryString, "UTF-8");
-		if (payload.get("nonce").length == 1 && payload.get("username").length == 1) {
+		
+		try {
 			remoteNonce = payload.get("nonce")[0];
-			userName = payload.get("username")[0];	
-		} else {
-			throw new Exception("Invalid payload");
+			userName = payload.get("username")[0];
+			userFullName = payload.get("fullname")[0];
+		} catch (Exception e) {
+			throw new Exception("Invalid payload.");
 		}
-				
-		if  (!nonce.equals(remoteNonce)) {
+		
+		//Initial validation
+		if (!localSignature.equals(remoteSignature))
+			throw new Exception("Payload verification failed.");
+		if (localNonce == null) 
+			throw new Exception("Request expired. Please re-initiate login.");	
+		if  (!localNonce.equals(remoteNonce)) 
 			throw new Exception("Invalid nonce. Please re-initiaite login.");
-		}
-		
-		if (userName == null) {
+		//End initial validation
+	
+		//Data validation
+		if (userName == null || userName.length() < 1) 
 			throw new Exception("Invalid username data in payload");
-		}
+		if (userFullName == null || userFullName.length() < 1)
+			throw new Exception("Invalid user full name data in payload");
 		
-		setUser(request, new UserBean(userName));
+		boolean isAdmin = false;
+		if (adminUsers.contains(userName))
+			isAdmin = true;
+		
+		setUser(request, new UserBean(userName, isAdmin));
 		return isAuthenticated(request);
 	}
 

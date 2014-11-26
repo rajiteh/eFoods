@@ -46,7 +46,7 @@ function do_auth($username, $password, $challenge_url, $challenge_file) {
 
 function validate_payload($raw_payload, $raw_signature, $shared_key) {
   $remote_payload = base64_decode($_REQUEST['payload']);
-  $signature = hash_hmac('sha256', urlencode($_REQUEST['payload']), $shared_key);
+  $signature = hash_hmac('sha256', $_REQUEST['payload'], $shared_key);
   if (strtolower($signature) == strtolower($raw_signature)) { 
     parse_str($remote_payload, $payload_array);
     return $payload_array;
@@ -58,12 +58,17 @@ function validate_payload($raw_payload, $raw_signature, $shared_key) {
 function get_redirect_url($base_url, $nonce, $data, $shared_key ) {
   $data["nonce"] = $nonce;
   $pre_payload = http_build_query($data);
+  error_log($pre_payload);
   $pre_encode = base64_encode($pre_payload);
   $payload =  urlencode($pre_encode);
   $signature = strtolower(hash_hmac('sha256', $payload, $shared_key));
   $query_string = "payload=" . $payload . "&signature=" . $signature;
   
   return $base_url . "?" . $query_string; 
+}
+
+function get_full_name($username) {
+  return exec('getent passwd ' . escapeshellarg($username) . ' | cut -d: -f5 | cut -d, -f1');
 }
 // End functions & helpers
 
@@ -80,7 +85,9 @@ if  (!empty($_REQUEST['submit'])) {
   header('Content-Type: application/json');
   if ($authenticate === true) {
     http_response_code(200);
-    $data = array("username" => $username);
+    $data = array();
+    $data["username"] = $username;
+    $data["fullname"] = get_full_name($username);
 
     //Testing
     $ALT_REDIRECT = empty($_SESSION["REDIRECT_TO"]) ? $config->redirectURL : $_SESSION["REDIRECT_TO"];
@@ -164,7 +171,7 @@ if (!empty($_SERVER["HTTP_REFERER"]) && !empty($_REQUEST["redirect"])) {
         <input type="hidden" name="payload" value="<?php echo $_REQUEST["payload"] ?>"/>
         <input type="hidden" name="signature" value="<?php echo $_REQUEST["signature"] ?>"/>
         <p class="lead">You will be authenticated against EECS LDAP.</p>    
-            <a class="btn btn-lg btn-info" data-type="submit" href="#">Login! <span class="glyphicon glyphicon-user"></span></a>
+            <a class="btn btn-lg btn-primary" data-type="submit" href="#">Login <span class="glyphicon glyphicon-user"></span></a>
             <br/><br/>
 
           </form>

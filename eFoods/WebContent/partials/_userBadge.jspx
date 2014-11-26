@@ -7,7 +7,10 @@
 
 	<c:choose>
 		<c:when test="${not empty currentUser }">
-			<p class="login-text">Hello, ${currentUser.name }!  </p>
+			<p class="login-text">Hello, ${currentUser.fullName }!  </p>
+			<c:if test="${currentUser.admin }">
+				<p class="login-text"><a href="backend/analytics" data-refresh-ids="main-content" onClick="return eFoods.app.handleHref(this);">Analytics</a></p>
+			</c:if>
 			<p class="login-text"><a href="backend/logout" data-refresh-ids="user-info, cart-info, main-content" onClick="return eFoods.app.handleHref(this);">Log Out</a></p> 
 		</c:when>
 		<c:otherwise>

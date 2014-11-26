@@ -3,6 +3,10 @@ package model;
 public class UserBean {
 	
 	String name;
+	String fullName;
+
+
+	boolean admin;
 	
 	public UserBean() {
 
@@ -12,6 +16,13 @@ public class UserBean {
 		super();
 		this.name = name;
 	}
+	
+	public UserBean(String name, boolean admin) {
+		super();
+		this.name = name;
+		this.admin = admin;
+	}
+	
 	/**
 	 * @return the name
 	 */
@@ -25,5 +36,31 @@ public class UserBean {
 		this.name = name;
 	}
 	
+	/**
+	 * @return the admin
+	 */
+	public boolean isAdmin() {
+		return admin;
+	}
 
+	/**
+	 * @param admin the admin to set
+	 */
+	public void setAdmin(boolean admin) {
+		this.admin = admin;
+	}
+
+	/**
+	 * @return the fullName
+	 */
+	public String getFullName() {
+		return fullName;
+	}
+
+	/**
+	 * @param fullName the fullName to set
+	 */
+	public void setFullName(String fullName) {
+		this.fullName = fullName;
+	}
 }

@@ -1,6 +1,8 @@
 package ctrl;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -16,15 +18,26 @@ import util.*;
  * Servlet implementation class Front
  */
 @WebServlet("/backend/*")
+@SuppressWarnings("serial")
 public class Front extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	
+	//Context objects
 	public static final String MODEL_KEY = "com.eFoods.ctrl.Front.EFOODS";
 	private static final String ROUTER_KEY = "com.eFoods.ctrl.Front.ROUTER";
 	public static final String SSO_AUTHENTICATOR_KEY = "com.eFoods.ctrl.Front.HTTP_AUTHENTICATOR";
+	
+	
+	//SSO Configuration
+	//private static final String SSO_AUTHENTICATOR_URL = "http://localhost:9000/";
 	private static final String SSO_AUTHENTICATOR_URL = "https://www.cse.yorku.ca/~cse11011/4413/auth/";
+	private static final String SSO_RECIEVER_URL = "backend/login/authenticate";
 	private static final String SSO_SHARED_KEY = "7fcbc0e27e7bb31e4ad7a39677eebdaf6b94c9db7dcdb2ebf25791298609a4a4";
-       
-	public static final String LAST_ERROR_KEY = "com.eFoods.LAST_ERROR";
+	private static final List<String> SSO_ADMINS = new ArrayList<String>() {{
+		add("cse11011"); //List of admin users
+	}};
+	
+	
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -45,7 +58,7 @@ public class Front extends HttpServlet {
 		//Initializing authentication module
 		SSOAuthenticator auth;
 		try {
-			auth = new SSOAuthenticator(SSO_AUTHENTICATOR_URL, SSO_SHARED_KEY);
+			auth = new SSOAuthenticator(SSO_AUTHENTICATOR_URL, SSO_RECIEVER_URL, SSO_SHARED_KEY, SSO_ADMINS);
 		} catch (Exception e) {
 			throw new ServletException("Authenticator init failure.");
 		}
@@ -100,7 +113,7 @@ public class Front extends HttpServlet {
 		try {
 			if ((route = router.getRoute(request)) != null) {
 				if (!route.isRequireAuthentication() || httpAuth.isAuthenticated(request)) {
-					System.out.println("Serving Route: " + request.getPathInfo() + " (" + route.getUrlPattern() + ") " +
+					System.out.println("Serving Route: " + route.getMethod() + " " + request.getPathInfo() + " (" + route.getUrlPattern() + ") " +
 							(route.isRequireAuthentication() ? " (Authenticated as " + ((SSOAuthenticator) httpAuth).getUser(request).getName() + ")": ""));
 					request.getServletContext().getNamedDispatcher(route.getDestination()).forward(request, response);
 				} else {
