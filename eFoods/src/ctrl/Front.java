@@ -29,8 +29,8 @@ public class Front extends HttpServlet {
 	
 	
 	//SSO Configuration
-	private static final String SSO_AUTHENTICATOR_URL = "http://localhost:9000/";
-	//private static final String SSO_AUTHENTICATOR_URL = "https://www.cse.yorku.ca/~cse11011/4413/auth/";
+	//private static final String SSO_AUTHENTICATOR_URL = "http://localhost:9000/";
+	private static final String SSO_AUTHENTICATOR_URL = "https://www.cse.yorku.ca/~cse11011/4413/auth/";
 	private static final String SSO_RECIEVER_URL = "backend/login/authenticate";
 	private static final String SSO_SHARED_KEY = "7fcbc0e27e7bb31e4ad7a39677eebdaf6b94c9db7dcdb2ebf25791298609a4a4";
 	private static final List<String> SSO_ADMINS = new ArrayList<String>() {{
