@@ -12,16 +12,14 @@ public class UserBean {
 
 	}
 
-	public UserBean(String name) {
+	public UserBean(String name, String fullName, boolean admin) {
 		super();
 		this.name = name;
-	}
-	
-	public UserBean(String name, boolean admin) {
-		super();
-		this.name = name;
+		this.fullName = fullName;
 		this.admin = admin;
 	}
+	
+	
 	
 	/**
 	 * @return the name

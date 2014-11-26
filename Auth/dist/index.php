@@ -58,14 +58,15 @@ function validate_payload($raw_payload, $raw_signature, $shared_key) {
 function get_redirect_url($base_url, $nonce, $data, $shared_key ) {
   $data["nonce"] = $nonce;
   $raw_payload = http_build_query($data);
-  $payload = base64_encode($pre_payload);
+  $payload = base64_encode($raw_payload);
   $signature = strtolower(hash_hmac('sha256', $payload, $shared_key));
-  $query_string = "payload=" . urlencode($pre_encode) . "&signature=" . urlencode($signature);
+  $query_string = "payload=" . urlencode($payload) . "&signature=" . urlencode($signature);
   return $base_url . "?" . $query_string;
 }
 
 function get_full_name($username) {
-  return exec('getent passwd ' . escapeshellarg($username) . ' | cut -d: -f5 | cut -d, -f1');
+  $system_name = exec('getent passwd ' . escapeshellarg($username) . ' | cut -d: -f5 | cut -d, -f1');
+  return empty($system_name) ? "Unknown Name" : $system_name;
 }
 // End functions & helpers
 

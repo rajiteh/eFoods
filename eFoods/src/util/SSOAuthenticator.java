@@ -85,14 +85,21 @@ public class SSOAuthenticator extends Authenticator {
 	public boolean login(HttpServletRequest request, String uname,
 			String pwd) throws Exception {
 		Map<String,String[]> payload = new HashMap<String,String[]>();
-		String localSignature, localNonce, remoteNonce, remotePayload, remoteSignature, payloadQueryString, userName, userFullName;
+		String localSignature, localNonce, remoteNonce, remotePayload, remoteSignature, rawPayload, userName, userFullName;
 		
 		remotePayload = request.getParameter("payload");
 		remoteSignature = request.getParameter("signature");
 		localSignature = encode(sharedKey, remotePayload);
 		localNonce = retrieveNonce(request);
-		payloadQueryString = new String(Base64.decodeBase64(remotePayload));
-		RequestUtil.parseParameters(payload, payloadQueryString, "UTF-8");
+		rawPayload = new String(Base64.decodeBase64(remotePayload));
+		RequestUtil.parseParameters(payload, rawPayload, "UTF-8");
+		
+
+		System.out.println("Auth : remote Payload: " + remotePayload);
+		System.out.println("Auth : raw Payload: " + rawPayload);
+		System.out.println("Auth : remote signatr: " + remoteSignature);
+		System.out.println("Auth : local  signatr: " + localSignature);
+		
 		
 		try {
 			remoteNonce = payload.get("nonce")[0];
@@ -101,10 +108,6 @@ public class SSOAuthenticator extends Authenticator {
 		} catch (Exception e) {
 			throw new Exception("Invalid payload.");
 		}
-		
-		System.out.println("Auth : remote Payload: " + remotePayload);
-		System.out.println("Auth : remote signatr: " + remoteSignature);
-		System.out.println("Auth : local  signatr: " + localSignature);
 		
 		
 		//Initial validation
@@ -126,7 +129,7 @@ public class SSOAuthenticator extends Authenticator {
 		if (adminUsers.contains(userName))
 			isAdmin = true;
 		
-		setUser(request, new UserBean(userName, isAdmin));
+		setUser(request, new UserBean(userName, userFullName, isAdmin));
 		return isAuthenticated(request);
 	}
 
