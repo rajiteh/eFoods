@@ -57,7 +57,14 @@ public class SSOAuthenticator extends Authenticator {
 
 	@Override
 	public boolean isAuthenticated(HttpServletRequest request) {
-		return (getUser(request) != null);
+		UserBean user = getUser(request);
+		Route currentRoute = (Route) request.getAttribute(Router.REQUEST_ROUTE_KEY);
+		if (user != null && currentRoute != null) {
+			boolean needAdmin = currentRoute.isRequireAdmin();
+			boolean hasAdmin = user.isAdmin();
+			return needAdmin ? needAdmin == hasAdmin : true;	
+		}		
+		return false;
 	}
 
 	public UserBean getUser(HttpServletRequest request) {
@@ -79,6 +86,7 @@ public class SSOAuthenticator extends Authenticator {
 		String encodedReciever = URLEncoder.encode(ssoReciever, "UTF-8");
 		String queryString = "payload=" + encodedPayload + "&signature=" + encodedSignature + "&redirect=" + encodedReciever;
 		storeNonce(request, nonce);
+		System.out.println("Auth: Nonce created.");
 		response.sendRedirect(ssoEndpoint + "?" + queryString);
 	}
 	@Override
@@ -91,14 +99,16 @@ public class SSOAuthenticator extends Authenticator {
 		remoteSignature = request.getParameter("signature");
 		localSignature = encode(sharedKey, remotePayload);
 		localNonce = retrieveNonce(request);
+		
+		//Only use the nonce once!
+		expireNonce(request);
+		
 		rawPayload = new String(Base64.decodeBase64(remotePayload));
 		RequestUtil.parseParameters(payload, rawPayload, "UTF-8");
 		
 
 		System.out.println("Auth : remote Payload: " + remotePayload);
 		System.out.println("Auth : raw Payload: " + rawPayload);
-		System.out.println("Auth : remote signatr: " + remoteSignature);
-		System.out.println("Auth : local  signatr: " + localSignature);
 		
 		
 		try {
@@ -173,6 +183,7 @@ public class SSOAuthenticator extends Authenticator {
 	protected static void expireNonce(HttpServletRequest request) {
 		request.getSession().setAttribute(NONCE_VALUE_KEY, null);
 		request.getSession().setAttribute(NONCE_TIME_KEY, null);
+		System.out.println("Auth: Nonce destroyed");
 	}
 	protected static String encode(String secret, String data) throws Exception {
 		String hashFunction = "HmacSHA256";

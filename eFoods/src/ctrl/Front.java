@@ -60,7 +60,7 @@ public class Front extends HttpServlet {
 		try {
 			auth = new SSOAuthenticator(SSO_AUTHENTICATOR_URL, SSO_RECIEVER_URL, SSO_SHARED_KEY, SSO_ADMINS);
 		} catch (Exception e) {
-			throw new ServletException("Authenticator init failure.");
+			throw new ServletException(e.getMessage());
 		}
 		
 		//Setting up routes
@@ -89,7 +89,7 @@ public class Front extends HttpServlet {
 		
 		appRouter.addRoute(new Route("^/error/(?<Base64EncodedMessage>.*)?","Misc", Route.METHOD_GET, Misc.ERROR_PAGE, false));
 		
-		appRouter.addRoute(new Route("^/analytics(/)?$","AnalysisCtrl", Route.METHOD_ANY, AnalysisCtrl.ANALYTICS_PAGE, true));
+		appRouter.addRoute(new Route("^/analytics(/)?$","AnalysisCtrl", Route.METHOD_ANY, AnalysisCtrl.ANALYTICS_PAGE, true, true));
 		
 		//Poking the context
 		config.getServletContext().setAttribute(MODEL_KEY, model);

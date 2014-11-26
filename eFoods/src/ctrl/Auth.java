@@ -75,7 +75,12 @@ public class Auth extends BaseCtrl implements Servlet {
 		case ROUTE_LOGOUT:
 			try {
 				auth.logout(request);
-				System.out.println("Login: Logged out");
+				if (auth.getUser(request) == null) {
+					System.out.println("Login: Logged out");	
+				} else {
+					throw new Exception("Could not log out");
+				};
+				
 			} catch (Exception e) {
 				e.printStackTrace();
 				throw new ServletException(e.getMessage());

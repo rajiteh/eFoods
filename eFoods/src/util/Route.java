@@ -17,7 +17,8 @@ public class Route {
 	private boolean requireAuthentication;
 	private Matcher matcher;
 	private int identifier;
-
+	private boolean requireAdmin;
+	
 	/**
 	 * @return the matcher
 	 */
@@ -27,12 +28,18 @@ public class Route {
 
 	public Route(String urlPattern, String destination, String method, int identifier,
 			boolean requireAuthentication) {
+		this(urlPattern, destination, method, identifier, requireAuthentication, false);
+	}
+	
+	public Route(String urlPattern, String destination, String method, int identifier,
+			boolean requireAuthentication, boolean requireAdmin) {
 		super();
 		this.urlPattern = urlPattern;
 		this.destination = destination;
 		this.method = method;
 		this.identifier = identifier;
 		this.requireAuthentication = requireAuthentication;
+		this.requireAdmin = requireAdmin;
 	}
 
 	/**
@@ -83,6 +90,21 @@ public class Route {
 	public boolean isRequireAuthentication() {
 		return requireAuthentication;
 	}
+	
+	/**
+	 * @return the requireAdmin
+	 */
+	public boolean isRequireAdmin() {
+		return requireAdmin;
+	}
+
+	/**
+	 * @param requireAdmin the requireAdmin to set
+	 */
+	public void setRequireAdmin(boolean requireAdmin) {
+		this.requireAdmin = requireAdmin;
+	}
+
 
 	public boolean match(HttpServletRequest request) {
 		Matcher m = Pattern.compile(this.urlPattern).matcher(request.getPathInfo());
