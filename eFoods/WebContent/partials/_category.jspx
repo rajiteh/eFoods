@@ -19,7 +19,7 @@
     </div>
 	<c:forEach items="${results }" var="r">
 		<div class="col-md-4 col-lg-3 col-sm-6">
-			<div class="thumbnail">
+			<div class="thumbnail well lg-well">
 				<a href="backend/category/${r.id }" data-refresh-ids="main-content" onClick="return eFoods.app.handleHref(this, true);"> <img
 					src="${pageContext.request.contextPath}/pics/ids/${r.id }-300x200.jpg" 
 					class="img-responsive"></img>
