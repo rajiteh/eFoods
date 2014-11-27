@@ -41,8 +41,8 @@ public class Orders extends BaseCtrl {
 	protected synchronized void processRequest(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		Route route = getRoute(request);		
-		//String basePath = request.getServletContext().getRealPath(BASE_PATH);
-		String basePath = "/Users/rajiteh/dev/eclipse_workspace/ProjectC/eFoods/WebContent/PurchaseOrders/";
+		String basePath = request.getServletContext().getRealPath(BASE_PATH);
+		//String basePath = "/Users/rajiteh/dev/eclipse_workspace/ProjectC/eFoods/WebContent/PurchaseOrders/";
 		String baseUrl = request.getContextPath() + BASE_PATH;		
 		PurchaseOrderFiles pofs; 
 		
