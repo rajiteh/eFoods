@@ -8,17 +8,14 @@
 
 	<div class="thumbnail item  well well-lg">
 		<div class="caption">
-			<p>${item.name }</p>
+			<p class="item-name">${item.name }</p>
 			<p>\$${item.price } CDN</p>
-			<p class="hidden">${item.qty }</p>
-			<p class="hidden">${item.category.name }</p>
-			<p class="hidden">${item.number }</p>
+			
 								<form method="POST" action="backend/cart"
 				data-refresh-ids="cart-info, item-${item.number }"
 				onsubmit="return eFoods.app.handleForm(this);" class="clearfix form-control-wrapper">
 				<c:choose>
 					<c:when test="${not empty cartItem }">
-				<small><b>Note:</b> This item is in your cart.</small>
 				<span class="pull-left">
 					<label for="number">Qty:</label>
 					<input class="item-quantity form-control" type="number" name="qty" value="${cartItem.quantity }" /> <input type="hidden"
@@ -28,6 +25,7 @@
 					<input type="submit"
 					class="btn btn-primary" name="itemAdd" value="Change" />
 				</span>
+				<span class="pull-left"><small><b>Note:</b> This item is in your cart.</small></span>
 					</c:when>
 					<c:otherwise>
 				<span class="pull-left">
@@ -44,7 +42,7 @@
 		</div>
 		<hr/>
 			<div class="caption clearfix">
-				<p class="h5">Suggested Purchase</p>
+				<p class="h5" style="padding-bottom: 10px;"><b>Suggested Purchase</b></p>
 				<a href="backend/item/${crossSellItem.number }" data-refresh-ids="main-content" onClick="return eFoods.app.handleHref(this, true);">
 					<img src="http://placehold.it/64x64" class="pull-left img-responsive"></img>
 					<span class="pull-right" style="max-width: 130px;">

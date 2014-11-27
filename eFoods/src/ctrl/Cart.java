@@ -68,13 +68,19 @@ public class Cart extends BaseCtrl implements Servlet {
 			
 			try {
 				itemNumber = request.getParameter("item");
-				newQty =  Integer.parseInt(request.getParameter("qty"));
-				item = model.items(itemNumber, ItemDAO.CAT_ALL, paging.getPage(), paging.getLimit(), ItemDAO.NO_FILTER).get(0);
-				if (item.getQty() <= newQty) {
-					cart.manipulateCart(item, newQty);	
-				} else {
-					throw new Exception("There are not enough quantities to satisfy your order.");
+				try {
+					newQty =  Integer.parseInt(request.getParameter("qty"));
+					if (newQty < 0) throw new Exception("Quantity must be 0 or positive.");
+				} catch (NumberFormatException e) {
+					throw new Exception("Quantity must be a valid number.");
 				}
+				
+				item = model.items(itemNumber, ItemDAO.CAT_ALL, paging.getPage(), paging.getLimit(), ItemDAO.NO_FILTER).get(0);
+				//if (item.getQty() > newQty) {
+					cart.manipulateCart(item, newQty);	
+				//} else {
+					//throw new Exception("There are not enough quantities to satisfy your order.");
+				//}
 				
 				// poke number of cart items into session scope, for listener
 				request.getSession().setAttribute("cartItemsCount", cart.getCartItems().size());

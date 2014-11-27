@@ -9,11 +9,9 @@
 	<div class="thumbnail item well well-lg">
 		<img src="http://placehold.it/195x195" class="img-responsive"></img>
 		<div class="caption">
-			<p>${item.name }</p>
+			<p class="item-name">${item.name }</p>
 			<p>\$${item.price } CDN</p>
-			<p class="hidden">${item.qty }</p>
-			<p class="hidden">${item.category.name }</p>
-			<p class="hidden">${item.number }</p>
+			
 						<form method="POST" action="backend/cart"
 				data-refresh-ids="cart-info, item-${item.number }"
 				onsubmit="return eFoods.app.handleForm(this);" class="clearfix form-control-wrapper">
@@ -28,6 +26,7 @@
 					<input type="submit"
 					class="btn btn-primary" name="itemAdd" value="Change" />
 				</span>
+				<span class="pull-left"><small><b>Note:</b> This item is in your cart.</small></span>
 					</c:when>
 					<c:otherwise>
 				<span class="pull-left">

@@ -142,7 +142,9 @@ public class Front extends HttpServlet {
 				request.setAttribute("encodedError", encodedError);
 				request.getServletContext().getNamedDispatcher("Misc").forward(request, response);
 			} else if (request.getParameter("ajax") != null) {
-				
+				 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+				 response.setContentType("application/json");
+				 response.getOutputStream().print("{\"error\": \"" + e.getMessage().replaceAll("\"", "\\\"") + "\"}");
 			} else {
 				String rdr = (request.getContextPath().length() == 0 ? "/" : request.getContextPath()) + "#!backend/error/" + encodedError;;
 				System.out.println("Redirecting to: " + rdr);

@@ -2,8 +2,11 @@
  * 
  */
 
-//for debuggin shiz
-window.test = {};
+//For archaic browsers that doesn't support console logging (*cough* IE.. *cough)
+if (typeof console == "undefined") {
+    this.console = {log: function() {}};
+}
+
 
 //Define the app scope
 var eFoods = {};
@@ -18,6 +21,41 @@ eFoods.vars = {
 	MAIN_URL : "backend/category",
 	CONTENT_DIV : "main-content"
 };
+
+eFoods.util.removeClass = function(element, className) {
+   element.className = element.className.replace(new RegExp(className, 'g'), '' );
+}
+eFoods.util.addClass = function(element, className) {
+	element.className += " " + className;
+}
+eFoods.util.showAlert = function(msg) {
+	var partial = document.getElementById("alert-partial");
+	var partialHTML = partial.innerHTML.replace('###MSG###', msg);
+	var alertContainer = document.getElementById("alert-container");
+	alertContainer.innerHTML = partialHTML;
+	var alerts = alertContainer.querySelectorAll(".efoods-alert");
+	for(var i=0;i < alerts.length; i++) {
+		eFoods.util.removeClass(alerts[i],"alert-hide")
+		eFoods.util.addClass(alerts[i],"alert-show");
+		setTimeout((function(element) {
+			return function() {
+				eFoods.util.hideAlert(element);
+			}
+		})(alerts[i]), 5000);
+	}
+}
+
+eFoods.util.hideAlert = function(element) {
+	console.log(element);
+	var alertContainer = document.getElementById("alert-container");
+	eFoods.util.removeClass(element,"alert-show")
+	eFoods.util.addClass(element,"alert-hide");
+	setTimeout((function(el) {
+		return function() {
+			alertContainer.removeChild(el);
+		}
+	})(element), 300);
+}
 
 // Returns the baseURL, ex. http://localhost:4413
 eFoods.util.baseURL = function() {
@@ -41,6 +79,12 @@ eFoods.util.doAjax = function(url, data, method, onSuccess, onFailure) {
 		onFailure = function(request) {
 			console.log("Request failed");
 			console.log(request);
+			try { 
+				var msg = JSON.parse(request.responseText);
+				eFoods.util.showAlert(msg.error);
+			}  catch (e) {
+				console.log(request.responseText) 
+			}
 		}
 	}
 	//End default callbacks
@@ -93,7 +137,6 @@ eFoods.util.formToQueryString = function(form) {
 		}
 		params += elem[i].name + "=" + encodeURIComponent(value) + "&";
 	}
-	console.log('Form query string', params);
 	return params;
 }
 
@@ -238,27 +281,28 @@ eFoods.util.addEvents = function(handlers, ev, fn) {
 
 //Initialization code. We'll call this at the bottom of the file.
 eFoods.app.init = function() {
+	console.log(eFoods.util.baseURL());
+	
 	eFoods.util.setState();
 	eFoods.app.ajaxifyAll();
 	eFoods.app.watchState();
+
+
 };
 
-eFoods.app.init();
-
-console.log(eFoods.util.baseURL());
+document.onreadystatechange = function () {
+    if (document.readyState == "interactive") {
+    	eFoods.app.init();
+    }
+}
 
 /* The idea for this module is as the user is typing
  * the main page is updated with foods matching the search.
  * 
  * We use a timeout to avoid sending requests for every keystroke.
  */	
-
-
-
 var searchBar = document.getElementById('item-search');
 var searchForm = document.getElementById('search-form');
-
-console.log(searchBar);
 
 var searchTimeout;
 searchBar.addEventListener('keyup', function() {
@@ -268,10 +312,6 @@ searchBar.addEventListener('keyup', function() {
 	}
 	searchTimeout = setTimeout(function() {
 		// do ajax here
-		console.log('keyup');
 		eFoods.app.handleForm(searchForm, true);
 	}, 400)
 })
-
-
-

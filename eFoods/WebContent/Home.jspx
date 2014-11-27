@@ -37,6 +37,8 @@
 <!-- Start JS -->
 </head>
 <body>
+	<!-- alert container -->
+	<div id="alert-container"><jsp:text /></div>
 	<!-- wrapper over content -->
 	<div class="container">
 
@@ -63,7 +65,19 @@
 	</div>
 
 	<script type="text/javascript"
-		src="${pageContext.request.contextPath}/res/js/main.js"> console.log("Just to make jsp happy"); </script>
+		src="${pageContext.request.contextPath}/res/js/main.js"><jsp:text /></script>
+	<script type="html/partial" id="alert-partial">
+<div class="efoods-alert alert-hide" onclick="eFoods.util.hideAlert(this)">
+	<div class="panel panel-danger">
+    	<div class="panel-heading">
+        	<h3 class="panel-title">Warning</h3>
+    	</div>
+    	<div class="panel-body">
+        	###MSG###
+	    </div>
+	</div>
+</div>
+		</script>
 </body>
 	</html>
 </jsp:root>
