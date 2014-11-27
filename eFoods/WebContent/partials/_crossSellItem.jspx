@@ -6,30 +6,38 @@
 	<jsp:output omit-xml-declaration="true" />
 
 
-	<div class="thumbnail item">
+	<div class="thumbnail item  well well-lg">
 		<div class="caption">
 			<p>${item.name }</p>
 			<p>\$${item.price } CDN</p>
 			<p class="hidden">${item.qty }</p>
 			<p class="hidden">${item.category.name }</p>
 			<p class="hidden">${item.number }</p>
-			<form method="POST" action="backend/cart"
+								<form method="POST" action="backend/cart"
 				data-refresh-ids="cart-info, item-${item.number }"
-				onsubmit="return eFoods.app.handleForm(this);">
-				<label for="number">Quantity:</label>
+				onsubmit="return eFoods.app.handleForm(this);" class="clearfix form-control-wrapper">
 				<c:choose>
 					<c:when test="${not empty cartItem }">
-					<input class="item-quantity" type="number" name="qty" value="${cartItem.quantity }" /> <input type="hidden"
+				<small><b>Note:</b> This item is in your cart.</small>
+				<span class="pull-left">
+					<label for="number">Qty:</label>
+					<input class="item-quantity form-control" type="number" name="qty" value="${cartItem.quantity }" /> <input type="hidden"
 					name="item" value="${item.number }" /> 
-					<br/>
+				</span>
+				<span class="pull-right">
 					<input type="submit"
 					class="btn btn-primary" name="itemAdd" value="Change" />
+				</span>
 					</c:when>
 					<c:otherwise>
-						<input class="item-quantity" type="number" name="qty" value="1" /> 
+				<span class="pull-left">
+						<label for="number">Qty:</label>
+						<input class="item-quantity form-control"  type="number" name="qty" value="1" /> 
 						<input type="hidden" name="item" value="${item.number }" /> 
-						<br/>
+				</span>
+				<span class="pull-right">
 						<input type="submit" class="btn btn-primary" name="itemAdd" value="Add" />
+				</span>
 					</c:otherwise>
 				</c:choose>
 			</form>
@@ -39,7 +47,7 @@
 				<p class="h5">Suggested Purchase</p>
 				<a href="backend/item/${crossSellItem.number }" data-refresh-ids="main-content" onClick="return eFoods.app.handleHref(this, true);">
 					<img src="http://placehold.it/64x64" class="pull-left img-responsive"></img>
-					<span class="pull-right">
+					<span class="pull-right" style="max-width: 130px;">
 					<p>${crossSellItem.name }</p>
 					<p>\$${crossSellItem.price } CDN</p>
 					</span>

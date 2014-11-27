@@ -64,8 +64,10 @@ a:hover {
 }
 
 .item-quantity {
-	width: 50px;
-	margin-left: 10px;
+	width: 30px;
+	margin: 15px 5px;
+	display: inline-block;
+	text-align: center;
 }
 
 .contact {
@@ -77,9 +79,8 @@ a:hover {
 .item {
 	border-radius: 5px;
 	margin: 10px;
-	padding: 10px;
-	box-shadow: 5px 5px 1px #888888;
-	height: 380px;
+	padding: 10px !important;
+	height: 335px;
 }
 
 .icon-previous {
