@@ -6,9 +6,12 @@
 
 
 	<div class="col-md-6">
-		<p> Contact Information </p>
-		<p> 4700 Keele St, Toronto, ON M3J 1P3 </p>
-		<p> (416) 736-2100 </p>
+		<div class="contact">
+			<p> Contact Information </p>
+			<p> 4700 Keele St, Toronto, ON M3J 1P3 </p>
+			<p> (416) 736-2100 </p>
+		</div>
+		
 	</div>
 	
 	<div class="col-md-6">

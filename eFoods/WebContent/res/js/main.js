@@ -224,6 +224,14 @@ eFoods.util.statefulHref = function(ele) {
 	return false;
 }
 
+eFoods.util.addEvents = function(handlers, ev, fn) {
+	console.log('Adding event for', ev, handlers);
+	for (var i = 0; i < handlers.length; i++) {
+		var h = handlers[i];
+		h.addEventListener(ev, fn);
+	}
+}
+
 //Initialization code. We'll call this at the bottom of the file.
 eFoods.app.init = function() {
 	eFoods.util.setState();
@@ -239,12 +247,15 @@ console.log(eFoods.util.baseURL());
  * the main page is updated with foods matching the search.
  * 
  * We use a timeout to avoid sending requests for every keystroke.
- */			
+ */	
+
+
+
 var searchBar = document.getElementById('item-search');
 var searchForm = document.getElementById('search-form');
 
 console.log(searchBar);
-	
+
 var searchTimeout;
 searchBar.addEventListener('keyup', function() {
 	// an ajax request will be only sent only after 400ms
@@ -257,4 +268,6 @@ searchBar.addEventListener('keyup', function() {
 		eFoods.app.handleForm(searchForm, true);
 	}, 400)
 })
-	
+
+
+

@@ -9,7 +9,7 @@
 html, body {
     margin-top: 20px;
     font-family: 'Lato';
-    font-size: 12px;
+    font-size: 14px;
 }
 
 .header {
@@ -63,54 +63,21 @@ a:hover {
 	width: 100%;
 }
 
-.footer > div > p {
+.contact > p {
 	font-size: 1.45em;
 }
 
-/* 
-	CSS for the loader
-   	in between AJAX.
-*/
-
-.spinner {
-  width: 40px;
-  height: 40px;
-
-  position: relative;
-  margin: 100px auto;
+.item-quantity {
+	width: 30px;
 }
 
-.double-bounce1, .double-bounce2 {
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  background-color: #333;
-  opacity: 0.6;
-  position: absolute;
-  top: 0;
-  left: 0;
-  
-  -webkit-animation: bounce 2.0s infinite ease-in-out;
-  animation: bounce 2.0s infinite ease-in-out;
+.contact {
+	background: white;
+	padding: 10px;
+	height: 450px; /* Make sure this matches the map */
 }
 
-.double-bounce2 {
-  -webkit-animation-delay: -1.0s;
-  animation-delay: -1.0s;
-}
-
-@-webkit-keyframes bounce {
-  0%, 100% { -webkit-transform: scale(0.0) }
-  50% { -webkit-transform: scale(1.0) }
-}
-
-@keyframes bounce {
-  0%, 100% { 
-    transform: scale(0.0);
-    -webkit-transform: scale(0.0);
-  } 50% { 
-    transform: scale(1.0);
-    -webkit-transform: scale(1.0);
-  }
+.item {
+	margin: auto;
 }
 

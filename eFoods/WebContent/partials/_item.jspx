@@ -6,31 +6,34 @@
 	<jsp:output omit-xml-declaration="true" />
 
 
-	<div class="thumbnail">
-		<img src="http://placehold.it/300x200" class="img-responsive"></img>
+	<div class="thumbnail item">
+		<img src="http://placehold.it/195x195" class="img-responsive"></img>
 		<div class="caption">
-			<h4>${item.name }</h4>
-			<h4>${item.price }</h4>
-			<h4>${item.qty }</h4>
-			<h4>${item.category.name }</h4>
-			<h4>${item.number }</h4>
+			<p>${item.name }</p>
+			<p>\$${item.price } CDN</p>
+			<p class="hidden">${item.qty }</p>
+			<p class="hidden">${item.category.name }</p>
+			<p class="hidden">${item.number }</p>
 			<form method="POST" action="backend/cart"
 				data-refresh-ids="cart-info, item-${item.number }"
 				onsubmit="return eFoods.app.handleForm(this);">
 				<label for="number">Quantity:</label>
 				<c:choose>
 					<c:when test="${not empty cartItem }">
-					<input type="number" name="qty" value="${cartItem.quantity }" /> <input type="hidden"
-					name="item" value="${item.number }" /> <input type="submit"
+					<input class="item-quantity" type="number" name="qty" value="${cartItem.quantity }" /> <input type="hidden"
+					name="item" value="${item.number }" /> 
+					</br>
+					<input type="submit"
 					class="btn btn-primary" name="itemAdd" value="Change" />
 						<p>
 							<b>Element in cart.</b>
 						</p>
 					</c:when>
 					<c:otherwise>
-						<input type="number" name="qty" value="1" /> <input type="hidden"
-					name="item" value="${item.number }" /> <input type="submit"
-					class="btn btn-primary" name="itemAdd" value="Add" />
+						<input class="item-quantity" type="number" name="qty" value="1" /> 
+						<input type="hidden" name="item" value="${item.number }" /> 
+						</br>
+						<input type="submit" class="btn btn-primary" name="itemAdd" value="Add" />
 					</c:otherwise>
 				</c:choose>
 				
