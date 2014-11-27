@@ -59,8 +59,11 @@ eFoods.util.doAjax = function(url, data, method, onSuccess, onFailure) {
 
 	var request = new XMLHttpRequest();
 	var postData = null;
+	var hasQS = url.split("?").length > 1;
+	url = url + (hasQS ? "&" : "?") + "ajax=true";
+	
 	if (method.trim().toUpperCase() == "GET") { //If GET we append data with a '?' mark
-		url += data.length > 0 ? "?" + data : ""
+		url += data.length > 0 ? "&" + data : ""
 		request.open(method, url, true);
 	} else if (method.trim().toUpperCase() == "POST") { //If POST we set the content type and assign data as PostData
 		postData = data;
@@ -118,13 +121,14 @@ eFoods.util.setState = function() {
 //Ajaxify, looks for  the tag data-ajaxify and populates the inside via ajax usisng "GET"
 eFoods.app.ajaxify = function(element) {
 	var url = element.getAttribute("data-ajaxify");
-	
+	var isMain = false;
 	// Check if we're changing app state
 	if (element.getAttribute("id") == eFoods.vars.CONTENT_DIV) {
 		window.location.hash = "#!" + url;
+		isMain = true;
 	}
-
-	eFoods.util.doAjax(url, "", "GET", function(request) {
+	
+	eFoods.util.doAjax(url, (isMain ? "main=true" : ""), "GET", function(request) {
 		console.log("Ajaxified.", url, element.id);
 		element.innerHTML = request.responseText;
 	});
