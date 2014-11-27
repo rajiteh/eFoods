@@ -8,8 +8,10 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import util.PurchaseOrderFiles.PurchaseOrderFile;
+
 public class PurchaseOrderFiles {
-	class PurchaseOrderFile {
+	public class PurchaseOrderFile {
 		public static final String STATUS_NEW = "new";
 		public static final String STATUS_PENDING = "pending";
 		public static final String STATUS_PURCHASED = "purchased";
@@ -46,7 +48,9 @@ public class PurchaseOrderFiles {
 			return status;
 		}
 
-		
+		public String getFileNameOnly() {
+			return new File(fileName).getName();
+		}
 		public PurchaseOrderFile(File basePath, int orderId, String userName,
 				String status) throws Exception {
 			super();
@@ -138,6 +142,15 @@ public class PurchaseOrderFiles {
 				fWriter.close();
 		}
 		
+	}
+
+	public List<PurchaseOrderFile> getOrdersByStatus(String status) {
+		List<PurchaseOrderFile> result = new ArrayList<PurchaseOrderFile>();
+		for(PurchaseOrderFile pof : purchaseOrderFiles) {
+			if (pof.getStatus().equals(status))
+				result.add(pof);
+		}
+		return result;
 	}
 	
 

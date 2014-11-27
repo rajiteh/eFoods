@@ -24,4 +24,8 @@
     <servlet-name>Misc</servlet-name>
     <servlet-class>ctrl.Misc</servlet-class>
   </servlet>
+  <servlet>
+    <servlet-name>Orders</servlet-name>
+    <servlet-class>ctrl.Orders</servlet-class>
+  </servlet>
 </web-app>
