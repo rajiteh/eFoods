@@ -21,6 +21,7 @@ public class AnalysisCtrl extends BaseCtrl implements Servlet
 		Route route = getRoute(request);
 		switch(route.getIdentifier()) {
 		case ANALYTICS_PAGE:
+			try {
 			// get analytic information from application scope
 			long avgAddItemTime = (long) this.getServletContext().getAttribute("avgAddItemTime");
 			long avgCheckOutTime = (long) this.getServletContext().getAttribute("avgCheckOutTime");
@@ -31,6 +32,10 @@ public class AnalysisCtrl extends BaseCtrl implements Servlet
 
 			// dispatch to JSPX
 			request.getRequestDispatcher("/Analytics.jspx").forward(request, response);
+			} catch (Exception e) {
+				e.printStackTrace();
+				throw new ServletException(e.getMessage());
+			}
 			break;
 		default:
 			throw new ServletException("Uh oh! We shouldn't be here!");
