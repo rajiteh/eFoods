@@ -27,7 +27,10 @@
 	type="text/css"/>
 	<link href='http://fonts.googleapis.com/css?family=Lato:300,400' rel='stylesheet' 
 	type='text/css'/>
-<link rel="stylesheet"
+	<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/res/css/spinkit.css"
+	type="text/css"/>
+	<link rel="stylesheet"
 	href="${pageContext.request.contextPath}/res/css/main.css"
 	type="text/css" title="cse4413" media="screen, print" />
 
