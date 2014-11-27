@@ -1,14 +1,12 @@
 package model;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlSchemaType;
 
 import model.CartModel;
-import model.CartModel.CartItem;
 
 @XmlRootElement(name="order")
 public class PurchaseOrderWrapper {
@@ -17,13 +15,14 @@ public class PurchaseOrderWrapper {
 	private int id;
 	
 	@XmlAttribute
+	@XmlSchemaType(name="date")
 	Date submitted;
 	
 	@XmlElement
 	UserBean customer;
 	
-	@XmlElement
-	List<CartItemWrapper> items;
+	@XmlElement(name="items")
+	CartItemsWrapper items;
 
 	@XmlElement
 	String total;
@@ -47,12 +46,7 @@ public class PurchaseOrderWrapper {
 		this.shipping = cart.getShipping().toPlainString();
 		this.HST = cart.getTax().toPlainString();
 		this.grandTotal = cart.getTotal().toPlainString();
-		
-		List<CartItemWrapper> cartItemWrapperList = new ArrayList<CartItemWrapper>();
-		for(CartItem ci: cart.getCartItems())
-			cartItemWrapperList.add(new CartItemWrapper(ci));
-		
-		this.items = cartItemWrapperList;
+		this.items = new CartItemsWrapper(cart.getCartItems());
 	}
 	/**
 	 * @return the grandTotal

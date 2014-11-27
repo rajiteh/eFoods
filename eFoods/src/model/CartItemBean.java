@@ -5,7 +5,7 @@ import javax.xml.bind.annotation.XmlElement;
 
 import model.CartModel.CartItem;
 
-public class CartItemWrapper {
+public class CartItemBean {
 	
 	@XmlAttribute
 	String number;
@@ -22,10 +22,10 @@ public class CartItemWrapper {
 	@XmlElement
 	String extended;
 
-	public CartItemWrapper() {
+	public CartItemBean() {
 		// TODO Auto-generated constructor stub
 	}
-	public CartItemWrapper(CartItem cartItem) {
+	public CartItemBean(CartItem cartItem) {
 		this.number = cartItem.getItem().getNumber();
 		this.name = cartItem.getItem().getName();
 		this.price = cartItem.getItem().getPrice();
