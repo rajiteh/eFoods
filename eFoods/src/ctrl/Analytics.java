@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import util.Route;
 
-public class AnalysisCtrl extends BaseCtrl implements Servlet
+public class Analytics extends BaseCtrl implements Servlet
 {
 	private static final long serialVersionUID = 1L;
 	public static final int ANALYTICS_PAGE = 0x0a;
@@ -18,6 +18,7 @@ public class AnalysisCtrl extends BaseCtrl implements Servlet
 	protected void processRequest(HttpServletRequest request,
 	      HttpServletResponse response) throws ServletException, IOException
 	{
+		
 		Route route = getRoute(request);
 		switch(route.getIdentifier()) {
 		case ANALYTICS_PAGE:
@@ -25,11 +26,11 @@ public class AnalysisCtrl extends BaseCtrl implements Servlet
 			// get analytic information from application scope
 			long avgAddItemTime = (long) this.getServletContext().getAttribute("avgAddItemTime");
 			long avgCheckOutTime = (long) this.getServletContext().getAttribute("avgCheckOutTime");
-
+			
 			// poke information into request scope
 			request.setAttribute("avgAddItemTime", avgAddItemTime);
 			request.setAttribute("avgCheckOutTime", avgCheckOutTime);
-
+		
 			// dispatch to JSPX
 			request.getRequestDispatcher("/Analytics.jspx").forward(request, response);
 			} catch (Exception e) {

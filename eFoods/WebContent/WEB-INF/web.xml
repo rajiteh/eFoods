@@ -28,4 +28,8 @@
     <servlet-name>Orders</servlet-name>
     <servlet-class>ctrl.Orders</servlet-class>
   </servlet>
+  <servlet>
+    <servlet-name>Analytics</servlet-name>
+    <servlet-class>ctrl.Analytics</servlet-class>
+  </servlet>
 </web-app>

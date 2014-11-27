@@ -96,7 +96,7 @@ public class Front extends HttpServlet {
 		
 		appRouter.addRoute(new Route("^/error/(?<Base64EncodedMessage>.*)?","Misc", Route.METHOD_GET, Misc.ERROR_PAGE, false));
 		
-		appRouter.addRoute(new Route("^/analytics(/)?$","AnalysisCtrl", Route.METHOD_ANY, AnalysisCtrl.ANALYTICS_PAGE, true, true));
+		appRouter.addRoute(new Route("^/analytics(/)?$","Analytics", Route.METHOD_ANY, Analytics.ANALYTICS_PAGE, true, true));
 		
 		appRouter.addRoute(new Route("^/orders(/)?$","Orders", Route.METHOD_GET, Orders.ROUTE_ALL_NEW, false));
 		
