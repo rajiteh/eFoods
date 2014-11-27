@@ -6,8 +6,7 @@
 	<jsp:output omit-xml-declaration="true" />
 
 
-	<div class="thumbnail">
-		<img src="http://placehold.it/195x195" class="img-responsive"></img>
+	<div class="thumbnail item">
 		<div class="caption">
 			<p>${item.name }</p>
 			<p>\$${item.price } CDN</p>
@@ -33,11 +32,9 @@
 						<input type="submit" class="btn btn-primary" name="itemAdd" value="Add" />
 					</c:otherwise>
 				</c:choose>
-				
 			</form>
 		</div>
-		<c:if test="${not empty cartItem }">
-			<hr/>
+		<hr/>
 			<div class="caption clearfix">
 				<p class="h5">Suggested Purchase</p>
 				<a href="backend/item/${crossSellItem.number }" data-refresh-ids="main-content" onClick="return eFoods.app.handleHref(this, true);">
@@ -46,10 +43,8 @@
 					<p>${crossSellItem.name }</p>
 					<p>\$${crossSellItem.price } CDN</p>
 					</span>
-					
 				</a>
 			</div>
-		</c:if>
 	</div>
 
 

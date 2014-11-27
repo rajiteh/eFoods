@@ -11,7 +11,6 @@
 		<div class="icon-previous">
 			<a href="javascript:window.history.back()"><span class="mdi-navigation-arrow-back"/></a>
 		</div>
-			
 	</div>
 	
 	<c:forEach items="${results }" var="r">
