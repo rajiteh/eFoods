@@ -30,8 +30,11 @@ public class Orders extends BaseCtrl {
 	private static final long serialVersionUID = 1L;
 	
 	public static final int ROUTE_ALL_NEW = 0x0a;
+	public static final int ROUTE_UPDATE_STATUS = 0x0b;
 	
 	public static final String BASE_PATH = "/PurchaseOrders/";
+
+	
 	
 	public Orders() {
 		// TODO Auto-generated constructor stub
@@ -41,8 +44,8 @@ public class Orders extends BaseCtrl {
 	protected synchronized void processRequest(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		Route route = getRoute(request);		
-		String basePath = request.getServletContext().getRealPath(BASE_PATH);
-		//String basePath = "/Users/rajiteh/dev/eclipse_workspace/ProjectC/eFoods/WebContent/PurchaseOrders/";
+		//String basePath = request.getServletContext().getRealPath(BASE_PATH);
+		String basePath = "/Users/rajiteh/dev/eclipse_workspace/ProjectC/eFoods/WebContent/PurchaseOrders/";
 		String baseUrl = request.getContextPath() + BASE_PATH;		
 		PurchaseOrderFiles pofs; 
 		
@@ -59,6 +62,18 @@ public class Orders extends BaseCtrl {
 				POFilesWrapper pofsWrapper = new POFilesWrapper(pofWrapperList);
 				String xmlOut = getXML(pofsWrapper);
 				response.getWriter().write(xmlOut);
+			} catch (Exception e) {
+				e.printStackTrace();
+				throw new ServletException(e.getMessage());
+			}
+			break;
+		case ROUTE_UPDATE_STATUS:
+			try {
+				int orderId = Integer.parseInt(route.getMatcher().group("orderId"));
+				String status = request.getParameter("status");
+				pofs = new PurchaseOrderFiles(basePath);
+				pofs.updateStatus(orderId, status);
+				
 			} catch (Exception e) {
 				e.printStackTrace();
 				throw new ServletException(e.getMessage());

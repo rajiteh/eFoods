@@ -153,5 +153,32 @@ public class PurchaseOrderFiles {
 		return result;
 	}
 	
+	public PurchaseOrderFile getOrderById(int orderId) {
+		for(PurchaseOrderFile pof : purchaseOrderFiles) {
+			if (pof.getOrderId() == orderId)
+				return pof;
+		}
+		return null;
+	}
+
+	public void updateStatus(int orderId, String status) throws Exception {
+		PurchaseOrderFile pof = getOrderById(orderId);
+		if (pof != null) {
+			String fname = pof.getFileName();
+			PurchaseOrderFile newPof = new PurchaseOrderFile(basePath, orderId, pof.getUserName(), status);
+			String newFname = newPof.getFileName();
+			File oldFile = new File(fname);
+			File newFile = new File(newFname);
+			if (oldFile.renameTo(newFile)) {
+				this.purchaseOrderFiles = allOrderFiles();
+			} else {
+				throw new Exception("Could not rename file");
+			}
+		} else {
+			throw new Exception("Order ID does not exist");
+		}
+		
+	}
+	
 
 }

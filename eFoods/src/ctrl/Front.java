@@ -92,6 +92,9 @@ public class Front extends HttpServlet {
 		appRouter.addRoute(new Route("^/analytics(/)?$","AnalysisCtrl", Route.METHOD_ANY, AnalysisCtrl.ANALYTICS_PAGE, true, true));
 		
 		appRouter.addRoute(new Route("^/orders(/)?$","Orders", Route.METHOD_GET, Orders.ROUTE_ALL_NEW, false));
+		
+		//POST request to /orders/<order-id> url with parameter "state" being one of "new, pending, purchased" will change the status of it.
+		appRouter.addRoute(new Route("^/orders/(?<orderId>[0-9]+)(/)?$","Orders", Route.METHOD_POST, Orders.ROUTE_UPDATE_STATUS, false));
 		//Poking the context
 		config.getServletContext().setAttribute(MODEL_KEY, model);
 		config.getServletContext().setAttribute(ROUTER_KEY, appRouter);
