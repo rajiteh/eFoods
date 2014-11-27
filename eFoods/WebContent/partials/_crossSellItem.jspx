@@ -6,7 +6,7 @@
 	<jsp:output omit-xml-declaration="true" />
 
 
-	<div class="thumbnail item">
+	<div class="thumbnail item  well well-lg">
 		<div class="caption">
 			<p>${item.name }</p>
 			<p>\$${item.price } CDN</p>

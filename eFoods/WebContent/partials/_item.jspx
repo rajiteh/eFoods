@@ -6,7 +6,7 @@
 	<jsp:output omit-xml-declaration="true" />
 
 
-	<div class="thumbnail item">
+	<div class="thumbnail item well well-lg">
 		<img src="http://placehold.it/195x195" class="img-responsive"></img>
 		<div class="caption">
 			<p>${item.name }</p>
