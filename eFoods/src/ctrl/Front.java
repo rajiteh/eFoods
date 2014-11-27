@@ -135,8 +135,12 @@ public class Front extends HttpServlet {
 				throw new Exception("Requested path is not found.");
 			}
 		} catch (Exception e) {
-			System.out.println("Front controller exception! : " + e.getMessage());
-			String encodedError = Base64.encodeBase64String(e.getMessage().getBytes());
+			String exceptionMsg = e.getMessage();
+			if (exceptionMsg == null) {
+				exceptionMsg = "Unknown error.";
+			}
+			System.out.println("Front controller exception! : " + exceptionMsg);
+			String encodedError = Base64.encodeBase64String(exceptionMsg.getBytes());
 			if(request.getParameter("main") != null) {
 				System.out.println("Routing via Misc.");
 				request.setAttribute("encodedError", encodedError);
@@ -144,7 +148,7 @@ public class Front extends HttpServlet {
 			} else if (request.getParameter("ajax") != null) {
 				 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 				 response.setContentType("application/json");
-				 response.getOutputStream().print("{\"error\": \"" + e.getMessage().replaceAll("\"", "\\\"") + "\"}");
+				 response.getOutputStream().print("{\"error\": \"" + exceptionMsg.replaceAll("\"", "\\\"") + "\"}");
 			} else {
 				String rdr = (request.getContextPath().length() == 0 ? "/" : request.getContextPath()) + "#!backend/error/" + encodedError;;
 				System.out.println("Redirecting to: " + rdr);
