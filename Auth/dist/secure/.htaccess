@@ -1,5 +1,0 @@
-SSLRequireSSL
-AuthType Basic
-AuthName "Authorize"
-AuthBasicProvider pam
-Require valid-user

@@ -4,6 +4,7 @@ session_start();
 $CONFIG_FILE = "./config/config.json";
 
 $config = get_config($CONFIG_FILE);
+$alerts = array();
 
 // Functions & Helpers
 function get_config($f) {
@@ -78,9 +79,8 @@ if  (!empty($_REQUEST['submit'])) {
   if (! $payload === false) 
     $authenticate = do_auth($username,$password,$config->challengeURL, $config->challengeFile);
   else
-    $authentication = array("message" => "Login request is expired. Please go back to the site and click long again.");
+    $authenticate = array("message" => "Login request is expired. Please go back to the site and click long again.");
 
-  header('Content-Type: application/json');
   if ($authenticate === true) {
     http_response_code(200);
     $data = array();
@@ -93,25 +93,25 @@ if  (!empty($_REQUEST['submit'])) {
     error_log("Redirect To :   " . $ALT_REDIRECT);
 
     $url = get_redirect_url($ALT_REDIRECT, $payload["nonce"], $data, $config->sharedKey);
-    echo json_encode(array("url" => $url));
+    header('Location: '. $url);
+    die();
   } else {
     http_response_code(403);
-    echo json_encode($authenticate);
+    array_push($alerts, $authenticate["message"]);
   }
-  die();
-} else if (empty($_REQUEST['payload']) || empty($_REQUEST['signature'])) {
-  $error = "Please provide a valid payload and a signature to use the authentication service.";
 } else {
-  $payload = validate_payload($_REQUEST['payload'], $_REQUEST['signature'], $config->sharedKey);
-  if ($payload === false) {
-    $error = "Login request is expired. Please go back to the site and click login again.";
+  if (empty($_REQUEST['payload']) || empty($_REQUEST['signature'])) {
+    $error = "Please provide a valid payload and a signature to use the authentication service.";
+  } else {
+    $payload = validate_payload($_REQUEST['payload'], $_REQUEST['signature'], $config->sharedKey);
+    if ($payload === false) {
+      $error = "Login request is expired. Please go back to the site and click login again.";
+    }
+  }
+  if (!empty($_SERVER["HTTP_REFERER"]) && !empty($_REQUEST["redirect"])) {
+    $_SESSION["REDIRECT_TO"] = $_SERVER["HTTP_REFERER"] . $_REQUEST["redirect"];
   }
 }
-
-if (!empty($_SERVER["HTTP_REFERER"]) && !empty($_REQUEST["redirect"])) {
-  $_SESSION["REDIRECT_TO"] = $_SERVER["HTTP_REFERER"] . $_REQUEST["redirect"];
-}
-
 ?>
 <!doctype html>
 <html class="no-js">
@@ -120,11 +120,17 @@ if (!empty($_SERVER["HTTP_REFERER"]) && !empty($_REQUEST["redirect"])) {
   <title>Auth</title>
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width">
-  <link rel="shortcut icon" href="/6df2b309.favicon.ico">
+  <link rel="shortcut icon" href="/favicon.ico">
   <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
-
-  <link rel="stylesheet" href="styles/050e8903.main.css">
-  <script src="scripts/vendor/fbe20327.modernizr.js"></script>
+  <!-- build:css(.) styles/vendor.css -->
+  <!-- bower:css -->
+  <!-- endbower -->
+  <!-- endbuild -->
+  <!-- build:css(.tmp) styles/main.css -->
+  <link rel="stylesheet" href="styles/main.css">
+  <!-- endbuild -->
+  <!-- build:js scripts/vendor/modernizr.js -->
+  <!-- endbuild -->
 
 </head>
 <body>
@@ -142,6 +148,19 @@ if (!empty($_SERVER["HTTP_REFERER"]) && !empty($_REQUEST["redirect"])) {
           <h3 class="text-muted">Lassonde Auth</h3>
         </div>
         <div class="alert-container">
+          <?php 
+           if (!empty($alerts)) {
+            foreach($alerts as $alert) {
+              ?>
+              <div class="alert alert-danger" role="alert">
+                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                <span class="sr-only">Error:</span>
+                  <?php echo $alert ?>
+              </div>
+              <?php
+            }
+           }
+          ?>
         </div>
         <div class="jumbotron">
         <?php if (empty($error)) { ?>
@@ -149,20 +168,20 @@ if (!empty($_SERVER["HTTP_REFERER"]) && !empty($_REQUEST["redirect"])) {
         <div class="form-group">
             <div class="input-group input-group-lg">
               <span class="input-group-addon">@</span>
-              <input type="text" name="username" class="form-control" placeholder="Username">
+              <input required type="text" name="username" class="form-control" placeholder="Username">
             </div>
         </div>  
         <div class="form-group">
             <div class="input-group input-group-lg">
               <span class="input-group-addon">@</span>
-              <input type="password" name="password" class="form-control" placeholder="Password">
+              <input required type="password" name="password" class="form-control" placeholder="Password">
             </div>
         </div>  
         <input type="hidden" name="submit" value="true"/>
         <input type="hidden" name="payload" value="<?php echo $_REQUEST["payload"] ?>"/>
         <input type="hidden" name="signature" value="<?php echo $_REQUEST["signature"] ?>"/>
         <p class="lead">You will be authenticated against EECS LDAP.</p>    
-            <a class="btn btn-lg btn-primary" data-type="submit" href="#">Login <span class="glyphicon glyphicon-user"></span></a>
+            <input type="submit" name="submit" value="Login" class="btn btn-lg btn-primary"/>
             <br/><br/>
 
           </form>
@@ -194,18 +213,10 @@ if (!empty($_SERVER["HTTP_REFERER"]) && !empty($_REQUEST["redirect"])) {
       </div>
 
 
-      <script src="scripts/38ef3709.vendor.js"></script>
+      <!-- build:js(.) scripts/vendor.js -->
+      <!-- bower:js -->
+      <!-- endbower -->
+      <!-- endbuild -->
 
-      <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
-      <script>
-        (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
-          function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
-        e=o.createElement(i);r=o.getElementsByTagName(i)[0];
-        e.src='//www.google-analytics.com/analytics.js';
-        r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
-        ga('create','UA-XXXXX-X');ga('send','pageview');
-      </script>
-
-      <script src="scripts/7f8d2e1e.main.js"></script>
     </body>
     </html>
