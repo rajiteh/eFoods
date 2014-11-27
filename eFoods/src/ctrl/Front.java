@@ -35,6 +35,7 @@ public class Front extends HttpServlet {
 	private static final String SSO_SHARED_KEY = "7fcbc0e27e7bb31e4ad7a39677eebdaf6b94c9db7dcdb2ebf25791298609a4a4";
 	private static final List<String> SSO_ADMINS = new ArrayList<String>() {{
 		add("cse11011"); //List of admin users
+		add("cse13195");
 	}};
 	
 	

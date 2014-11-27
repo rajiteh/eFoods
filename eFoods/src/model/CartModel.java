@@ -138,7 +138,7 @@ public class CartModel {
 	 * @return rounded BigDecimal to passed number of places.
 	 */
 	private BigDecimal round(BigDecimal number, int places) {
-		return number.round(new MathContext(places, RoundingMode.CEILING));
+		return number.round(new MathContext(places, RoundingMode.HALF_UP));
 	}
 
 	public boolean isFreeShipping() {
