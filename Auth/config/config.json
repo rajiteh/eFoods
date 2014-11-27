@@ -1,0 +1,6 @@
+{
+	"sharedKey": "7fcbc0e27e7bb31e4ad7a39677eebdaf6b94c9db7dcdb2ebf25791298609a4a4",
+	"challengeFile" : "./secure/challenge",
+	"challengeURL" : "https://www.cse.yorku.ca/~cse11011/4413/auth/secure/challenge",
+	"redirectURL" : "http://localhost:4413/eFoods/backend/login/authenticate"
+}
