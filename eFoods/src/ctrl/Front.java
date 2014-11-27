@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.tomcat.util.codec.binary.Base64;
+
 import model.*;
 import util.*;
 
@@ -126,19 +128,26 @@ public class Front extends HttpServlet {
 							(route.isRequireAuthentication() ? " (Authenticated as " + ((SSOAuthenticator) httpAuth).getUser(request).getName() + ")": ""));
 					request.getServletContext().getNamedDispatcher(route.getDestination()).forward(request, response);
 				} else {
-					System.out.println("Permission Denied");
-					request.getRequestDispatcher("/partials/_permissionDenied.jspx").forward(
-							request, response);
+					throw new Exception("You are not authorized to access this page. Please login.");
 				}
 			} else {
-				
 				System.out.println("Route not found!: " + request.getPathInfo());
-				request.getRequestDispatcher("/partials/_notFound.jspx").forward(
-						request, response);
+				throw new Exception("Requested path is not found.");
 			}
 		} catch (Exception e) {
-			request.getRequestDispatcher("/partials/_serverError.jspx").forward(
-					request, response);
+			System.out.println("Front controller exception! : " + e.getMessage());
+			String encodedError = Base64.encodeBase64String(e.getMessage().getBytes());
+			if(request.getParameter("main") != null) {
+				System.out.println("Routing via Misc.");
+				request.setAttribute("encodedError", encodedError);
+				request.getServletContext().getNamedDispatcher("Misc").forward(request, response);
+			} else if (request.getParameter("ajax") != null) {
+				
+			} else {
+				String rdr = (request.getContextPath().length() == 0 ? "/" : request.getContextPath()) + "#!backend/error/" + encodedError;;
+				System.out.println("Redirecting to: " + rdr);
+				response.sendRedirect(rdr);
+			}
 			//throw new ServletException(e);
 		}
 	}

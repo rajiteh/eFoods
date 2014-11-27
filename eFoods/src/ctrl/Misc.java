@@ -38,16 +38,27 @@ public class Misc extends BaseCtrl implements Servlet {
 			HttpServletResponse response) throws ServletException, IOException {
 		Route route = getRoute(request);
 		SSOAuthenticator auth = (SSOAuthenticator) getAuthenticator(request);
-		
-		switch(route.getIdentifier()) {
+		int identifier;
+		if (route == null) {
+			identifier = ERROR_PAGE;
+		} else {
+			identifier = route.getIdentifier();
+		}
+		switch(identifier) {
 		case ERROR_PAGE:
-			String encodedMsg = route.getMatcher().group("Base64EncodedMessage");
 			String errorMessage;
-			if (encodedMsg != null) {
-				errorMessage= new String(Base64.decodeBase64(encodedMsg));	
+			String encodedError = (String) request.getAttribute("encodedError");
+			if (encodedError == null) {
+				try {
+					encodedError = route.getMatcher().group("Base64EncodedMessage");
+					errorMessage= new String(Base64.decodeBase64(encodedError));
+				} catch (Exception e) {
+					errorMessage = "Something went wrong somewhere! :(";	
+				}
 			} else {
-				errorMessage = "Something went wrong somewhere! :(";
+				errorMessage= new String(Base64.decodeBase64(encodedError));	
 			}
+			
 			request.setAttribute("errorMessage", errorMessage);
 			request.getRequestDispatcher("/partials/_serverError.jspx").forward(
 					request, response);
