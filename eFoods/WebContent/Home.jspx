@@ -21,13 +21,12 @@
 	type="text/css"/>
 	<link href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-material-design/0.1.6/css/material-wfont.css" rel="stylesheet"
 	type="text/css"/>
-	<link href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-material-design/0.1.6/css/ripples.css" rel="stylesheet"
+	<link href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-material-design/0.1.6/css/ripples.min.css" rel="stylesheet"
+	type="text/css"/>
+	<link href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-material-design/0.1.6/fonts/Material-Design-Icons.woff" rel="stylesheet"
 	type="text/css"/>
 	<link href='http://fonts.googleapis.com/css?family=Lato:300,400' rel='stylesheet' 
 	type='text/css'/>
-	<link rel="stylesheet"
-	href="${pageContext.request.contextPath}/bower_components/spinkit/css/spinkit.css"
-	type="text/css"/>
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/res/css/main.css"
 	type="text/css" title="cse4413" media="screen, print" />
