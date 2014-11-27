@@ -14,26 +14,32 @@
 			<p class="hidden">${item.qty }</p>
 			<p class="hidden">${item.category.name }</p>
 			<p class="hidden">${item.number }</p>
-			<form method="POST" action="backend/cart"
+						<form method="POST" action="backend/cart"
 				data-refresh-ids="cart-info, item-${item.number }"
-				onsubmit="return eFoods.app.handleForm(this);">
-				<label for="number">Quantity:</label>
+				onsubmit="return eFoods.app.handleForm(this);" class="clearfix form-control-wrapper">
 				<c:choose>
 					<c:when test="${not empty cartItem }">
-					<input class="item-quantity" type="number" name="qty" value="${cartItem.quantity }" /> <input type="hidden"
+				<span class="pull-left">
+					<label for="number">Qty:</label>
+					<input class="item-quantity form-control" type="number" name="qty" value="${cartItem.quantity }" /> <input type="hidden"
 					name="item" value="${item.number }" /> 
-					<br/>
+				</span>
+				<span class="pull-right">
 					<input type="submit"
 					class="btn btn-primary" name="itemAdd" value="Change" />
+				</span>
 					</c:when>
 					<c:otherwise>
-						<input class="item-quantity" type="number" name="qty" value="1" /> 
+				<span class="pull-left">
+						<label for="number">Qty:</label>
+						<input class="item-quantity form-control"  type="number" name="qty" value="1" /> 
 						<input type="hidden" name="item" value="${item.number }" /> 
-						<br/>
+				</span>
+				<span class="pull-right">
 						<input type="submit" class="btn btn-primary" name="itemAdd" value="Add" />
+				</span>
 					</c:otherwise>
 				</c:choose>
-				
 			</form>
 		</div>
 	</div>
