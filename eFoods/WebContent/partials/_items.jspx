@@ -6,15 +6,14 @@
 	<jsp:output omit-xml-declaration="true" />
 
 	<div class="col-md-12">
-		<h1>${category.name }</h1>
-		<p class="lead"><a href="backend/category/" data-refresh-ids="main-content"
-			onClick="return eFoods.app.handleHref(this, true);">Back to all
-			categories</a></p>
+		<p class="h4"><a href="backend/category" data-refresh-ids="main-content" onClick="return eFoods.app.handleHref(this, true);">All Categories</a></p>
+		<h1><a href="backend/category/${category.id }" data-refresh-ids="main-content" onClick="return eFoods.app.handleHref(this, true);">${category.name }</a></h1>
+		<p class="lead"><a href="javascript:window.history.back()">Go back.</a></p>
 			
 	</div>
 	
 	<c:forEach items="${results }" var="r">
-		<div class="col-md-4 col-sm-6 col-lg-3" data-ajaxify="backend/item/${r.number }" id="item-${r.number }">
+		<div class="col-md-4 col-sm-6 col-lg-3" data-ajaxify="backend/item/${r.number }/partial" id="item-${r.number }">
 			<c:set var="item" scope="request" value="${r }" />
 			<c:set var="cartItem" scope="request" value="${cartItems[r.name] }" />
 			<jsp:include page="_item.jspx" />

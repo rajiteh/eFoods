@@ -1,7 +1,9 @@
 package ctrl;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.servlet.Servlet;
@@ -116,6 +118,7 @@ public class Cart extends BaseCtrl implements Servlet {
 						pendingOrders.add(pof);
 					else if (pof.getStatus().equals(PurchaseOrderFile.STATUS_PURCHASED))
 						purchasedOrders.add(pof);
+				
 				request.setAttribute("pendingOrders", pendingOrders);
 				request.setAttribute("newOrders", newOrders);
 				request.setAttribute("purchasedOrders", purchasedOrders);

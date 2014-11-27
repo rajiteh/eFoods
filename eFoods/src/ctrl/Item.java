@@ -23,6 +23,7 @@ public class Item extends BaseCtrl {
 	public static final int ROUTE_BY_NUMBER = 0x0b;
 	public static final int ROUTE_BY_CATEGORY = 0x0c;
 	public static final int ROUTE_BY_SEARCH = 0x0d;
+	public static final int ROUTE_BY_NUMBER_FULL = 0x0e;
 
 
 	protected void processRequest(HttpServletRequest request,
@@ -53,9 +54,18 @@ public class Item extends BaseCtrl {
 				request.getRequestDispatcher("/partials/_items.jspx").forward(request,
 						response);
 				break;
-			case ROUTE_BY_NUMBER:
+			case ROUTE_BY_NUMBER_FULL:
 				String number = route.getMatcher().group("itemNumber");
-				ItemBean item = model.items(number, ItemDAO.CAT_ALL, ItemDAO.PAGE_ALL, ItemDAO.LIMIT_ALL, ItemDAO.NO_FILTER).get(0);
+				results = model.items(number, ItemDAO.CAT_ALL, ItemDAO.PAGE_ALL, ItemDAO.LIMIT_ALL, ItemDAO.NO_FILTER);
+				request.setAttribute("cartItems", cart.mappedCartItems());
+				request.setAttribute("category", results.get(0).getCategory());
+				request.setAttribute("results", results);
+				request.getRequestDispatcher("/partials/_items.jspx").forward(request,
+						response);
+				break;
+			case ROUTE_BY_NUMBER:
+				String number2 = route.getMatcher().group("itemNumber");
+				ItemBean item = model.items(number2, ItemDAO.CAT_ALL, ItemDAO.PAGE_ALL, ItemDAO.LIMIT_ALL, ItemDAO.NO_FILTER).get(0);
 				request.setAttribute("cartItem", cart.getCartItemFor(item));
 				request.setAttribute("item", item);
 				request.getRequestDispatcher("/partials/_item.jspx").forward(request,

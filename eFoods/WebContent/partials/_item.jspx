@@ -22,7 +22,7 @@
 					<c:when test="${not empty cartItem }">
 					<input class="item-quantity" type="number" name="qty" value="${cartItem.quantity }" /> <input type="hidden"
 					name="item" value="${item.number }" /> 
-					</br>
+					<br/>
 					<input type="submit"
 					class="btn btn-primary" name="itemAdd" value="Change" />
 						<p>
@@ -32,7 +32,7 @@
 					<c:otherwise>
 						<input class="item-quantity" type="number" name="qty" value="1" /> 
 						<input type="hidden" name="item" value="${item.number }" /> 
-						</br>
+						<br/>
 						<input type="submit" class="btn btn-primary" name="itemAdd" value="Add" />
 					</c:otherwise>
 				</c:choose>
