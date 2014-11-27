@@ -4,8 +4,8 @@
 	<jsp:directive.page contentType="text/html; charset=UTF-8"
 		pageEncoding="UTF-8" session="false" />
 	<jsp:output omit-xml-declaration="true" />
-<a href="javascript:window.history.back()">Go back.</a>	
-<h1>Authorized signed in users only!</h1>
-<br/>
-<h2>May be you have forgotton to <a href="backend/login" onClick="return eFoods.util.statefulHref(this);">log in.</a> </h2>
+
+<h1>Congratulations!</h1>
+<p>Your order was successfully placed. </p>
+<p>You can check the status of all your orders by visiting your <a href="backend/cart/history" data-refresh-ids="main-content" onClick="return eFoods.app.handleHref(this, true);">purchase history</a> page</p>
 </jsp:root>

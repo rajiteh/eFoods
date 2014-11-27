@@ -28,7 +28,7 @@ public class EFoods {
 		return itemDAO.retrieve(number, catId, page, limit, filter);
 	}
 	
-	public synchronized void createPurchaseOrder(CartModel cart, String filepath) throws Exception {
+	public synchronized int createPurchaseOrder(CartModel cart, String filepath) throws Exception {
 		PurchaseOrderFiles pofs = new PurchaseOrderFiles(filepath);
 		int orderId = pofs.getNextOrderId();
 		PurchaseOrderWrapper poWrapper = new PurchaseOrderWrapper(cart, orderId);
@@ -53,7 +53,7 @@ public class EFoods {
 			marshaller.marshal(poWrapper, new StreamResult(sWriter));
 
 			pofs.storeNewOrder(orderId, cart.getAccount().getName(), sWriter.toString());
-
+			return orderId;
 		} catch (Exception e) {
 			throw e;
 		} finally {

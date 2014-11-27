@@ -33,7 +33,7 @@ public class Orders extends BaseCtrl {
 	public static final int ROUTE_UPDATE_STATUS = 0x0b;
 	
 	public static final String BASE_PATH = "/PurchaseOrders/";
-
+	//public static final String DEBUG_PATH = "/Users/rajiteh/dev/eclipse_workspace/ProjectC/eFoods/WebContent/PurchaseOrders/";
 	
 	
 	public Orders() {
@@ -44,8 +44,7 @@ public class Orders extends BaseCtrl {
 	protected synchronized void processRequest(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		Route route = getRoute(request);		
-		//String basePath = request.getServletContext().getRealPath(BASE_PATH);
-		String basePath = "/Users/rajiteh/dev/eclipse_workspace/ProjectC/eFoods/WebContent/PurchaseOrders/";
+		String basePath = request.getServletContext().getRealPath(BASE_PATH);
 		String baseUrl = request.getContextPath() + BASE_PATH;		
 		PurchaseOrderFiles pofs; 
 		

@@ -250,4 +250,9 @@ public class CartModel {
 		return dis;
 	}
 
+	public void clear() {
+		this.cartItems = new ArrayList<CartItem>();
+		computeCart();
+	}
+
 }

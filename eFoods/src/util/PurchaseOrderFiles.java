@@ -2,8 +2,10 @@ package util;
 
 import java.io.File;
 import java.io.FileWriter;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -20,6 +22,14 @@ public class PurchaseOrderFiles {
 		int orderId;
 		String userName;
 		String status;
+		String modifiedDate;
+		/**
+		 * @return the modifiedDate
+		 */
+		public String getModifiedDate() {
+			return modifiedDate;
+		}
+
 		/**
 		 * @return the fileName
 		 */
@@ -53,24 +63,15 @@ public class PurchaseOrderFiles {
 		}
 		public PurchaseOrderFile(File basePath, int orderId, String userName,
 				String status) throws Exception {
-			super();
-			
 			String filename = orderId + "_" + userName + "_" + status + ".xml";
 			if (!filename.matches(MATCHER_REGEX))
 				throw new Exception("Order filename invalid. Check parameters. " + filename);
-			
-			this.fileName = new File(basePath, filename).getAbsolutePath();
+			File leFile = new File(basePath, filename);
+			this.fileName = leFile.getAbsolutePath();
 			this.orderId = orderId;
 			this.userName = userName;
 			this.status = status;
-		}
-
-		public PurchaseOrderFile(String absolutePath, int orderId, String userName,
-				String status) {
-			this.fileName = absolutePath;
-			this.orderId = orderId;
-			this.userName = userName;
-			this.status = status;
+			this.modifiedDate = new Date(leFile.lastModified()).toString();
 		}
 	}
 	protected static final String MATCHER_REGEX = "^(?<poId>[1-9][0-9]*)_(?<accountId>[A-Za-z0-9]+)_(?<statusId>new|pending|purchased)\\.xml$";
@@ -101,7 +102,7 @@ public class PurchaseOrderFiles {
 						throw new Exception("Non unique id " + currId  );
 					else
 						idArray.add(currId);
-					results.add(new PurchaseOrderFile(file.getAbsolutePath(),currId,account,status));
+					results.add(new PurchaseOrderFile(basePath,currId,account,status));
 				} else {
 					throw new Exception("Malformed xml name " + file.getName());
 				}
@@ -144,6 +145,15 @@ public class PurchaseOrderFiles {
 		
 	}
 
+	public List<PurchaseOrderFile> getOrdersByUser(String username) {
+		List<PurchaseOrderFile> result = new ArrayList<PurchaseOrderFile>();
+		for(PurchaseOrderFile pof : purchaseOrderFiles) {
+			if (pof.getUserName().equals(username))
+				result.add(pof);
+		}
+		return result;
+	}
+	
 	public List<PurchaseOrderFile> getOrdersByStatus(String status) {
 		List<PurchaseOrderFile> result = new ArrayList<PurchaseOrderFile>();
 		for(PurchaseOrderFile pof : purchaseOrderFiles) {

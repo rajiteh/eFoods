@@ -85,7 +85,9 @@ public class Front extends HttpServlet {
 		appRouter.addRoute(new Route("^/cart(/)?$","Cart", Route.METHOD_POST, Cart.ROUTE_MANIPULATE, false));
 		appRouter.addRoute(new Route("^/cart/checkout(/)?$","Cart", Route.METHOD_POST, Cart.ROUTE_CHECKOUT, true));
 		appRouter.addRoute(new Route("^/cart/history(/)?$","Cart", Route.METHOD_GET, Cart.ROUTE_HISTORY, true));
+		appRouter.addRoute(new Route("^/cart/success(/)?$","Cart", Route.METHOD_GET, Cart.ROUTE_SUCCESS, true));
 		appRouter.addRoute(new Route("^/cart/badge(/)?$","Cart", Route.METHOD_GET, Cart.ROUTE_BADGE, false));
+		
 		
 		appRouter.addRoute(new Route("^/error/(?<Base64EncodedMessage>.*)?","Misc", Route.METHOD_GET, Misc.ERROR_PAGE, false));
 		
