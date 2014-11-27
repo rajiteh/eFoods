@@ -1,8 +1,14 @@
 package model;
 
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+
 public class UserBean {
 	
+	@XmlAttribute(name="account")
 	String name;
+	
+	
 	String fullName;
 
 
@@ -27,12 +33,6 @@ public class UserBean {
 	public String getName() {
 		return name;
 	}
-	/**
-	 * @param name the name to set
-	 */
-	public void setName(String name) {
-		this.name = name;
-	}
 	
 	/**
 	 * @return the admin
@@ -41,24 +41,14 @@ public class UserBean {
 		return admin;
 	}
 
-	/**
-	 * @param admin the admin to set
-	 */
-	public void setAdmin(boolean admin) {
-		this.admin = admin;
-	}
 
 	/**
 	 * @return the fullName
 	 */
+	@XmlElement(name="name")
 	public String getFullName() {
 		return fullName;
 	}
 
-	/**
-	 * @param fullName the fullName to set
-	 */
-	public void setFullName(String fullName) {
-		this.fullName = fullName;
-	}
+
 }

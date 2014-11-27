@@ -180,7 +180,7 @@ public class CartModel {
 	 *            the account to set
 	 */
 	public void setAccount(UserBean account) {
-		if (account != null)
+		if ((this.account == null || !this.account.equals(account)) && account != null)
 			System.out.println("CartModel: Ownership changed to "
 					+ account.name);
 		this.account = account;

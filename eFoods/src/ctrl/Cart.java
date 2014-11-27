@@ -50,6 +50,7 @@ public class Cart extends BaseCtrl implements Servlet {
 			request.setAttribute("total", cart.getTotal());
 			request.setAttribute("shipping", cart.getShipping());
 			request.setAttribute("tax", cart.getTax());
+			request.setAttribute("user", auth.getUser(request));
 			request.getRequestDispatcher("/partials/_cart.jspx").forward(
 					request, response);
 			break;
@@ -71,8 +72,16 @@ public class Cart extends BaseCtrl implements Servlet {
 			}
 			break;
 		case ROUTE_CHECKOUT:
+			System.out.println("Checking out");
 			// add code here
-			
+			try {
+				//String filePath = request.getServletContext().getRealPath("/PurchaseOrders/");
+				String filePath = "/Users/rajiteh/dev/eclipse_workspace/ProjectC/eFoods/WebContent/PurchaseOrders/";
+				model.createPurchaseOrder(cart, filePath);
+			} catch (Exception e) {
+				System.out.println(e.getMessage());
+				e.printStackTrace();
+			}
 			// notify listener by poking attribute into session scope after client had checked out
 			request.getSession().setAttribute("checkedOut", true);
 			

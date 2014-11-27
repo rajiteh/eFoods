@@ -16,7 +16,7 @@
 		<p> Choose foods ranging from meats to ice cream.</p>
 		<div class="home-search-bar col-md-12">
 			<form method="get" action="backend/search" id="search-form"
-			data-refresh-ids="main-content">
+			data-refresh-ids="main-content" onSubmit="return false;">
 				<input name="filter" class="search-input"  id="item-search" type="text" 
 				value="" placeholder="Search from a wide assortment of foods."/>
 				<input type="hidden" name="page" value="1"/>

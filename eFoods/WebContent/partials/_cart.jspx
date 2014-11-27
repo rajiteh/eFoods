@@ -36,4 +36,15 @@
 	<h2>Shipping: ${shipping.toPlainString() }</h2>
 	<h2>Tax: ${tax.toPlainString() }</h2>
 	<h2>SubTotal: ${total.add(shipping).add(tax).toPlainString() }</h2>
+	
+	<c:choose>
+    <c:when test="${not empty user}">
+      	<form method="POST" action="backend/cart/checkout" >
+			<input type="submit" class="btn btn-primary btn-lg" name="cartSubmit" value="Checkout" />
+		</form>
+    </c:when>
+    <c:otherwise>
+        <a class="btn btn-primary btn-lg" href="backend/login" onClick="return eFoods.util.statefulHref(this);">Checkout</a>
+    </c:otherwise>
+	</c:choose>
 </jsp:root>

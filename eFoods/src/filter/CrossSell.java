@@ -65,7 +65,6 @@ public class CrossSell implements Filter {
 		// TODO Auto-generated method stub
 		// place your code here
 		try {
-			System.out.println("Filter init");
 			HttpServletRequest httpRequest = (HttpServletRequest) request;
 			HttpServletResponse httpResponse = (HttpServletResponse) response;
 			if (!(httpRequest == null || httpResponse == null)) {
@@ -92,7 +91,6 @@ public class CrossSell implements Filter {
 	
 	private void filterCart(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
 		if (request.getMethod().equals("POST")) {
-			System.out.println("Filter cart init moment");
 			try {
 				int quantity = Integer.parseInt(request.getParameter("qty"));
 				String number = (String) request.getParameter("item");
