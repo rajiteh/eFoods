@@ -36,10 +36,13 @@
 		</tbody>
 	</table>
 	
-	<h2>Total: ${total.toPlainString() }</h2>
-	<h2>Shipping: ${shipping.toPlainString() }</h2>
-	<h2>Tax: ${tax.toPlainString() }</h2>
-	<h2>SubTotal: ${total.add(shipping).add(tax).toPlainString() }</h2>
+	<div class="checkout-pricing">
+		<p>Total: ${total.toPlainString() }</p>
+		<p>Shipping: ${shipping.toPlainString() }</p>
+		<p>Tax: ${tax.toPlainString() }</p>
+		<p>SubTotal: ${total.add(shipping).add(tax).toPlainString() }</p>
+	</div>
+	
 	
 	<c:choose>
     <c:when test="${not empty user}">

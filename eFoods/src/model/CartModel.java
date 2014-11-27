@@ -1,6 +1,8 @@
 package model;
 
 import java.math.BigDecimal;
+import java.math.MathContext;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -108,21 +110,35 @@ public class CartModel {
 
 	private BigDecimal calculateShipping() {
 		if (isFreeShipping())
-			return BigDecimal.ZERO;
-		return SHIPPING_CHARGE;
+			return round(BigDecimal.ZERO, 4);
+		return round(SHIPPING_CHARGE, 4);
 	}
 
 	private BigDecimal calculateTotal() {
 		BigDecimal t = BigDecimal.ZERO;
 		for (CartItem ci : cartItems) {
-			t = t.add(new BigDecimal(Float.toString(ci.item.getPrice()))).multiply(
-					new BigDecimal(ci.quantity));
+			System.out.println(new BigDecimal(ci.item.getPrice()));
+			System.out.println(new BigDecimal(ci.quantity));
+			t = t.add(new BigDecimal(ci.item.getPrice()).multiply(
+					new BigDecimal(ci.quantity)));
+			System.out.println(t);
 		}
-		return t;
+		System.out.println(round(t,4));
+		return round(t, 4);
 	}
 
 	private BigDecimal calculateTax() {
-		return (isFreeShipping() ? total.multiply(TAX_MULTIPLIER) : total.add(shipping).multiply(TAX_MULTIPLIER));
+		return round((isFreeShipping() ? total.multiply(TAX_MULTIPLIER) : total.add(shipping).multiply(TAX_MULTIPLIER)), 3);
+	}
+	
+	/**
+	 * 
+	 * @param number
+	 * @param places
+	 * @return rounded BigDecimal to passed number of places.
+	 */
+	private BigDecimal round(BigDecimal number, int places) {
+		return number.round(new MathContext(places, RoundingMode.CEILING));
 	}
 
 	public boolean isFreeShipping() {
