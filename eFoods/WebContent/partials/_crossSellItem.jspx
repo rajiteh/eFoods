@@ -47,7 +47,7 @@
 				<p class="h5">Suggested Purchase</p>
 				<a href="backend/item/${crossSellItem.number }" data-refresh-ids="main-content" onClick="return eFoods.app.handleHref(this, true);">
 					<img src="http://placehold.it/64x64" class="pull-left img-responsive"></img>
-					<span class="pull-right">
+					<span class="pull-right" style="max-width: 130px;">
 					<p>${crossSellItem.name }</p>
 					<p>\$${crossSellItem.price } CDN</p>
 					</span>
