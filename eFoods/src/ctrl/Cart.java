@@ -75,8 +75,8 @@ public class Cart extends BaseCtrl implements Servlet {
 			System.out.println("Checking out");
 			// add code here
 			try {
-				//String filePath = request.getServletContext().getRealPath("/PurchaseOrders/");
-				String filePath = "/Users/rajiteh/dev/eclipse_workspace/ProjectC/eFoods/WebContent/PurchaseOrders/";
+				String filePath = request.getServletContext().getRealPath("/PurchaseOrders/");
+				//String filePath = "/Users/rajiteh/dev/eclipse_workspace/ProjectC/eFoods/WebContent/PurchaseOrders/"; //Use a static path like this to test because eclipse deletes xml files on server reload
 				model.createPurchaseOrder(cart, filePath);
 			} catch (Exception e) {
 				System.out.println(e.getMessage());
