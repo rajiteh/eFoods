@@ -9,7 +9,7 @@
 		<p class="h4"><a href="backend/category" data-refresh-ids="main-content" onClick="return eFoods.app.handleHref(this, true);">All Categories</a></p>
 		<h1><a href="backend/category/${category.id }" data-refresh-ids="main-content" onClick="return eFoods.app.handleHref(this, true);">${category.name }</a></h1>		
 		<div class="icon-previous">
-			<a href="javascript:window.history.back()"><i class="mdi-navigation-arrow-back"></i></a>
+			<a href="javascript:window.history.back()"><span class="mdi-navigation-arrow-back"/></a>
 		</div>
 			
 	</div>

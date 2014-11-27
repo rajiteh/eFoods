@@ -25,9 +25,6 @@
 					<br/>
 					<input type="submit"
 					class="btn btn-primary" name="itemAdd" value="Change" />
-						<p>
-							<b>Element in cart.</b>
-						</p>
 					</c:when>
 					<c:otherwise>
 						<input class="item-quantity" type="number" name="qty" value="1" /> 
