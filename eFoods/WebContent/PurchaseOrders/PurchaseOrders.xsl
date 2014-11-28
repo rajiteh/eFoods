@@ -15,7 +15,15 @@
     	<p>ID: <xsl:value-of select="@id"/></p>
     	<p>Time Submitted: <xsl:value-of select="@submitted"/></p>
     	
-    	<xsl:apply-templates/>   
+    	<xsl:apply-templates select="customer"/>
+    	<xsl:for-each select="/items/item">
+    	<tr>
+   			<td><xsl:value-of select="./name"/></td>
+			<td><xsl:value-of select="./price"/></td>
+			<td><xsl:value-of select="./quantity"/></td>
+			<td><xsl:value-of select="./extended"/></td>
+		</tr>
+   		</xsl:for-each>
     	
     	<h3> Costs </h3>
     	<p>Total: <xsl:value-of select="./total"/></p>
