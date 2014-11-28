@@ -24,12 +24,13 @@ public class Analytics extends BaseCtrl implements Servlet
 		case ANALYTICS_PAGE:
 			try {
 			// get analytic information from application scope
-			//long avgAddItemTime = (long) this.getServletContext().getAttribute("avgAddItemTime");
-			//long avgCheckOutTime = (long) this.getServletContext().getAttribute("avgCheckOutTime");
-			
+			Long avgAddItemTime = (Long) this.getServletContext().getAttribute("avgAddItemTime");
+			Long avgCheckOutTime = (Long) this.getServletContext().getAttribute("avgCheckOutTime");
+			if (avgAddItemTime == null) avgAddItemTime = new Long(0);
+			if (avgCheckOutTime == null) avgCheckOutTime = new Long(0);
 			// poke information into request scope
-			//request.setAttribute("avgAddItemTime", avgAddItemTime);
-			//request.setAttribute("avgCheckOutTime", avgCheckOutTime);
+			request.setAttribute("avgAddItemTime", avgAddItemTime);
+			request.setAttribute("avgCheckOutTime", avgCheckOutTime);
 		
 			// dispatch to JSPX
 			request.getRequestDispatcher("/partials/_analytics.jspx").forward(request, response);
