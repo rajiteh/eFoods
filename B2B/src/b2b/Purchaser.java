@@ -93,10 +93,17 @@ public class Purchaser
 	private void generateReport(AggOrderBean order, String filename) throws Exception
 	{
 		// marshaling
-		JAXBContext jc = JAXBContext.newInstance(order.getClass());
-		Marshaller mar = jc.createMarshaller();
-		mar.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
-		mar.setProperty(Marshaller.JAXB_FRAGMENT, Boolean.TRUE);
-		mar.marshal(order, new File(filename));
+		try
+		{
+			JAXBContext jc = JAXBContext.newInstance(order.getClass());
+			Marshaller mar = jc.createMarshaller();
+			mar.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+			mar.setProperty(Marshaller.JAXB_FRAGMENT, Boolean.TRUE);
+			mar.marshal(order, new File(filename));
+		}
+		catch (Exception e)
+		{
+			throw new Exception("Error occurs during marshalling.");
+		}
 	}
 }

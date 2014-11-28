@@ -1,14 +1,11 @@
 package ctrl;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.net.ConnectException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLEncoder;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 import java.util.ArrayList;
@@ -18,8 +15,6 @@ import java.util.List;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Unmarshaller;
 
-import java.io.OutputStream;
-
 import beans.POFileBean;
 import beans.POFilesWrapper;
 
@@ -28,6 +23,7 @@ public class PODownloader
 	String pofwurl;
 	String bseurl;
 	List<POFileBean> pofs;
+	
 	public PODownloader(String poFilesWrapperUrl, String baseUrl)
    {
 		this.pofwurl = poFilesWrapperUrl;
@@ -72,10 +68,14 @@ public class PODownloader
 		{
 			throw new Exception("Invalid URL!");
 		}
+		catch (ConnectException c)
+		{
+			throw new Exception("Cannot connect to source URL.");
+		}
 		catch (Exception e)
 		{
-			e.printStackTrace();
-			//throw new Exception("Error: fail to download file.");
+			//e.printStackTrace();
+			throw new Exception("Error: fail to download file.");
 		}
 	}
 	
@@ -131,29 +131,30 @@ public class PODownloader
 		return url.substring(url.lastIndexOf('/') + 1);
 	}
 
-	public void setStatus(String string) throws Exception {
-		String type = "application/x-www-form-urlencoded";
-		for(POFileBean pof: pofs) {
-			int id = pof.getId();
-			try {
-				URL u = new URL(this.bseurl + "/eFoods/backend/orders/" + id + "?ajax=1&status=" + string);
-				HttpURLConnection conn = (HttpURLConnection) u.openConnection();
-				conn.setDoOutput(true);
-				conn.setRequestMethod("POST");
-				conn.setRequestProperty( "Content-Type", type );
-				conn.setRequestProperty( "Content-Length", "0");
-				BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-				System.out.println("State changed\t:" + id + ":" + 
-						string + ":" + 
-						conn.getResponseMessage());
-				conn.disconnect();
-			} catch (Exception e) {
-				//e.printStackTrace();
-				System.out.println(e.getMessage());
-			}
-			
+	public void setStatus(String status) throws Exception {
+		if (pofs != null)
+		{
+			String type = "application/x-www-form-urlencoded";
+			for(POFileBean pof: pofs) {
+				int id = pof.getId();
+				try {
+					URL u = new URL(this.bseurl + "/eFoods/backend/orders/" + id + "?ajax=1&status=" + status);
+					HttpURLConnection conn = (HttpURLConnection) u.openConnection();
+					conn.setDoOutput(true);
+					conn.setRequestMethod("POST");
+					conn.setRequestProperty( "Content-Type", type );
+					conn.setRequestProperty( "Content-Length", "0");
+					System.out.println("State changed\t:" + id + ":" + 
+							status + ":" + 
+							conn.getResponseMessage());
+					conn.disconnect();
+				} catch (Exception e) {
+					//e.printStackTrace();
+					//System.out.println(e.getMessage());
+					throw new Exception("set status failed! " + e.getMessage());
+				}
+			} // end of traversal of POFileBean list
 		}
-		// TODO Auto-generated method stub
-		
-	}
+	} // end of method setStatus
+	
 }
