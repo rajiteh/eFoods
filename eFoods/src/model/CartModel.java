@@ -270,5 +270,13 @@ public class CartModel {
 		this.cartItems = new ArrayList<CartItem>();
 		computeCart();
 	}
+	
+	/**
+	 * 
+	 * @return The grandTotal is cumulative amount of tax + shipping + total
+	 */
+	public BigDecimal getGrandTotal() {
+		return tax.add(total).add(shipping);
+	}
 
 }
