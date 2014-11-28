@@ -45,7 +45,7 @@ public class PurchaseOrderWrapper {
 		this.total = cart.getTotal().toPlainString();
 		this.shipping = cart.getShipping().toPlainString();
 		this.HST = cart.getTax().toPlainString();
-		this.grandTotal = cart.getTotal().toPlainString();
+		this.grandTotal = cart.getGrandTotal().toPlainString();
 		this.items = new CartItemsWrapper(cart.getCartItems());
 	}
 	/**
