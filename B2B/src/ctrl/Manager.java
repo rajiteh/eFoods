@@ -2,6 +2,7 @@ package ctrl;
 
 import java.io.File;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import b2b.Aggregator;
@@ -28,14 +29,19 @@ public class Manager
 		// download PO files from eFood server
 		PODownloader dl = new PODownloader("http://localhost:4413/eFoods/backend/orders", "http://localhost:4413");
 		Date now = new Date();
-		String dir = "/home/user/Downloads/" + now.toString() + "/";
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
+		String dir = "./" + sdf.format(now) + "/";
 		new File(dir).mkdir();
 		
 		String[] fns = dl.downloadPOs(dir);
 		
 		int id = Math.abs(now.hashCode());
+		dl.setStatus("pending");
 		AggOrderBean prcrm = agg.getAggregatedOrder(fns, id);
 		pch.purchase(prcrm, dir + "rpt" + id + ".xml");
+		dl.setStatus("purchased");
+		//dl.setStatus("new"); //restore for testing
+		
 	}
 
 }
