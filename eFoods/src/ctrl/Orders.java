@@ -98,7 +98,12 @@ public class Orders extends BaseCtrl {
 			sWriter = new StringWriter();
 			
 			marshaller.marshal(wrapper, new StreamResult(sWriter));
-			return sWriter.toString();
+			
+			// add the stylesheet
+			StringBuffer sb = new StringBuffer(sWriter.toString());
+			sb.insert(0, "<?xml-stylesheet type=\"text/xsl\" href=\"SIS.xsl\"?>\n");
+			
+			return sb.toString();
 		} catch (Exception e) {
 			throw e;
 		} finally {
