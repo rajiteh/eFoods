@@ -37,13 +37,9 @@ public class Misc extends BaseCtrl implements Servlet {
 	protected void processRequest(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		Route route = getRoute(request);
-		SSOAuthenticator auth = (SSOAuthenticator) getAuthenticator(request);
-		int identifier;
-		if (route == null) {
-			identifier = ERROR_PAGE;
-		} else {
-			identifier = route.getIdentifier();
-		}
+		
+		int identifier = ERROR_PAGE;
+		
 		switch(identifier) {
 		case ERROR_PAGE:
 			String errorMessage;

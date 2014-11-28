@@ -189,6 +189,13 @@ public class PurchaseOrderFiles {
 		}
 		
 	}
+
+	public void nuke() throws Exception {
+		for(PurchaseOrderFile pof : purchaseOrderFiles) {
+			new File(pof.getFileName()).delete();
+		}
+		this.purchaseOrderFiles = allOrderFiles();
+	}
 	
 
 }

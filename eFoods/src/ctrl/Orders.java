@@ -31,7 +31,7 @@ public class Orders extends BaseCtrl {
 	
 	public static final int ROUTE_ALL_NEW = 0x0a;
 	public static final int ROUTE_UPDATE_STATUS = 0x0b;
-	
+	public static final int ROUTE_NUKE = 0x0c;
 	public static final String BASE_PATH = "/PurchaseOrders/";
 	//public static final String DEBUG_PATH = "/Users/rajiteh/dev/eclipse_workspace/ProjectC/eFoods/WebContent/PurchaseOrders/";
 	
@@ -78,6 +78,15 @@ public class Orders extends BaseCtrl {
 				throw new ServletException(e.getMessage());
 			}
 			break;
+		case ROUTE_NUKE:
+			try {
+				pofs = new PurchaseOrderFiles(basePath);
+				pofs.nuke();
+			} catch (Exception e) {
+				e.printStackTrace();
+				throw new ServletException(e.getMessage());
+			}
+			break;
 		default:
 			throw new ServletException("Routing configuration error.");
 		}
@@ -91,8 +100,6 @@ public class Orders extends BaseCtrl {
 					.getClass());
 			Marshaller marshaller = jaxbCtx.createMarshaller();
 			
-			//marshaller.setProperty(Marshaller.JAXB_SCHEMA_LOCATION,
-			//		"SIS.xsd");
 			marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT,
 					Boolean.TRUE);
 			sWriter = new StringWriter();
@@ -101,7 +108,7 @@ public class Orders extends BaseCtrl {
 			
 			// add the stylesheet
 			StringBuffer sb = new StringBuffer(sWriter.toString());
-			sb.insert(0, "<?xml-stylesheet type=\"text/xsl\" href=\"SIS.xsl\"?>\n");
+			
 			
 			return sb.toString();
 		} catch (Exception e) {
