@@ -38,6 +38,7 @@ public class Front extends HttpServlet {
 	private static final List<String> SSO_ADMINS = new ArrayList<String>() {{
 		add("cse11011"); //List of admin users
 		add("cse13195");
+		add("cse13122");
 	}};
 	
 	

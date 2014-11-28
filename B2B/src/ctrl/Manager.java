@@ -1,6 +1,8 @@
 package ctrl;
 
+import java.io.File;
 import java.net.URL;
+import java.util.Date;
 
 import b2b.Aggregator;
 import b2b.Purchaser;
@@ -9,7 +11,6 @@ import beans.AggOrderBean;
 
 public class Manager
 {
-
 	public static void main(String[] args) throws Exception
 	{
 		// create aggregator and purchaser
@@ -22,16 +23,19 @@ public class Manager
 		pch.addWholesaler(new Wholesaler("Halifax", new URL("http://roumani.eecs.yorku.ca:4413/axis/YHZ.jws")));
 		
 		// set purchase key
-		pch.setKey("4413Secret");
+		pch.setKey("4413secret");
 		
-		// test
-		String[] fns = {"/home/user/Downloads/PO120.xml",
-							 "/home/user/Downloads/PO121.xml",
-							 "/home/user/Downloads/PO122.xml",
-							 "/home/user/Downloads/PO124.xml"};
+		// download PO files from eFood server
+		PODownloader dl = new PODownloader("http://localhost:4413/eFoods/backend/orders", "http://localhost:4413");
+		Date now = new Date();
+		String dir = "/home/user/Downloads/" + now.toString() + "/";
+		new File(dir).mkdir();
 		
-		AggOrderBean prcr = agg.getAggregatedOrder(fns, 103);
-		pch.purchase(prcr, "/home/user/Downloads/rpt103.xml");
+		String[] fns = dl.downloadPOs(dir);
+		
+		int id = Math.abs(now.hashCode());
+		AggOrderBean prcrm = agg.getAggregatedOrder(fns, id);
+		pch.purchase(prcrm, dir + "rpt" + id + ".xml");
 	}
 
 }
