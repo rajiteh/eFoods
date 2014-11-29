@@ -23,20 +23,39 @@ public class ItemDAO extends BaseDAO {
 			+ "C.description as \"CAT_DESCRIPTION\" FROM ITEM I "
 			+ "INNER JOIN CATEGORY C  ON I.catId = C.id";
 	
-	public ItemDAO() {
-		// TODO Auto-generated constructor stub
-	}
+	public ItemDAO() {}
 
+	/**
+	 * Retrieves all the items from the database.
+	 * @return A List containing all the items.
+	 * @throws Exception
+	 */
 	public List<ItemBean> retrieve() throws Exception {
 		return retrieve(NUMBER_ALL);
 	}
 
-	
 
+	/**
+	 * Retrieves a single item from the database.
+	 * @param number
+	 * @return A List containing the single item.
+	 * @throws Exception
+	 */
 	public List<ItemBean> retrieve(String number) throws Exception {
 		return retrieve(number, CAT_ALL, PAGE_ALL, LIMIT_ALL, NO_FILTER);
 	}
 	
+	/**
+	 * Creates a query for the DB based on the passed parameters.
+	 * 
+	 * @param number
+	 * @param catId
+	 * @param page
+	 * @param limit
+	 * @param filter
+	 * @return The list of the items passed on the generated query.
+	 * @throws Exception
+	 */
 	public List<ItemBean> retrieve(String number, int catId, int page, int limit, String filter) throws Exception {
 		Connection connection = null;
 		PreparedStatement preparedStatement;

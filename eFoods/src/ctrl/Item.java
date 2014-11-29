@@ -25,7 +25,10 @@ public class Item extends BaseCtrl {
 	public static final int ROUTE_BY_SEARCH = 0x0d;
 	public static final int ROUTE_BY_NUMBER_FULL = 0x0e;
 
-
+	/**
+	 * Process the request and response. Uses the model, authenticator, route
+	 * to manage the request appropriately.
+	 */
 	protected void processRequest(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		EFoods model = getModel(request);

@@ -19,6 +19,11 @@ public class Router {
 		routes.add(route);
 	}
 
+	/**
+	 * 
+	 * @param request
+	 * @return the route with respect to the request
+	 */
 	public Route getRoute(HttpServletRequest request) {
 		for (Route r : routes)
 			if (r.match(request)){

@@ -57,6 +57,7 @@ a:hover {
 	height: 2em;
 	font-size: 2em;
 	width: 100%;
+	padding-left: 60px;
 }
 
 .contact > p {
