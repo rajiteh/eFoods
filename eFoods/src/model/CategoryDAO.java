@@ -13,9 +13,7 @@ public class CategoryDAO extends BaseDAO {
 
 	
 	
-	public CategoryDAO() {
-		// TODO Auto-generated constructor stub
-	}
+	public CategoryDAO() {}
 
 	public List<CategoryBean> retrieve() throws Exception {
 		return retrieve(ID_ALL);

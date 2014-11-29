@@ -6,10 +6,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Queue;
 
-
-
-
-
 public class BaseDAO {
 	
 	
@@ -32,6 +28,14 @@ public class BaseDAO {
 		}
 	}
 	
+	/**
+	 * Creates a new string based a list of where clauses, this list
+	 * is joined by the operator.
+	 * 
+	 * @param wheres
+	 * @param operator
+	 * @return A string joined by the passed operator
+	 */
 	protected String createWhereString(List<String> wheres, String operator) {
 		String whereString = "";
 		Iterator<String> iter = wheres.iterator();
@@ -40,6 +44,14 @@ public class BaseDAO {
         return "(" + whereString + ")";
 	}
 	
+	/**
+	 * 
+	 * @param query
+	 * @param piQ
+	 * @param connection
+	 * @return The prepared statement.
+	 * @throws Exception
+	 */
 	protected PreparedStatement instaPrepareStatement(String query, Queue<PrepareInstruction> piQ, Connection connection) throws Exception {
 		PreparedStatement ps = connection.prepareStatement(query);
 		int idx=0;
@@ -60,6 +72,14 @@ public class BaseDAO {
 		return ps;
 	}
 	
+	/**
+	 * Creates a string for paging. This is used to fetch
+	 * a specific amount of rows from the database.
+	 * 
+	 * @param page
+	 * @param limit
+	 * @return
+	 */
 	protected String pagingString(int page, int limit) {
 		String ret = "";
 		

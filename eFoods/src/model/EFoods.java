@@ -28,6 +28,14 @@ public class EFoods {
 		return itemDAO.retrieve(number, catId, page, limit, filter);
 	}
 	
+	/**
+	 * Creates a purchase order based on the current items in the cart.
+	 * 
+	 * @param cart
+	 * @param filepath
+	 * @return the purchase order id
+	 * @throws Exception
+	 */
 	public synchronized int createPurchaseOrder(CartModel cart, String filepath) throws Exception {
 		PurchaseOrderFiles pofs = new PurchaseOrderFiles(filepath);
 		int orderId = pofs.getNextOrderId();
