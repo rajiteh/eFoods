@@ -48,7 +48,6 @@ public class CartModel {
 	private static final BigDecimal TAX_MULTIPLIER = new BigDecimal("0.13");
 	private static final BigDecimal FREE_SHIPPING_LIMIT = new BigDecimal("100.00");
 	private static final BigDecimal SHIPPING_CHARGE = new BigDecimal("5.00");
-	// private static final boolean TAX_WITH_SHIPPING = false;
 	private static final String CART_SESSION_KEY = "com.eFoods.model.Cart";
 
 	private List<CartItem> cartItems;

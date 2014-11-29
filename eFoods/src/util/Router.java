@@ -20,7 +20,7 @@ public class Router {
 	}
 
 	/**
-	 * 
+	 * Loop through all configured routes and find one that matches.
 	 * @param request
 	 * @return the route with respect to the request
 	 */

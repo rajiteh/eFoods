@@ -2,7 +2,6 @@ package filter;
 
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.DispatcherType;
@@ -17,8 +16,6 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
 
-import util.SSOAuthenticator;
-import model.CartModel;
 import model.CartModel.CartItem;
 import model.EFoods;
 import model.ItemBean;
@@ -37,7 +34,8 @@ public class CrossSell implements Filter {
 			put("0905A044", "0905A123"); //Add cross sell items <ItemAddedToCart,ItemToCrossSell>
 			put("0905A112", "0905A127"); 
 			put("0905A123", "0905A112"); 
-			put("0905A127", "0905A044"); 
+			put("0905A127", "0905A044");
+			put("1409S413", "2002H712");
 		}
 	}; 
 	

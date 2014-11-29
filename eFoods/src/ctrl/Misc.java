@@ -9,13 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.tomcat.util.codec.binary.Base64;
 
-import ctrl.BaseCtrl.PagingHelper;
 import util.Route;
-import util.SSOAuthenticator;
-import model.CartModel;
-import model.EFoods;
-import model.ItemBean;
-import model.ItemDAO;
 
 /**
  * Servlet implementation class Cart
@@ -60,7 +54,7 @@ public class Misc extends BaseCtrl implements Servlet {
 					request, response);
 			break;
 		default:
-			throw new ServletException("Uh oh! We shouldn't be here!");
+			throw new ServletException("Routing configuration error.");
 		}
 		
 	}

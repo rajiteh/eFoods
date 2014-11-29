@@ -67,44 +67,58 @@ public class Front extends HttpServlet {
 			throw new ServletException(e.getMessage());
 		}
 		
-		//Setting up routes
-		Router appRouter = new Router();
-		
-		
-		appRouter.addRoute(new Route("^/category(/)?$","Category", Route.METHOD_GET, Category.ROUTE_ALL, false));
-		//appRouter.addRoute(new Route("^/category/(?<catId>[0-9]+)(/)?$","Category", Route.METHOD_GET, Category.ROUTE_BY_ID, false));
-		appRouter.addRoute(new Route("^/category/(?<catId>[0-9]+)(/)?$","Item", Route.METHOD_GET, Item.ROUTE_BY_CATEGORY, false));
-		
-		appRouter.addRoute(new Route("^/item(/)?$","Item", Route.METHOD_GET, Item.ROUTE_ALL,false));
-		appRouter.addRoute(new Route("^/item/(?<itemNumber>[0-9a-zA-Z]+)/partial(/)?$","Item", Route.METHOD_GET, Item.ROUTE_BY_NUMBER,false));
-		appRouter.addRoute(new Route("^/item/(?<itemNumber>[0-9a-zA-Z]+)(/)?$","Item", Route.METHOD_GET, Item.ROUTE_BY_NUMBER_FULL,false));
-		
-		appRouter.addRoute(new Route("^/search(/)?$","Item", Route.METHOD_GET, Item.ROUTE_BY_SEARCH,false));
 
-		
+		Router appRouter = new Router();
+		/*
+		 * Start Route Definitions
+		 */
+		//List All categories
+		appRouter.addRoute(new Route("^/category(/)?$","Category", Route.METHOD_GET, Category.ROUTE_ALL, false));
+		//List All items from a category
+		appRouter.addRoute(new Route("^/category/(?<catId>[0-9]+)(/)?$","Item", Route.METHOD_GET, Item.ROUTE_BY_CATEGORY, false));
+		//List all items
+		appRouter.addRoute(new Route("^/item(/)?$","Item", Route.METHOD_GET, Item.ROUTE_ALL,false));
+		//Render a partial of a single item
+		appRouter.addRoute(new Route("^/item/(?<itemNumber>[0-9a-zA-Z]+)/partial(/)?$","Item", Route.METHOD_GET, Item.ROUTE_BY_NUMBER,false));
+		//Render an item as a result listing
+		appRouter.addRoute(new Route("^/item/(?<itemNumber>[0-9a-zA-Z]+)(/)?$","Item", Route.METHOD_GET, Item.ROUTE_BY_NUMBER_FULL,false));
+		//Free text search on all items
+		appRouter.addRoute(new Route("^/search(/)?$","Item", Route.METHOD_GET, Item.ROUTE_BY_SEARCH,false));
+		//Authentication initiation endpoint
 		appRouter.addRoute(new Route("^/login(/)?$","Auth", Route.METHOD_GET, Auth.ROUTE_INITAL, false));
+		//Authentication redirect reciever endpoint
 		appRouter.addRoute(new Route("^/login/authenticate(/)?$","Auth", Route.METHOD_GET, Auth.ROUTE_AUTHENTICATE, false));
+		//Log out current user
 		appRouter.addRoute(new Route("^/logout(/)?$","Auth", Route.METHOD_GET, Auth.ROUTE_LOGOUT, true));
+		//Render the badge that shows user information or logged in link if not auth
 		appRouter.addRoute(new Route("^/user(/)?$","Auth", Route.METHOD_GET, Auth.ROUTE_USER_BADGE, false));
-		
+		//Render current cart
 		appRouter.addRoute(new Route("^/cart(/)?$","Cart", Route.METHOD_GET, Cart.ROUTE_ALL, false));
+		//Change elements in the cart. Accepted GET "item=?&qty=?
 		appRouter.addRoute(new Route("^/cart(/)?$","Cart", Route.METHOD_POST, Cart.ROUTE_MANIPULATE, false));
+		//Initiate checkout of the current cart
 		appRouter.addRoute(new Route("^/cart/checkout(/)?$","Cart", Route.METHOD_POST, Cart.ROUTE_CHECKOUT, true));
+		//Render purchase history page
 		appRouter.addRoute(new Route("^/cart/history(/)?$","Cart", Route.METHOD_GET, Cart.ROUTE_HISTORY, true));
+		//Render checkout success page
 		appRouter.addRoute(new Route("^/cart/success(/)?$","Cart", Route.METHOD_GET, Cart.ROUTE_SUCCESS, true));
+		//Render cart item count badge
 		appRouter.addRoute(new Route("^/cart/badge(/)?$","Cart", Route.METHOD_GET, Cart.ROUTE_BADGE, false));
-		
-		
+		//Render generic error page (accepts b64 string as an error message to show)
 		appRouter.addRoute(new Route("^/error/(?<Base64EncodedMessage>.*)?","Misc", Route.METHOD_GET, Misc.ERROR_PAGE, false));
-		
+		//Render analytics page
 		appRouter.addRoute(new Route("^/analytics(/)?$","Analytics", Route.METHOD_ANY, Analytics.ANALYTICS_PAGE, true, true));
-		
+		//Render XML listing of available orders
 		appRouter.addRoute(new Route("^/orders(/)?$","Orders", Route.METHOD_GET, Orders.ROUTE_ALL_NEW, false));
-		
-		//POST request to /orders/<order-id> url with parameter "state" being one of "new, pending, purchased" will change the status of it.
+		//Change status of an order (Accepts GET parameter "state" being one of "new", "pending" or "purchased")
 		appRouter.addRoute(new Route("^/orders/(?<orderId>[0-9]+)(/)?$","Orders", Route.METHOD_POST, Orders.ROUTE_UPDATE_STATUS, false));
-		//Poking the context
+		//Permenantly remove all orders from the system. Destructive action! 
 		appRouter.addRoute(new Route("^/orders/nuke(/)?$","Orders", Route.METHOD_GET, Orders.ROUTE_NUKE, false));
+		/*
+		 * End Route definitions
+		 */
+		
+		//Poking the context
 		config.getServletContext().setAttribute(MODEL_KEY, model);
 		config.getServletContext().setAttribute(ROUTER_KEY, appRouter);
 		config.getServletContext().setAttribute(SSO_AUTHENTICATOR_KEY, auth);
@@ -156,7 +170,6 @@ public class Front extends HttpServlet {
 				System.out.println("Redirecting to: " + rdr);
 				response.sendRedirect(rdr);
 			}
-			//throw new ServletException(e);
 		}
 	}
 

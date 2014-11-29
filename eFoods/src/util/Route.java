@@ -105,6 +105,9 @@ public class Route {
 		this.requireAdmin = requireAdmin;
 	}
 
+	/*
+	 * Tests if the given http request matches to this route
+	 */
 	public boolean match(HttpServletRequest request) {
 		Matcher m = Pattern.compile(this.urlPattern).matcher(request.getPathInfo());
 		if (m.matches() && verifyMethod(request.getMethod())) {

@@ -66,7 +66,7 @@ public class BaseDAO {
 				ps.setInt(idx, (int) pi.value);
 				break;
 			default:
-				throw new Exception("Instructions not clear statement stuck in toaster");
+				throw new Exception("Instructions are invalid");
 			}
 		}
 		return ps;

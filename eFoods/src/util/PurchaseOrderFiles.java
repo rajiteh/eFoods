@@ -2,15 +2,13 @@ package util;
 
 import java.io.File;
 import java.io.FileWriter;
-import java.text.SimpleDateFormat;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import util.PurchaseOrderFiles.PurchaseOrderFile;
 
 public class PurchaseOrderFiles {
 	public class PurchaseOrderFile {
@@ -61,6 +59,11 @@ public class PurchaseOrderFiles {
 		public String getFileNameOnly() {
 			return new File(fileName).getName();
 		}
+		
+		/*
+		 * This constructor will automatically determine the file name given the required information. 
+		 * Ensures that file names with illiegal schemes will not be saved.
+		 */
 		public PurchaseOrderFile(File basePath, int orderId, String userName,
 				String status) throws Exception {
 			String filename = orderId + "_" + userName + "_" + status + ".xml";
@@ -86,6 +89,10 @@ public class PurchaseOrderFiles {
 		this.purchaseOrderFiles = allOrderFiles();
 	}
 
+	/*
+	 * Traverses all files in the purchase order folder and creates a List of
+	 *  PurchaseOrderFile classes ready to be used by other methods.
+	 */
 	public List<PurchaseOrderFile> allOrderFiles() throws Exception {
 		File[] files = basePath.listFiles();
 		List<PurchaseOrderFile> results = new ArrayList<PurchaseOrderFile>();
@@ -111,6 +118,9 @@ public class PurchaseOrderFiles {
 		return results;
 	}
 	
+	/*
+	 * Finds the highest order id and return int added 1
+	 */
 	public int getNextOrderId() throws Exception {
 		int[] ids = new int[purchaseOrderFiles.size()];
 		int i = 0;
@@ -125,6 +135,9 @@ public class PurchaseOrderFiles {
 		}
 	}
 	
+	/*
+	 * Creates a new purchase order file
+	 */
 	public void storeNewOrder(int orderId, String accountName, String order) throws Exception {
 		int nextId = getNextOrderId();
 		if (nextId != orderId)
@@ -171,6 +184,9 @@ public class PurchaseOrderFiles {
 		return null;
 	}
 
+	/*
+	 * Renames an order file in order to change it's status
+	 */
 	public void updateStatus(int orderId, String status) throws Exception {
 		PurchaseOrderFile pof = getOrderById(orderId);
 		if (pof != null) {
@@ -190,6 +206,9 @@ public class PurchaseOrderFiles {
 		
 	}
 
+	/*
+	 * Deletes all order files in the system. Destructive action.
+	 */
 	public void nuke() throws Exception {
 		for(PurchaseOrderFile pof : purchaseOrderFiles) {
 			new File(pof.getFileName()).delete();

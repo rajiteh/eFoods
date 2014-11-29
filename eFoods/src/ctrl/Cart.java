@@ -1,9 +1,6 @@
 package ctrl;
 
-import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import javax.servlet.Servlet;
@@ -26,6 +23,9 @@ import model.ItemDAO;
 
 public class Cart extends BaseCtrl implements Servlet {
 	private static final long serialVersionUID = 1L;
+	/*
+	 * Route definitions for this controller
+	 */
 	public static final int ROUTE_ALL = 0x0a;
 	public static final int ROUTE_MANIPULATE = 0x0b;
 	public static final int ROUTE_HISTORY = 0x0c;
@@ -44,7 +44,7 @@ public class Cart extends BaseCtrl implements Servlet {
 
 	@Override
 	protected void processRequest(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
+			HttpServletResponse response) throws Exception {
 		Route route = getRoute(request);
 		SSOAuthenticator auth = (SSOAuthenticator) getAuthenticator(request);
 		CartModel cart = CartModel.getInstance(request ,auth);
@@ -65,76 +65,56 @@ public class Cart extends BaseCtrl implements Servlet {
 			String itemNumber;
 			ItemBean item;
 			int newQty;
-			
+			itemNumber = request.getParameter("item");
 			try {
-				itemNumber = request.getParameter("item");
-				try {
-					newQty =  Integer.parseInt(request.getParameter("qty"));
-					if (newQty < 0) throw new Exception("Quantity must be 0 or positive.");
-				} catch (NumberFormatException e) {
-					throw new Exception("Quantity must be a valid number.");
-				}
-				
-				item = model.items(itemNumber, ItemDAO.CAT_ALL, paging.getPage(), paging.getLimit(), ItemDAO.NO_FILTER).get(0);
-				//if (item.getQty() > newQty) {
-					cart.manipulateCart(item, newQty);	
-				//} else {
-					//throw new Exception("There are not enough quantities to satisfy your order.");
-				//}
-				
-				// poke number of cart items into session scope, for listener
-				request.getSession().setAttribute("cartItemsCount", cart.getCartItems().size());
-			} catch (Exception e) {
-				e.printStackTrace();
-				throw new ServletException(e.getMessage());
+				newQty =  Integer.parseInt(request.getParameter("qty"));
+			} catch (NumberFormatException e) {
+				throw new Exception("Quantity must be a valid number.");
 			}
+			
+			if (newQty < 0) throw new Exception("Quantity must be 0 or positive.");
+			
+			item = model.items(itemNumber, ItemDAO.CAT_ALL, paging.getPage(), paging.getLimit(), ItemDAO.NO_FILTER).get(0);
+			cart.manipulateCart(item, newQty);	
+			
+			// poke number of cart items into session scope, for listener
+			request.getSession().setAttribute("cartItemsCount", cart.getCartItems().size());
+		
 			break;
 		case ROUTE_CHECKOUT:
 			System.out.println("Checking out");
-			// add code here
-			try {
-				
-				if (cart.getCartItems().size() < 1) {
-					throw new Exception("Can't checkout empty cart!");
-				}
-				int orderId = model.createPurchaseOrder(cart, filePath);
-				// notify listener by poking attribute into session scope after client had checked out
-				cart.clear();
-				request.getSession().setAttribute("checkedOut", true);
-				String rdr = (request.getContextPath().length() == 0 ? "/" : request.getContextPath()) + "#!backend/cart/success?order=" + orderId;
-				response.sendRedirect(rdr);
-			} catch (Exception e) {
-				e.printStackTrace();
-				throw new ServletException(e.getMessage());
+			if (cart.getCartItems().size() < 1) {
+				throw new Exception("Can't checkout empty cart!");
 			}
-			
+			int orderId = model.createPurchaseOrder(cart, filePath);
+			// notify listener by poking attribute into session scope after client had checked out
+			cart.clear();
+			request.getSession().setAttribute("checkedOut", true);
+			String rdr = (request.getContextPath().length() == 0 ? "/" : request.getContextPath()) + "#!backend/cart/success?order=" + orderId;
+			response.sendRedirect(rdr);
 			break;
 		case ROUTE_HISTORY:
-			try {
-				PurchaseOrderFiles pofs = new PurchaseOrderFiles(filePath);
-				List<PurchaseOrderFile> pofList = pofs.getOrdersByUser(auth.getUser(request).getName());
-				
-				List<PurchaseOrderFile> pendingOrders = new ArrayList<PurchaseOrderFile>();
-				List<PurchaseOrderFile> newOrders = new ArrayList<PurchaseOrderFile>();
-				List<PurchaseOrderFile> purchasedOrders = new ArrayList<PurchaseOrderFile>();
-				for(PurchaseOrderFile pof : pofList)
-					if (pof.getStatus().equals(PurchaseOrderFile.STATUS_NEW))
-						newOrders.add(pof);
-					else if (pof.getStatus().equals(PurchaseOrderFile.STATUS_PENDING))
-						pendingOrders.add(pof);
-					else if (pof.getStatus().equals(PurchaseOrderFile.STATUS_PURCHASED))
-						purchasedOrders.add(pof);
-				
-				request.setAttribute("pendingOrders", pendingOrders);
-				request.setAttribute("newOrders", newOrders);
-				request.setAttribute("purchasedOrders", purchasedOrders);
-				request.getRequestDispatcher("/partials/_cartHistory.jspx").forward(
-						request, response);	
-			} catch (Exception e) {
-				e.printStackTrace();
-				throw new ServletException(e.getMessage());
-			}
+			PurchaseOrderFiles pofs = new PurchaseOrderFiles(filePath);
+			List<PurchaseOrderFile> pofList = pofs.getOrdersByUser(auth.getUser(request).getName());
 			
+			List<PurchaseOrderFile> pendingOrders = new ArrayList<PurchaseOrderFile>();
+			List<PurchaseOrderFile> newOrders = new ArrayList<PurchaseOrderFile>();
+			List<PurchaseOrderFile> purchasedOrders = new ArrayList<PurchaseOrderFile>();
+
+			//Sorting the purchase orders by their type
+			for(PurchaseOrderFile pof : pofList)
+				if (pof.getStatus().equals(PurchaseOrderFile.STATUS_NEW))
+					newOrders.add(pof);
+				else if (pof.getStatus().equals(PurchaseOrderFile.STATUS_PENDING))
+					pendingOrders.add(pof);
+				else if (pof.getStatus().equals(PurchaseOrderFile.STATUS_PURCHASED))
+					purchasedOrders.add(pof);
+			
+			request.setAttribute("pendingOrders", pendingOrders);
+			request.setAttribute("newOrders", newOrders);
+			request.setAttribute("purchasedOrders", purchasedOrders);
+			request.getRequestDispatcher("/partials/_cartHistory.jspx").forward(
+					request, response);	
 			break;
 		case ROUTE_SUCCESS:
 			request.getRequestDispatcher("/partials/_cartSuccess.jspx").forward(
@@ -146,7 +126,7 @@ public class Cart extends BaseCtrl implements Servlet {
 					request, response);
 			break;
 		default:
-			throw new ServletException("Uh oh! We shouldn't be here!");
+			throw new ServletException("Route configuration error.");
 		}
 		
 	}

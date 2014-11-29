@@ -50,7 +50,13 @@ public abstract class BaseCtrl extends HttpServlet
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		processRequest(request, response);
+		try {
+			processRequest(request, response);	
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new ServletException(e.getMessage());
+		}
+		
 	}
 
 		
@@ -61,7 +67,7 @@ public abstract class BaseCtrl extends HttpServlet
 		doGet(request, response);
 	}
 	
-	protected abstract void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException; 
+	protected abstract void processRequest(HttpServletRequest request, HttpServletResponse response) throws Exception; 
 	
 
 	protected PagingHelper getPagination(HttpServletRequest request) {

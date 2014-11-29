@@ -114,11 +114,4 @@ public class ItemDAO extends BaseDAO {
 		return retval;
 	}
 	
-
-	/*
-	 * SET SCHEMA roumani; SELECT I.number, I.name, I.price, I.qty, I.onorder,
-	 * I.reorder, I.catid, I.supid, I.costprice, I.unit, C.id as "cat_id",
-	 * C.name as "cat_name", C.description as "cat_description" FROM ITEM I
-	 * INNER JOIN CATEGORY C ON I.catId = C.id;
-	 */
 }

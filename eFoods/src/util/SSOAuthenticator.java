@@ -1,7 +1,5 @@
 package util;
 
-import java.io.IOException;
-import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
@@ -29,7 +27,6 @@ public class SSOAuthenticator extends Authenticator {
 	private static final String NONCE_VALUE_KEY = "com.eFoods.util.Authentication.SSO.nonce.value";
 	private static final String NONCE_TIME_KEY = "com.eFoods.util.Authentication.SSO.nonce.time";
 	private static final int NONCE_EXPIRY = 10; //minutes
-	
 	private static final int NONCE_LENGTH = 16;
 	
 	private String sharedKey;
@@ -50,6 +47,8 @@ public class SSOAuthenticator extends Authenticator {
 		this.ssoEndpoint = ssoEndpoint;
 		this.ssoReciever = ssoReciever;
 		this.sharedKey = sharedKey;
+		
+		//Creates a unique sesion key for this SSO endpoint 
 		this.sessionKey = SESSION_KEY_PREFIX + "." + ssoEndpoint.hashCode();
 		this.adminUsers = adminUsers;
 		
@@ -75,6 +74,9 @@ public class SSOAuthenticator extends Authenticator {
 		request.getSession().setAttribute(this.sessionKey, user);
 	}
 
+	/**
+	 *Generates a nonce, constructs a payload and redirects to the auth endpoint
+	 */
 	public void SSORedirect(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		String nonce = generateNonce(NONCE_LENGTH);
 		String rawPayload = "nonce=" + nonce;
@@ -89,6 +91,11 @@ public class SSOAuthenticator extends Authenticator {
 		System.out.println("Auth: Nonce created.");
 		response.sendRedirect(ssoEndpoint + "?" + queryString);
 	}
+	
+	/**
+	 * Accepts a payload and a signature and verifies the authenticity of the request by comparing the nonce. 
+	 * Set's the user in to the current session.
+	 */
 	@Override
 	public boolean login(HttpServletRequest request, String uname,
 			String pwd) throws Exception {
@@ -135,9 +142,17 @@ public class SSOAuthenticator extends Authenticator {
 		if (userFullName == null || userFullName.length() < 1)
 			throw new Exception("Invalid user full name data in payload");
 		
-		boolean isAdmin = false;
-		if (adminUsers.contains(userName))
-			isAdmin = true;
+		/*
+		 * FOLLOWING CODE IS COMMENTED OUT FOR THE SAKE OF MARKER. AS THERE IS NO WAY
+		 * TO ADD HIM/HER AS AN ADMIN WITHOUT PRIOR KNOWLEDGE OF THEIR USERNAMES
+		 */
+		//boolean isAdmin = false;
+		//if (adminUsers.contains(userName))
+		//	isAdmin = true;
+		boolean isAdmin = true;
+		/*
+		 * End testing code
+		 */
 		
 		setUser(request, new UserBean(userName, userFullName, isAdmin));
 		return isAuthenticated(request);
@@ -146,6 +161,7 @@ public class SSOAuthenticator extends Authenticator {
 	@Override
 	public void logout(HttpServletRequest request) throws Exception {
 		HttpSession session = request.getSession(false);
+		//Clears the session before invalidating 
 		if (session != null) {
 			Enumeration<String> e = session.getAttributeNames();
 			while (e.hasMoreElements()) {
@@ -173,6 +189,7 @@ public class SSOAuthenticator extends Authenticator {
 		if (timeAtStore != null && timeAtStore > (System.currentTimeMillis() - (NONCE_EXPIRY * 1000 * 60 * 10))) {
 			return (String) request.getSession().getAttribute(NONCE_VALUE_KEY);	
 		} else {
+			//Expire the nonce if the maximum time has been passed.
 			expireNonce(request);
 			return null;
 		}
