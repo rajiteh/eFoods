@@ -5,7 +5,7 @@ Project C of EECS4413 @ YU
 
 ### B2C
 * Download the supporting tools package (includes jetty­run and other apache libraries)
-  https://www.dropbox.com/s/h4spx292i3w2k9x/efoods­runner.zip?dl=0
+  https://www.dropbox.com/s/h4spx292i3w2k9x/efoods-runner.zip?dl=0
 * Extract the tools package and place “eFoods.war” in the /app subfolder.  
 ```
     ~/efoods-runner$> tree .
